@@ -32,3 +32,25 @@ Notable project decisions, newest last. Each line: date, decision, why.
 - **Local placeholder env values** for Razorpay and Instagram so dev/build run; real values are in `docs/OWNER_TODO.md`.
 - **`pnpm typecheck` runs `next typegen` first**, so Next's generated route types (`LayoutProps`, `PageProps`) exist on a fresh checkout.
 - **No coupons or discount codes** (owner's decision). Migration `20261003001100` drops the `coupons` table, `coupon_type`, and `orders.discount`/`coupon_code`, and removes coupon logic from `create_order`/`restore_stock`. This overrides the requirements doc's "Coupon / Gift Card" in the cart: the cart keeps gift cards only. Gift cards stay because they are a payment method, not a discount.
+
+## 2026-10-03 — Catalogue seed
+- **`docs/catalogue.md` created** from the four catalogue PDFs (it was referenced but didn't exist). It stays local like the rest of `/docs`; `pnpm seed` reads it and fails clearly if it's missing. Descriptions in Erayah's voice, launch flags and merchandising order live in `scripts/seed.ts`.
+- **Catalogue text fixes:** PDF line-break artefacts ("10- inch", "mother-of- pearl") and a missing space ("mother-of-pearl.Comes") fixed; "white stone polk" → "white stone polki" (Āhna).
+- **Names:** "Chanatara Ring" seeded as **Chantara Ring** (matches the Chantara earrings and pendant). "Kaman"/"Kamān" unified as **Kamān**. Products sharing a name get a stone suffix: Kumud, Pākhi, Indu, Kamān (– Mother-of-Pearl / – Firozi / – Polki), Vakra (– Polki / – Multicolour).
+- **Colours left empty** where the catalogue only says "stone polki" (no colour given), so those pieces don't appear under a colour filter until the owner sets one. Firozi is filed as turquoise, jade as green, 3+ stone colours also as multicolour.
+- **Family** groups pieces that share a name or motif: elephant (Gajā, Vakra), moon (Indu, Kamān, Soma, Ardh), lotus (Kumud, Padma), wings (Pākhi), parrot (Mithū, Piku), plus name pairs (Chantara, Harakh, Juhi, Vaani).
+- **Seeding is non-destructive.** Re-running refreshes only catalogue text on existing products; price, stock, flags, positions and variants are owner-managed in `/admin` and never overwritten. Settings, pages and FAQs are only filled where empty.
+- **Shipping rule not reset to ₹0.** The prompt asked for a ₹0 placeholder rule, but the owner had already set ₹100; the seed only creates a rule (named "SET THE REAL RATE IN ADMIN") if none exists.
+- **Payment FAQ says no cash on delivery** (the prompt listed COD; COD was removed earlier).
+- **Variants:** Dori Ring White 2 / Green 2 / Pink 1; Harakh Earrings White 3 / Pink 2 (5 per product in total). Stock 5 per product is a placeholder.
+- **Placeholder images:** one ivory 1200×1500 JPEG in `product-images/placeholders/`, used for the four expected roles of every product until real photos replace them.
+- **Complete the Look:** 3 per product, chosen by score: same family first (across categories), then shared motif (celestial/nature/animal weigh more than pearl), shared colour and similar price; at most two from one category, and pieces already suggested often are penalised so suggestions spread across the catalogue (no piece appears more than 7 times).
+
+### Merchandising order (launch)
+Heroes in the first four slots, statement and minimal pieces alternating, prices mixed, and no two pieces of the same family side by side (the seed enforces this).
+- **Earrings:** Meher, Harakh, Mallika, Chantara, Dahlia, Vaani – Blue, Arohi, Aira, Rani, Juhi – Green & Blue, Nevara, Nir, Gulbahar, Jharna, Misri, Vaani – Pink, Boond, Tavira, Mrina, Inara, Reva, Juhi – Red, Orva, Avira.
+- **Necklace Sets:** Mayurika, Rohini, Noor, Mithū, Ziya, Channak, Tara, Gul.
+- **Rings:** Ekam, Dori, Harakh, Bindu, Mārakat, Chantara, Aabha, Beej (unpublished until it has a price).
+- **Pendants:** Rangmil, Gajā I, Soma, Kumud – MoP, Piku, Indu – Polki, Dwandva, Pākhi – MoP, Āhna, Vakra – Polki, Chantara, Kalāsh, Padma, Kamān – MoP, Gajā II, Ardh, Kumud – Firozi, Indu – MoP, Pākhi – Firozi, Vakra – Multicolour, Kamān – Polki, Gajā III.
+- **New Arrivals:** Mayurika, Mallika, Noor, Ekam, Mithū, Arohi, Rohini, Rangmil, Ziya, Gulbahar, Gul, Channak, Tara.
+- **Best Sellers:** Meher, Gajā I, Dahlia, Harakh Ring, Gul, Kumud – MoP, Rani, Juhi – Red.

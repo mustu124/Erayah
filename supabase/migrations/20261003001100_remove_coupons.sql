@@ -304,3 +304,4 @@ alter table public.orders
 
 drop table public.coupons;
 drop type public.coupon_type;
+
