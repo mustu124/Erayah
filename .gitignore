@@ -40,4 +40,13 @@ Thumbs.db
 .idea
 
 # client source material — kept local only (repo is public)
-/docs/
+/docs/*
+!/docs/DATABASE.md
+!/docs/DECISIONS.md
+!/docs/OWNER_TODO.md
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

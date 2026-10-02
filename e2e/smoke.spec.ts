@@ -1,0 +1,39 @@
+import { expect, test } from "@playwright/test";
+
+test.describe("smoke", () => {
+  test("home page loads", async ({ page }, testInfo) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error") errors.push(message.text());
+    });
+
+    const response = await page.goto("/");
+    expect(response?.status()).toBe(200);
+
+    await expect(page).toHaveTitle(/Erayah/);
+    await expect(page.getByRole("heading", { level: 1, name: "ERAYAH" })).toBeVisible();
+
+    // Brand fonts and colours are applied.
+    const heading = page.getByRole("heading", { level: 1 });
+    await expect(heading).toHaveCSS("font-family", /STIX Two Text/);
+    await expect(heading).toHaveCSS("color", "rgb(49, 24, 41)"); // --color-ink
+    await expect(page.locator("body")).toHaveCSS("font-family", /Montserrat/);
+
+    // No horizontal scroll at any width.
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+
+    // Elephant favicon is linked.
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", /icon/);
+
+    expect(errors).toEqual([]);
+
+    await testInfo.attach("home", {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+  });
+});
