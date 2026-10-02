@@ -20,7 +20,6 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 |---|---|
 | `site_settings` | One row (`id = 1`) of site-wide settings: announcement, brand story, contact details, GST and invoice prefix. |
 | `shipping_rules` | Shipping rates by pincode prefix, state or default; the most specific active rule wins. |
-| `coupons` | Discount codes (percent or flat), case-insensitive, with dates, minimum order, cap and usage limit. |
 | `gift_cards` | Gift card codes with a remaining balance. |
 | `gift_card_redemptions` | Each use of a gift card on an order; `reversed_at` is set if the order is released. |
 | `faqs` | FAQ entries (markdown answers), grouped and ordered. |
@@ -42,8 +41,8 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | Function | Who can call it | What it does |
 |---|---|---|
 | `is_admin()` / `is_owner()` | anyone (used by RLS) | Whether the signed-in user is in `admin_users` (as an owner). |
-| `create_order(payload jsonb)` | service role only | Places an order in one transaction: locks rows, re-reads prices, checks and takes stock, applies coupon, shipping, GST and gift card, writes the order, items and first event. Returns `{order_id, order_number, access_token, total, status, payment_method}`. Errors are stable codes such as `OUT_OF_STOCK:<id>` (full list at the top of the remove_cod_set_shipping migration). |
-| `restore_stock(order_id)` | service role only | Puts back stock, coupon usage and gift card balance for an order that won't be fulfilled. Safe to call twice. Does not change the status. |
+| `create_order(payload jsonb)` | service role only | Places an order in one transaction: locks rows, re-reads prices, checks and takes stock, applies shipping, GST and gift card, writes the order, items and first event. Returns `{order_id, order_number, access_token, total, status, payment_method}`. Errors are stable codes such as `OUT_OF_STOCK:<id>` (full list at the top of the remove_coupons migration). |
+| `restore_stock(order_id)` | service role only | Puts back stock and gift card balance for an order that won't be fulfilled. Safe to call twice. Does not change the status. |
 | `expire_pending_orders(interval)` | service role only (pg_cron) | Cancels Razorpay orders unpaid after 30 minutes and releases what they held. Runs every 10 minutes. |
 | `assign_invoice_number(order_id)` | service role only | Gives an order its GST invoice number (`ERY/26-27/00001`). Call it when a Razorpay payment is confirmed; gift-card-only orders get one automatically. |
 | `quote_shipping(pincode, state, order_value)` | service role only | The shipping fee and delivery estimate for an address; use it for the cart estimate too. |
@@ -54,9 +53,8 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 
 ## Money rules
 - `subtotal` = sum of database prices × quantity.
-- `discount` = coupon, capped by `max_discount` and the subtotal.
-- `shipping_fee` = most specific matching rule; 0 once the discounted subtotal reaches that rule's `free_above`. A more specific rule (pincode or state) does not inherit the default rule's free-shipping threshold, so set `free_above` on each rule that should have one.
-- `gst_amount` = 3% of (subtotal − discount + shipping). When prices include GST it is the portion already inside; otherwise it is added on top.
+- `shipping_fee` = most specific matching rule; 0 once the subtotal reaches that rule's `free_above`. A more specific rule (pincode or state) does not inherit the default rule's free-shipping threshold, so set `free_above` on each rule that should have one.
+- `gst_amount` = 3% of (subtotal + shipping). There are no coupons or discounts. When prices include GST it is the portion already inside; otherwise it is added on top.
 - `gift_card_amount` is applied last, like a payment, and is capped at the total.
 - `total` = what the customer pays online through Razorpay. There is no Cash on Delivery. 0 means a gift card covered everything: `payment_method` is `gift_card` and the order is marked paid at once.
 
@@ -72,5 +70,5 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 - The first owner is added by hand once: create the user in Supabase Auth, then run `insert into admin_users (user_id, email, role) values ('<user id>', '<email>', 'owner');` in the SQL editor.
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration.
-- Migrations up to `20261003001000` were applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
-  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000`
+- Migrations up to `20261003001100` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
+  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100`

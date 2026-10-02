@@ -18,7 +18,7 @@ Notable project decisions, newest last. Each line: date, decision, why.
 - **`search_vector` maintained by trigger**, not a generated column: generated columns can't read the category name or use non-immutable `array_to_string`. Accents are stripped (`unaccent`) so "mithu" finds "Mithū".
 - **Gap-free numbering** via `document_counters`: order numbers `ERY-2026-00001` per calendar year; GST invoice numbers `ERY/26-27/00001` per financial year, assigned only once paid.
 - **Stock is held at order creation**; unpaid Razorpay orders are cancelled and released after 30 minutes by `pg_cron` (`expire_pending_orders`, every 10 minutes).
-- **`restore_stock` also reverses coupon usage and gift card balance**, idempotently.
+- **`restore_stock` also reverses gift card balance**, idempotently.
 - **Added `contact_messages`** (contact form stored for `/admin`, since no email).
 - **Only owners can manage `admin_users`** so staff cannot promote themselves.
 - **Customer email is optional; phone is required.**
@@ -31,3 +31,4 @@ Notable project decisions, newest last. Each line: date, decision, why.
 - **Playwright** (Chromium + WebKit) smoke tests in `e2e/`, run with `pnpm test:e2e` against `next dev` at 375px and 1280px.
 - **Local placeholder env values** for Razorpay and Instagram so dev/build run; real values are in `docs/OWNER_TODO.md`.
 - **`pnpm typecheck` runs `next typegen` first**, so Next's generated route types (`LayoutProps`, `PageProps`) exist on a fresh checkout.
+- **No coupons or discount codes** (owner's decision). Migration `20261003001100` drops the `coupons` table, `coupon_type`, and `orders.discount`/`coupon_code`, and removes coupon logic from `create_order`/`restore_stock`. This overrides the requirements doc's "Coupon / Gift Card" in the cart: the cart keeps gift cards only. Gift cards stay because they are a payment method, not a discount.

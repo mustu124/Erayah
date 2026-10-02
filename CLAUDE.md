@@ -62,10 +62,11 @@ Homepage sections, strictly in this order and nothing else: Hero, Shop by Catego
 
 ## Commerce rules
 - Guest checkout only. Payment: Razorpay only (UPI, cards, wallets, netbanking). There is NO Cash on Delivery.
-- All prices, discounts, shipping and totals are computed on the server from the database. Never trust prices sent by the browser.
+- All prices, shipping and totals are computed on the server from the database. Never trust prices sent by the browser.
 - After a successful order the customer sees a confirmation page showing the invoice, with a Download PDF button. The invoice is NEVER emailed, SMSed or WhatsApped to the customer; it exists only on that screen. That is the end of the customer journey.
+- There are NO coupons or discount codes anywhere.
 - The site sends NO email at all (no email service is used). The owner sees new orders in /admin, and contact form messages are saved to the database and read in /admin.
-- The owner manages everything in /admin (products, images, merchandising order, homepage, orders, coupons, gift cards, shipping rates, content, settings).
+- The owner manages everything in /admin (products, images, merchandising order, homepage, orders, gift cards, shipping rates, content, settings).
 - Shipping policy text (use verbatim on product pages and Shipping & Returns): delivery in 7–10 working days; express on request; handcrafted variations are natural; returns/exchanges only for transit damage or wrong product, unworn and in original packaging; return shipping is paid by the customer.
 
 ## Engineering rules
