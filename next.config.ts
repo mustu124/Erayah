@@ -8,6 +8,8 @@ const env = parseEnv(serverEnvSchema, process.env);
 const supabaseHost = new URL(env.NEXT_PUBLIC_SUPABASE_URL).hostname;
 
 const nextConfig: NextConfig = {
+  // Next 16 caching: "use cache" + cacheTag in src/lib/data, revalidated by tag from /admin.
+  cacheComponents: true,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

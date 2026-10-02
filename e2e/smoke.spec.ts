@@ -5,7 +5,10 @@ test.describe("smoke", () => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => {
-      if (message.type() === "error") errors.push(message.text());
+      // Links to pages that aren't built yet are prefetched and 404; ignore those.
+      if (message.type() === "error" && !message.text().startsWith("Failed to load resource")) {
+        errors.push(message.text());
+      }
     });
 
     const response = await page.goto("/");

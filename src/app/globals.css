@@ -99,6 +99,36 @@
   }
 }
 
+/* Drawer (native <dialog>): opacity fade in and out, no sliding. */
+dialog.drawer {
+  opacity: 0;
+  transition:
+    opacity 300ms var(--ease-soft),
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+dialog.drawer[open] {
+  opacity: 1;
+}
+dialog.drawer::backdrop {
+  background-color: rgb(49 24 41 / 0);
+  transition:
+    background-color 300ms var(--ease-soft),
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+dialog.drawer[open]::backdrop {
+  background-color: rgb(49 24 41 / 0.35);
+}
+@starting-style {
+  dialog.drawer[open] {
+    opacity: 0;
+  }
+  dialog.drawer[open]::backdrop {
+    background-color: rgb(49 24 41 / 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

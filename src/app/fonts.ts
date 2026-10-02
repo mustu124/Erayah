@@ -11,7 +11,7 @@ export const fontHeading = STIX_Two_Text({
 
 export const fontBody = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-montserrat",
   display: "swap",
 });

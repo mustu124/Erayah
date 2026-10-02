@@ -11,7 +11,8 @@
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --linked --schema public > src/lib/supabase/types.ts",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "db:types:local": "tsx scripts/gen-db-types.ts"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
@@ -26,11 +27,13 @@
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
     "sharp": "^0.35.5",
+    "simple-icons": "^16.33.0",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

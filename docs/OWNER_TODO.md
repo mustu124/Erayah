@@ -17,7 +17,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 
 ## Brand files
 - [ ] **Sloop font file** (licensed web font: `.woff2` preferred) for highlight words. Currently STIX Two Text Italic.
-- [ ] **Logo as SVG** (wordmark and elephant mark). Only PNGs exist in `/docs/brand`; SVG keeps the header and footer wordmark sharp and small.
+- [ ] **Logo as SVG** (wordmark, tagline and elephant mark). Only PNGs exist in `/docs/brand`; the site uses traced versions for now, which look right but the designer's originals are better.
 
 ## Business and legal
 - [ ] **Business details for invoices**: legal name, registered address, GSTIN, and whether prices include GST (assumed yes, 3%). Stored in `site_settings`.
@@ -34,7 +34,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Review the product descriptions** written in Erayah's voice, especially the name meanings (e.g. Harakh = joy, Mārakat = emerald, Kamān = bow). Edit any that aren't right.
 - [ ] **Review the launch flags and order** (New Arrivals, Best Sellers, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
 - [ ] **Product photos**: four per product (worn close-up, lifestyle, product-only, detail), plus optional flat lay / video.
-- [ ] **Hero slides, category tile images, lifestyle images.**
+- [ ] **Hero slides, category tile images, lifestyle images.** The first active hero slide also becomes the image in the desktop Shop menu.
 - [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).

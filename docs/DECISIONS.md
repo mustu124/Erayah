@@ -61,3 +61,19 @@ Heroes in the first four slots, statement and minimal pieces alternating, prices
 - Short descriptions name the colour instead of "available in … colours/variants" (e.g. "stackable bands with green stone polki").
 - Each colour has 5 in stock (placeholder). Same-colour siblings are kept apart in the category order (Dori at 2, 5, 8 in Rings; Harakh at 2 and 19 in Earrings).
 - **`pnpm seed --reset-merchandising`** re-applies launch flags, category order and Complete the Look over existing products. Used once now, before any /admin edits exist; normal re-runs leave them alone. Complete the Look links are only added for products that have none, so a product never gets more than 3.
+
+## 2026-10-03 — Site shell and UI primitives
+- **Cache Components on** (`cacheComponents: true`). Storefront data is read in `src/lib/data/*` with `"use cache"` + `cacheTag` (tags in `src/lib/cache-tags.ts`) through a cookie-free anon client (`src/lib/supabase/public.ts`); admin edits will call `revalidateTag(tag, "max")`. `unstable_cache` is deprecated in Next 16.
+- **Database types without the CLI link:** `pnpm db:types:local` applies the migrations to PGlite and writes `src/lib/supabase/types.ts` in the `supabase gen types` shape (tables, relationships, functions, enums). Switch to `pnpm db:types` once linked.
+- **Logo traced to SVG.** `/docs/brand` only has PNGs, so the wordmark, tagline and elephant were traced (potrace) into inline SVG paths (`src/components/ui/logo-paths.ts`). Replace with the designer's SVGs when supplied.
+- **URL scheme:** `/collections/{all|earrings|necklace-sets|rings|bracelets|pendants|new-arrivals|best-sellers|gifts-for-her}`, styles as `/collections/all?style=…`, products `/products/[slug]`, `/search?q=`, `/wishlist`, and `/about`, `/contact`, `/faqs`, `/shipping-returns`, `/privacy-policy`, `/terms` (all in `src/lib/routes.ts`).
+- **Mega-menu headings are ink with a gold hairline**, not gold text: gold on off-white is ~2.3:1, below WCAG AA. The editorial tile uses the first active hero slide's image; until one exists it shows an ivory tile with the elephant mark.
+- **Mega-menu opens on hover or click/Enter**, not on focus (opening on focus re-opened it after Esc returned focus to SHOP).
+- **Drawers are native modal `<dialog>`s** (focus trap, inert page, Esc and backdrop close, focus returns), fading via CSS `@starting-style`; no slide animation.
+- **Wishlist on mobile:** the mobile header has only cart and menu (as specified), so a Wishlist link sits at the bottom of the mobile menu next to Instagram and WhatsApp.
+- **Mobile search row scrolls away**; only the header row is sticky, to keep the viewport for the jewellery.
+- **Carousel dots** are 24×44px tap targets (44px tall, narrower so eight fit on a phone).
+- **Brand glyphs** (WhatsApp, Instagram) come from `simple-icons`; Lucide no longer ships brand logos. Lucide icons use a 1.25 absolute stroke. The cart icon is a shopping bag.
+- **Footer pattern strip** is a 96×40 ivory elephant-and-dot tile (`public/brand/elephant-pattern.svg`) at 12% opacity.
+- **Cart drawer** is mounted in the shell with an empty state; Prompt 9 fills it.
+- **Montserrat 600** is loaded for the small bold uppercase labels.
