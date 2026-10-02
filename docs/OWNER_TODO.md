@@ -23,18 +23,18 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Business details for invoices**: legal name, registered address, GSTIN, and whether prices include GST (assumed yes, 3%). Stored in `site_settings`.
 - [ ] **Shipping**: ₹100 flat is set "for now". Confirm the rate and whether there is a free-shipping threshold.
 - [ ] **Policies** for legal sign-off: Privacy Policy and Terms & Conditions are seeded as drafts marked "DRAFT – REVIEW BEFORE LAUNCH", with placeholders [LEGAL BUSINESS NAME], [REGISTERED ADDRESS], [EMAIL], [PHONE], [CITY], [DATE] and a Grievance Officer [NAME]. Shipping & Returns uses the catalogue text.
-- [ ] **FAQs** (12, seeded): review the wording, especially care advice and the damaged-order process.
+- [ ] **FAQs** — final text to be provided by the owner at the end. 12 drafts are seeded in the meantime.
 
 ## Content
 - [ ] **Beej Ring price** (missing from the Rings catalogue).
 - [ ] **Products that share a name** were seeded with a stone suffix (e.g. "Kumud Pendant – Mother-of-Pearl", "Vakra Pendant – Multicolour"), and "Kaman"/"Kamān" as Kamān. Confirm or rename in /admin.
 - [ ] **"Chanatara Ring"** in the catalogue was seeded as **Chantara Ring** (to match the earrings and pendant). Confirm the spelling.
-- [ ] **Stock**: every product was seeded with 5 (Dori Ring and Harakh Earrings split across colours). Set real stock in /admin.
+- [ ] **Stock**: every product was seeded with 5, including each colour of Dori Ring and Harakh Earrings (now separate products). Set real stock in /admin.
 - [ ] **Colours** for pieces described only as "stone polki" (several rings and pendants) are empty, so they don't show under a colour filter. Set them in /admin.
 - [ ] **Review the product descriptions** written in Erayah's voice, especially the name meanings (e.g. Harakh = joy, Mārakat = emerald, Kamān = bow). Edit any that aren't right.
 - [ ] **Review the launch flags and order** (New Arrivals, Best Sellers, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
 - [ ] **Product photos**: four per product (worn close-up, lifestyle, product-only, detail), plus optional flat lay / video.
 - [ ] **Hero slides, category tile images, lifestyle images.**
-- [ ] **Founder story** for the About page (marked [FOUNDER STORY TO BE ADDED]). The homepage brand story and the About page use the brand guidelines' text for now.
-- [ ] **About / brand story review**, **FAQs**, **testimonials**, **announcement bar text**, support email and phone.
+- [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
+- [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).

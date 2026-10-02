@@ -42,15 +42,22 @@ Notable project decisions, newest last. Each line: date, decision, why.
 - **Seeding is non-destructive.** Re-running refreshes only catalogue text on existing products; price, stock, flags, positions and variants are owner-managed in `/admin` and never overwritten. Settings, pages and FAQs are only filled where empty.
 - **Shipping rule not reset to ₹0.** The prompt asked for a ₹0 placeholder rule, but the owner had already set ₹100; the seed only creates a rule (named "SET THE REAL RATE IN ADMIN") if none exists.
 - **Payment FAQ says no cash on delivery** (the prompt listed COD; COD was removed earlier).
-- **Variants:** Dori Ring White 2 / Green 2 / Pink 1; Harakh Earrings White 3 / Pink 2 (5 per product in total). Stock 5 per product is a placeholder.
+- ~~Variants: Dori Ring and Harakh Earrings as colour variants.~~ Superseded below: every colour is its own product. Stock 5 per product is a placeholder.
 - **Placeholder images:** one ivory 1200×1500 JPEG in `product-images/placeholders/`, used for the four expected roles of every product until real photos replace them.
 - **Complete the Look:** 3 per product, chosen by score: same family first (across categories), then shared motif (celestial/nature/animal weigh more than pearl), shared colour and similar price; at most two from one category, and pieces already suggested often are penalised so suggestions spread across the catalogue (no piece appears more than 7 times).
 
 ### Merchandising order (launch)
 Heroes in the first four slots, statement and minimal pieces alternating, prices mixed, and no two pieces of the same family side by side (the seed enforces this).
-- **Earrings:** Meher, Harakh, Mallika, Chantara, Dahlia, Vaani – Blue, Arohi, Aira, Rani, Juhi – Green & Blue, Nevara, Nir, Gulbahar, Jharna, Misri, Vaani – Pink, Boond, Tavira, Mrina, Inara, Reva, Juhi – Red, Orva, Avira.
+- **Earrings:** Meher, Harakh – White, Mallika, Chantara, Dahlia, Vaani – Blue, Arohi, Aira, Rani, Juhi – Green & Blue, Nevara, Nir, Gulbahar, Jharna, Misri, Vaani – Pink, Boond, Tavira, Harakh – Pink, Mrina, Inara, Reva, Juhi – Red, Orva, Avira.
 - **Necklace Sets:** Mayurika, Rohini, Noor, Mithū, Ziya, Channak, Tara, Gul.
-- **Rings:** Ekam, Dori, Harakh, Bindu, Mārakat, Chantara, Aabha, Beej (unpublished until it has a price).
+- **Rings:** Ekam, Dori – White, Harakh, Bindu, Dori – Green, Mārakat, Chantara, Dori – Pink, Aabha, Beej (unpublished until it has a price).
 - **Pendants:** Rangmil, Gajā I, Soma, Kumud – MoP, Piku, Indu – Polki, Dwandva, Pākhi – MoP, Āhna, Vakra – Polki, Chantara, Kalāsh, Padma, Kamān – MoP, Gajā II, Ardh, Kumud – Firozi, Indu – MoP, Pākhi – Firozi, Vakra – Multicolour, Kamān – Polki, Gajā III.
 - **New Arrivals:** Mayurika, Mallika, Noor, Ekam, Mithū, Arohi, Rohini, Rangmil, Ziya, Gulbahar, Gul, Channak, Tara.
 - **Best Sellers:** Meher, Gajā I, Dahlia, Harakh Ring, Gul, Kumud – MoP, Rani, Juhi – Red.
+
+## 2026-10-03 — Colours as products
+- **Every colour is its own product** (owner's decision), as Juhi and Vaani already were. Dori Ring → Dori Ring – White / Green / Pink; Harakh Earrings → Harakh Earrings – White / Pink. 65 products in total. No product uses `product_variants`; the table stays but is unused.
+- The two products first seeded with variants were **renamed in place** to their White versions (keeping their images and links); their 5 seed-created variant rows were removed. The seed refuses to do this for a product that has ever been ordered.
+- Short descriptions name the colour instead of "available in … colours/variants" (e.g. "stackable bands with green stone polki").
+- Each colour has 5 in stock (placeholder). Same-colour siblings are kept apart in the category order (Dori at 2, 5, 8 in Rings; Harakh at 2 and 19 in Earrings).
+- **`pnpm seed --reset-merchandising`** re-applies launch flags, category order and Complete the Look over existing products. Used once now, before any /admin edits exist; normal re-runs leave them alone. Complete the Look links are only added for products that have none, so a product never gets more than 3.

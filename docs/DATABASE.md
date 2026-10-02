@@ -9,7 +9,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 |---|---|
 | `categories` | The five shop categories (Bracelets starts as `is_coming_soon`), with SEO fields and sort order. |
 | `products` | Every piece: price (null while a draft), materials/stones/colours/styles arrays for filters and search, merchandising flags and positions, stock, and a trigger-maintained `search_vector`. |
-| `product_variants` | Options for products sold in more than one colour (Dori Ring, Harakh Earrings); when present, stock lives here instead of on the product. |
+| `product_variants` | Unused at launch: every colour is sold as its own product (e.g. Dori Ring – Green). Kept for future options; when a product has variants, stock lives here instead of on the product. |
 | `product_images` | Product photos and video by role; the card shows `worn_closeup`, hover shows `lifestyle`, and the product page shows all by `sort_order`. |
 | `product_relations` | Hand-picked "Complete the Look" and cart cross-sell links between products. |
 | `lifestyle_tiles` | Editorial images placed between product rows on a category page (or Shop All when `category_id` is null). |

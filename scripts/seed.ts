@@ -1,14 +1,19 @@
-// Seeds the Erayah catalogue and launch content. Run with `pnpm seed`.
+// Seeds the Erayah catalogue and launch content. Run with `pnpm seed`
+// (`--dry-run` to preview, `--reset-merchandising` to re-apply launch flags,
+// category order and Complete the Look over any /admin changes).
 //
 // Reads docs/catalogue.md (transcribed from the catalogue PDFs) and writes to
 // Supabase with the service role. Safe to run more than once:
 // - new products are inserted with everything below (price, stock, flags,
-//   merchandising positions, variants, placeholder images, relations);
+//   merchandising positions, placeholder images, relations);
 // - existing products only get their catalogue text refreshed (name,
 //   descriptions, stones, colours, styles, closure, chain). Price, stock,
-//   flags and positions are owner-managed in /admin and left alone;
+//   flags and positions are owner-managed in /admin and left alone (unless
+//   --reset-merchandising);
 // - settings, pages and FAQs are only filled where still empty.
-// Nothing is ever deleted.
+// The only deletions: the variant rows of a product split into colours
+// (refused if it was ever ordered), and Complete the Look links when they are
+// rebuilt with --reset-merchandising. Products are never deleted.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -59,20 +64,21 @@ type CatalogueRow = {
 /** Curated order within each category (requirements §7). */
 const MERCH_ORDER: Record<Exclude<CategorySlug, "bracelets">, string[]> = {
   earrings: [
-    "meher-earrings", "harakh-earrings", "mallika-earrings", "chantara-earrings",
+    "meher-earrings", "harakh-earrings-white", "mallika-earrings", "chantara-earrings",
     "dahlia-earrings", "vaani-earrings-blue", "arohi-earrings", "aira-earrings",
     "rani-earrings", "juhi-earrings-green-blue", "nevara-earrings", "nir-earrings",
     "gulbahar-earrings", "jharna-earrings", "misri-earrings", "vaani-earrings-pink",
-    "boond-earrings", "tavira-earrings", "mrina-earrings", "inara-earrings",
-    "reva-earrings", "juhi-earrings-red", "orva-earrings", "avira-earrings",
+    "boond-earrings", "tavira-earrings", "harakh-earrings-pink", "mrina-earrings",
+    "inara-earrings", "reva-earrings", "juhi-earrings-red", "orva-earrings",
+    "avira-earrings",
   ],
   "necklace-sets": [
     "mayurika-choker-set", "rohini-choker", "noor-set", "mithu-necklace-set",
     "ziya-choker-set", "channak-set", "tara-choker-set", "gul-choker-set",
   ],
   rings: [
-    "ekam-ring", "dori-ring", "harakh-ring", "bindu-ring",
-    "marakat-ring", "chantara-ring", "aabha-ring", "beej-ring",
+    "ekam-ring", "dori-ring-white", "harakh-ring", "bindu-ring", "dori-ring-green",
+    "marakat-ring", "chantara-ring", "dori-ring-pink", "aabha-ring", "beej-ring",
   ],
   pendants: [
     "rangmil-pendant", "gaja-i-pendant", "soma-pendant", "kumud-pendant-mother-of-pearl",
@@ -104,17 +110,15 @@ const HEROES = [
 
 const GIFT_PRICE_LIMIT = 300000; // ₹3,000 in paise
 
-/** Variants: stock is split across options (5 per product in total). */
-const VARIANTS: Record<string, { label: string; colour: string; stock: number }[]> = {
-  "dori-ring": [
-    { label: "White", colour: "white", stock: 2 },
-    { label: "Green", colour: "green", stock: 2 },
-    { label: "Pink", colour: "pink", stock: 1 },
-  ],
-  "harakh-earrings": [
-    { label: "White", colour: "white", stock: 3 },
-    { label: "Pink", colour: "pink", stock: 2 },
-  ],
+/**
+ * Every colour is its own product (owner's decision), so there are no variants.
+ * Products first seeded with colour variants are renamed in place to their
+ * first colour (keeping their images and links), and their variant rows are
+ * removed, but only if no order has ever referenced the product.
+ */
+const SPLIT_INTO_COLOURS: Record<string, string> = {
+  "dori-ring": "dori-ring-white",
+  "harakh-earrings": "harakh-earrings-white",
 };
 
 // ─── Descriptions in Erayah's voice ─────────────────────────────────────────
@@ -127,8 +131,10 @@ const DESCRIPTIONS: Record<string, string> = {
     "Reva pairs white and green polki with faux pearls and soft jade. A dangler that moves gently and sits as easily with cotton as with silk.",
   "inara-earrings":
     "Inara is a stud with quiet presence. White polki set close and finished with faux pearls, for the days you want one certain detail.",
-  "harakh-earrings":
-    "Harakh means joy. Polki and a single faux pearl, in white or pink, set close to the ear. Made to be worn often, and to meet the Harakh ring.",
+  "harakh-earrings-white":
+    "Harakh means joy. White polki and a single faux pearl, set close to the ear. Made to be worn often, and to meet the Harakh ring.",
+  "harakh-earrings-pink":
+    "Harakh means joy. Pink polki and a single faux pearl, set close to the ear, a soft blush of colour. Made to be worn often, and to meet the Harakh ring.",
   "meher-earrings":
     "Meher means grace. Chaandbaalis drawn in white and green polki and edged with faux pearls, in the crescent that has framed faces for generations. For the occasions you will want to remember.",
   "gulbahar-earrings":
@@ -201,8 +207,12 @@ const DESCRIPTIONS: Record<string, string> = {
     "Aabha means glow. A nature-inspired ring in polki, adjustable for a comfortable fit and easy to wear every day.",
   "marakat-ring":
     "Mārakat is an old word for emerald. Green and white polki on an adjustable band, a little colour for the hand.",
-  "dori-ring":
-    "Dori is the thread that ties things together. Slim stackable bands in polki, in white, green or pink. Wear one alone or gather them.",
+  "dori-ring-white":
+    "Dori is the thread that ties things together. Slim stackable bands in white polki. Wear them alone or gather them with the green and pink.",
+  "dori-ring-green":
+    "Dori is the thread that ties things together. Slim stackable bands in green polki. Wear them alone or gather them with the white and pink.",
+  "dori-ring-pink":
+    "Dori is the thread that ties things together. Slim stackable bands in pink polki. Wear them alone or gather them with the white and green.",
   "ekam-ring":
     "Ekam means one. A one-of-a-kind ring in polki with a faux pearl, adjustable for a comfortable fit.",
 
@@ -523,7 +533,7 @@ function validate(rows: CatalogueRow[]) {
     if (!slugs.has(slug)) problems.push(`description for unknown slug ${slug}`);
     if (/!/.test(DESCRIPTIONS[slug])) problems.push(`${slug}: exclamation mark in description`);
   }
-  for (const list of [NEW_ARRIVALS, BEST_SELLERS, HEROES, Object.keys(VARIANTS)]) {
+  for (const list of [NEW_ARRIVALS, BEST_SELLERS, HEROES, Object.values(SPLIT_INTO_COLOURS)]) {
     for (const slug of list) if (!slugs.has(slug)) problems.push(`unknown slug ${slug}`);
   }
 
@@ -646,6 +656,29 @@ async function main() {
     if (!categoryId.has(r.category)) throw new Error(`Unknown category ${r.category} for ${r.slug}`);
   }
 
+  const resetMerchandising = process.argv.includes("--reset-merchandising");
+
+  // Colour split: rename products first seeded with variants to their first colour.
+  for (const [oldSlug, newSlug] of Object.entries(SPLIT_INTO_COLOURS)) {
+    const found = check(
+      await supabase.from("products").select("id, slug").in("slug", [oldSlug, newSlug]),
+      `read ${oldSlug}`,
+    ) as { id: number; slug: string }[];
+    const old = found.find((p) => p.slug === oldSlug);
+    if (!old || found.some((p) => p.slug === newSlug)) continue;
+
+    const orders = await supabase
+      .from("order_items")
+      .select("id", { count: "exact", head: true })
+      .eq("product_id", old.id);
+    if (orders.error) throw new Error(`check orders for ${oldSlug}: ${orders.error.message}`);
+    if (orders.count) throw new Error(`${oldSlug} has orders; split it into colours by hand in /admin.`);
+
+    check(await supabase.from("product_variants").delete().eq("product_id", old.id), `remove variants of ${oldSlug}`);
+    check(await supabase.from("products").update({ slug: newSlug }).eq("id", old.id), `rename ${oldSlug}`);
+    console.log(`Split into colours: ${oldSlug} → ${newSlug}`);
+  }
+
   // Products.
   const existing = check(await supabase.from("products").select("id, slug"), "read products") as {
     id: number;
@@ -671,25 +704,32 @@ async function main() {
     chain_length: r.chainLength,
   });
 
+  // Launch flags and positions. Set on insert; on existing products only
+  // with --reset-merchandising (otherwise the owner's /admin edits stand).
+  const merchandising = (r: CatalogueRow) => ({
+    is_new_arrival: NEW_ARRIVALS.includes(r.slug),
+    is_best_seller: BEST_SELLERS.includes(r.slug),
+    is_gift_for_her: r.category === "pendants" || (r.price !== null && r.price <= GIFT_PRICE_LIMIT),
+    is_hero: HEROES.includes(r.slug),
+    merch_position: merchPosition(r),
+    new_arrival_position: position(NEW_ARRIVALS, r.slug),
+    best_seller_position: position(BEST_SELLERS, r.slug),
+  });
+
   const toInsert = rows
     .filter((r) => !existingSlugs.has(r.slug))
     .map((r) => ({
       ...content(r),
+      ...merchandising(r),
       price: r.price,
       is_published: r.price !== null,
-      is_new_arrival: NEW_ARRIVALS.includes(r.slug),
-      is_best_seller: BEST_SELLERS.includes(r.slug),
-      is_gift_for_her: r.category === "pendants" || (r.price !== null && r.price <= GIFT_PRICE_LIMIT),
-      is_hero: HEROES.includes(r.slug),
       stock_qty: STOCK_PER_PRODUCT,
-      merch_position: merchPosition(r),
-      new_arrival_position: position(NEW_ARRIVALS, r.slug),
-      best_seller_position: position(BEST_SELLERS, r.slug),
     }));
 
   if (toInsert.length) check(await supabase.from("products").insert(toInsert), "insert products");
   for (const r of rows.filter((row) => existingSlugs.has(row.slug))) {
-    check(await supabase.from("products").update(content(r)).eq("slug", r.slug), `update ${r.slug}`);
+    const patch = resetMerchandising ? { ...content(r), ...merchandising(r) } : content(r);
+    check(await supabase.from("products").update(patch).eq("slug", r.slug), `update ${r.slug}`);
   }
 
   const products = check(
@@ -697,27 +737,16 @@ async function main() {
     "read products",
   ) as { id: number; slug: string; name: string }[];
   const productId = new Map(products.map((p) => [p.slug, p.id]));
-  const insertedSlugs = new Set(toInsert.map((p) => p.slug));
 
-  // Variants (only for newly inserted products, so owner stock edits survive).
-  const variantRows = Object.entries(VARIANTS)
-    .filter(([slug]) => insertedSlugs.has(slug))
-    .flatMap(([slug, variants]) =>
-      variants.map((v, i) => ({
-        product_id: productId.get(slug),
-        label: v.label,
-        colour: v.colour,
-        stock_qty: v.stock,
-        sort_order: i + 1,
-      })),
-    );
-  if (variantRows.length) {
+  // Keep placeholder alt text in step with product names.
+  for (const p of products) {
     check(
-      await supabase.from("product_variants").upsert(variantRows, {
-        onConflict: "product_id,label",
-        ignoreDuplicates: true,
-      }),
-      "insert variants",
+      await supabase
+        .from("product_images")
+        .update({ alt: `${p.name}, photograph coming soon` })
+        .eq("product_id", p.id)
+        .eq("storage_path", PLACEHOLDER_PATH),
+      `update alt for ${p.slug}`,
     );
   }
 
@@ -744,23 +773,39 @@ async function main() {
   );
   if (imageRows.length) check(await supabase.from("product_images").insert(imageRows), "insert images");
 
-  // Complete the Look.
+  // Complete the Look: only for products that have none yet, unless
+  // --reset-merchandising, which replaces the catalogue's suggestions.
+  const catalogueIds = rows.map((r) => productId.get(r.slug) as number);
+  if (resetMerchandising) {
+    check(
+      await supabase
+        .from("product_relations")
+        .delete()
+        .eq("kind", "complete_the_look")
+        .in("product_id", catalogueIds),
+      "reset relations",
+    );
+  }
+  const linked = check(
+    await supabase.from("product_relations").select("product_id").eq("kind", "complete_the_look"),
+    "read relations",
+  ) as { product_id: number }[];
+  const hasLinks = new Set(linked.map((l) => l.product_id));
+
   const usage = new Map<string, number>();
-  const relationRows = rows.flatMap((r) =>
-    completeTheLook(r, rows, usage).map((related, i) => ({
+  const relationRows = rows.flatMap((r) => {
+    const picks = completeTheLook(r, rows, usage); // always computed, so `usage` stays consistent
+    if (hasLinks.has(productId.get(r.slug) as number)) return [];
+    return picks.map((related, i) => ({
       product_id: productId.get(r.slug),
       related_product_id: productId.get(related),
       kind: "complete_the_look",
       sort_order: i + 1,
-    })),
-  );
-  check(
-    await supabase.from("product_relations").upsert(relationRows, {
-      onConflict: "product_id,related_product_id,kind",
-      ignoreDuplicates: true,
-    }),
-    "insert relations",
-  );
+    }));
+  });
+  if (relationRows.length) {
+    check(await supabase.from("product_relations").insert(relationRows), "insert relations");
+  }
 
   // Site settings: only fill what is still empty.
   const settings = check(
@@ -835,7 +880,7 @@ async function main() {
 
   console.log(
     `\nInserted ${toInsert.length} new products, refreshed ${rows.length - toInsert.length}, ` +
-      `${variantRows.length} variants, ${imageRows.length} placeholder images, ` +
+      `${relationRows.length} Complete the Look links, ${imageRows.length} placeholder images, ` +
       `${faqRows.length} FAQs, settings fields filled: ${Object.keys(settingsPatch).length}.\n`,
   );
   console.table(
