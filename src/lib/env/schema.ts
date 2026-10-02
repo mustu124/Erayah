@@ -22,14 +22,6 @@ export const serverEnvSchema = publicEnvSchema.extend({
   SUPABASE_SERVICE_ROLE_KEY: required,
   RAZORPAY_KEY_SECRET: required,
   RAZORPAY_WEBHOOK_SECRET: required,
-  RESEND_API_KEY: z.string().regex(/^re_\w+$/, "must start with re_"),
-  ORDER_EMAIL_FROM: z
-    .string()
-    .regex(
-      /^(.+<[^@\s]+@[^@\s]+>|[^@\s]+@[^@\s]+)$/,
-      'must be an email or "Name <email>"',
-    ),
-  OWNER_NOTIFICATION_EMAIL: z.email(),
 });
 
 export type PublicEnv = z.infer<typeof publicEnvSchema>;
