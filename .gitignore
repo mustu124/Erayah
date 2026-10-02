@@ -1,0 +1,43 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# env — only the example is committed
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# supabase (local CLI state)
+supabase/.branches
+supabase/.temp
+supabase/.env
+
+# testing
+/coverage
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.pem
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# client source material — kept local only (repo is public)
+/docs/

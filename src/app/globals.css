@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Erayah design tokens (see CLAUDE.md → Brand system).
+ * Tailwind 4 reads its config from @theme; every token here is also a CSS
+ * variable on :root (e.g. --color-ink), usable outside Tailwind classes.
+ */
+@theme {
+  /* Reset Tailwind's default palette so only brand colours exist. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-ink: #311829;
+  --color-plum: #600e54;
+  --color-gold: #b4a07c;
+  --color-gold-light: #e9dcc3;
+  --color-ivory: #f9eee1;
+  --color-paper: #ffffff;
+  --color-paper-warm: #fdf9f4;
+  --color-mist: #e5e5e5;
+
+  /* Fonts: next/font (src/app/fonts.ts) sets --font-stix/-montserrat/-sloop. */
+  --font-heading: var(--font-stix), "STIX Two Text", Georgia, serif;
+  --font-body: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
+  --font-script: var(--font-sloop), "STIX Two Text", Georgia, serif;
+  --font-sans: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
+
+  /* Type scale — mobile first; md: variants step up for larger screens. */
+  --text-caption: 0.75rem; /* 12px */
+  --text-caption--line-height: 1.5;
+  --text-label: 0.6875rem; /* 11px, uppercase labels */
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.18em;
+  --text-body-sm: 0.8125rem; /* 13px */
+  --text-body-sm--line-height: 1.6;
+  --text-body: 0.875rem; /* 14px */
+  --text-body--line-height: 1.65;
+  --text-body-lg: 0.9375rem; /* 15px */
+  --text-body-lg--line-height: 1.65;
+  --text-h3: 1.125rem; /* 18px */
+  --text-h3--line-height: 1.35;
+  --text-h2: 1.5rem; /* 24px */
+  --text-h2--line-height: 1.25;
+  --text-h1: 2rem; /* 32px */
+  --text-h1--line-height: 1.15;
+  --text-display: 3rem; /* 48px */
+  --text-display--line-height: 1;
+
+  /* Corners: square or barely rounded (max 2px). */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-full: 9999px; /* pill labels and the WhatsApp button only */
+
+  /* Motion: opacity fades only, 200–400ms. */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --default-transition-duration: 300ms;
+  --default-transition-timing-function: var(--ease-soft);
+}
+
+:root {
+  --gradient-gold: linear-gradient(90deg, #b4a07c 0%, #e9dcc3 100%);
+}
+
+@utility bg-gradient-gold {
+  background-image: var(--gradient-gold);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper-warm);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-plum);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
