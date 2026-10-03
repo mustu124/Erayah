@@ -34,6 +34,7 @@ export default async function SettingsPage() {
               supportEmail: s?.support_email ?? "",
               supportPhone: s?.support_phone ?? "",
               instagramUrl: s?.instagram_url ?? "",
+              businessHours: s?.business_hours ?? "",
             }}
           />
         </Panel>

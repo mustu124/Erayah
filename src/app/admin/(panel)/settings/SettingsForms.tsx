@@ -18,6 +18,7 @@ type Settings = {
   supportEmail: string;
   supportPhone: string;
   instagramUrl: string;
+  businessHours: string;
 };
 
 export function SettingsForm({ initial }: { initial: Settings }) {
@@ -69,6 +70,9 @@ export function SettingsForm({ initial }: { initial: Settings }) {
         </Labeled>
         <Labeled label="Support phone" htmlFor="support-phone">
           <TextInput id="support-phone" inputMode="tel" value={v.supportPhone} onChange={set("supportPhone")} maxLength={30} />
+        </Labeled>
+        <Labeled label="Business hours" htmlFor="business-hours" className="sm:col-span-2" hint="Shown on the Contact page, e.g. Monday to Saturday, 10 am to 7 pm.">
+          <TextInput id="business-hours" value={v.businessHours} onChange={set("businessHours")} maxLength={120} />
         </Labeled>
       </fieldset>
 

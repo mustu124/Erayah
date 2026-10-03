@@ -68,6 +68,7 @@ export type Database = {
           created_at: string;
           email: string | null;
           id: number;
+          ip_hash: string | null;
           is_read: boolean;
           message: string;
           name: string;
@@ -77,6 +78,7 @@ export type Database = {
           created_at?: string;
           email?: string | null;
           id?: never;
+          ip_hash?: string | null;
           is_read?: boolean;
           message: string;
           name: string;
@@ -86,6 +88,7 @@ export type Database = {
           created_at?: string;
           email?: string | null;
           id?: never;
+          ip_hash?: string | null;
           is_read?: boolean;
           message?: string;
           name?: string;
@@ -822,6 +825,7 @@ export type Database = {
           brand_story_highlight: string | null;
           brand_story_text: string | null;
           business_address: string | null;
+          business_hours: string | null;
           business_name: string;
           gst_rate: number;
           gstin: string | null;
@@ -841,6 +845,7 @@ export type Database = {
           brand_story_highlight?: string | null;
           brand_story_text?: string | null;
           business_address?: string | null;
+          business_hours?: string | null;
           business_name?: string;
           gst_rate?: number;
           gstin?: string | null;
@@ -860,6 +865,7 @@ export type Database = {
           brand_story_highlight?: string | null;
           brand_story_text?: string | null;
           business_address?: string | null;
+          business_hours?: string | null;
           business_name?: string;
           gst_rate?: number;
           gstin?: string | null;

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { requireAdminPage } from "@/lib/admin/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 // Admin pages are per request (they read the session), so they block on the
 // server rather than prerender; see docs/DECISIONS.md.
@@ -11,7 +12,8 @@ export const instant = false;
 
 async function Nav() {
   const admin = await requireAdminPage();
-  return <AdminNav role={admin.role} email={admin.email} />;
+  const { count } = await createAdminClient().from("contact_messages").select("id", { count: "exact", head: true }).eq("is_read", false);
+  return <AdminNav role={admin.role} email={admin.email} unread={count ?? 0} />;
 }
 
 function PageSkeleton() {

@@ -11,7 +11,7 @@ import { PageEditor } from "./PageEditor";
 export const metadata: Metadata = { title: "Edit page" };
 
 const SLUGS = ["about", "shipping-returns", "privacy-policy", "terms"] as const;
-type Img = { path: string; alt: string; role: "founder" | "story" };
+type Img = { path: string; alt: string; role: "hero" | "founder" | "story" };
 
 export default async function EditContentPage({ params }: PageProps<"/admin/content/pages/[slug]">) {
   await requireAdminPage("owner");

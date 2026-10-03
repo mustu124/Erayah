@@ -19,6 +19,7 @@ export const ADMIN_NAV: Item[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/messages", label: "Messages" },
   { href: "/admin/merchandising", label: "Merchandising", owner: true },
   { href: "/admin/homepage", label: "Homepage", owner: true },
   { href: "/admin/promotions", label: "Gift cards", owner: true },
@@ -28,7 +29,7 @@ export const ADMIN_NAV: Item[] = [
   { href: "/admin/account", label: "My account" },
 ];
 
-function Links({ role, onNavigate }: { role: AdminRole; onNavigate?: () => void }) {
+function Links({ role, unread, onNavigate }: { role: AdminRole; unread: number; onNavigate?: () => void }) {
   const path = usePathname();
   return (
     <ul className="space-y-0.5">
@@ -47,6 +48,11 @@ function Links({ role, onNavigate }: { role: AdminRole; onNavigate?: () => void 
             >
               {item.label}
               {item.href === "/admin/orders" ? <NewOrderBadge /> : null}
+              {item.href === "/admin/messages" && unread ? (
+                <span className="ml-2 inline-flex min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-[11px] leading-5 text-ink tabular-nums" aria-label={`${unread} unread messages`}>
+                  {unread}
+                </span>
+              ) : null}
             </Link>
           </li>
         );
@@ -67,7 +73,7 @@ function SignOutButton() {
 }
 
 /** Sidebar on desktop; a top bar with a slide-down menu on phones. */
-export function AdminNav({ role, email }: { role: AdminRole; email: string }) {
+export function AdminNav({ role, email, unread }: { role: AdminRole; email: string; unread: number }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -79,7 +85,7 @@ export function AdminNav({ role, email }: { role: AdminRole; email: string }) {
           <span className="mt-1 block text-label text-gold uppercase">Admin</span>
         </Link>
         <nav aria-label="Admin" className="mt-8 flex-1 overflow-y-auto">
-          <Links role={role} />
+          <Links role={role} unread={unread} />
         </nav>
         <div className="border-t border-mist pt-3">
           <p className="truncate px-3 text-caption text-ink/60" title={email}>
@@ -105,7 +111,7 @@ export function AdminNav({ role, email }: { role: AdminRole; email: string }) {
         </div>
         {open ? (
           <nav id="admin-mobile-nav" aria-label="Admin" className="max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-t border-mist px-3 py-3">
-            <Links role={role} onNavigate={() => setOpen(false)} />
+            <Links role={role} unread={unread} onNavigate={() => setOpen(false)} />
             <div className="mt-2 border-t border-mist pt-2">
               <SignOutButton />
             </div>

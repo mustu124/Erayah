@@ -18,7 +18,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 ### Settings and content
 | Table | Purpose |
 |---|---|
-| `site_settings` | One row (`id = 1`) of site-wide settings: announcement, brand story (and its highlighted phrase), contact details, GST and invoice prefix. |
+| `site_settings` | One row (`id = 1`) of site-wide settings: announcement, brand story (and its highlighted phrase), contact details and business hours, GST and invoice prefix. |
 | `shipping_rules` | Shipping rates by pincode prefix, state or default; the most specific active rule wins. |
 | `gift_cards` | Gift card codes with a remaining balance. |
 | `gift_card_redemptions` | Each use of a gift card on an order; `reversed_at` is set if the order is released. |
@@ -27,7 +27,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | `pages` | Editable content pages: about, shipping-returns, privacy-policy, terms (markdown), plus `images` (jsonb: About page founder/story photos in site-media). |
 | `admin_users` | Supabase Auth users who may use `/admin`, as `owner` or `staff`. Only owners can add or change admins. |
 | `search_misses` | Searches that found nothing (term, count, first and last seen), logged by the server for the owner to read in /admin. |
-| `contact_messages` | Contact form submissions, read in `/admin`. The site sends no email. |
+| `contact_messages` | Contact form submissions, read in `/admin/messages`. The site sends no email. `ip_hash` (a salted hash, never the IP) rate-limits senders. |
 
 ### Orders
 | Table | Purpose |
@@ -77,5 +77,5 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration (`pnpm db:types:local` builds them from the migration files without a connection).
 - **Realtime:** `orders` is in the `supabase_realtime` publication (migration 14); admins receive changes through RLS.
-- **Migrations are idempotent and applied through the CLI**, never pasted into the dashboard: `pnpm db:push` (also `pnpm db:migrations` to compare local and remote, `pnpm db:types` to regenerate types from the live schema). `scripts/supabase-db.mjs` connects through the session pooler (`aws-0-ap-northeast-2`) with `SUPABASE_DB_PASSWORD` from `.env.local`, so no `supabase login`/`link` is needed. The remote migration history is in sync up to `20261003001400` (0100–1200 were marked applied with `migration repair` on 2026-10-03, after being pasted earlier).
+- **Migrations are idempotent and applied through the CLI**, never pasted into the dashboard: `pnpm db:push` (also `pnpm db:migrations` to compare local and remote, `pnpm db:types` to regenerate types from the live schema). `scripts/supabase-db.mjs` connects through the session pooler (`aws-0-ap-northeast-2`) with `SUPABASE_DB_PASSWORD` from `.env.local`, so no `supabase login`/`link` is needed. The remote migration history is in sync up to `20261003001500` (0100–1200 were marked applied with `migration repair` on 2026-10-03, after being pasted earlier).
 - `pnpm test:db` applies every migration in PGlite, re-runs the checkout migration to prove it's idempotent, and checks there is exactly one expiry cron job.

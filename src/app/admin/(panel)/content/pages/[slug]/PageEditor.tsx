@@ -15,7 +15,7 @@ import { Icon } from "@/components/ui/Icon";
 import { savePage } from "@/lib/admin/actions/content";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 
-type Img = { path: string; alt: string; role: "founder" | "story" };
+type Img = { path: string; alt: string; role: "hero" | "founder" | "story" };
 type Page = { slug: "about" | "shipping-returns" | "privacy-policy" | "terms"; title: string; body: string; seoTitle: string; seoDescription: string; images: Img[] };
 
 export function PageEditor({ page }: { page: Page }) {
@@ -31,7 +31,10 @@ export function PageEditor({ page }: { page: Page }) {
       const path = await uploadToStorage("site-media", `about/${img.hash}.${img.ext}`, img.blob, img.contentType);
       setV((prev) => ({
         ...prev,
-        images: role === "founder" ? [{ path, alt: "Erayah's founder", role }, ...prev.images.filter((i) => i.role !== "founder")] : [...prev.images, { path, alt: "", role }],
+        images:
+          role === "story"
+            ? [...prev.images, { path, alt: "", role }]
+            : [{ path, alt: role === "founder" ? "Erayah's founder" : "Erayah jewellery", role }, ...prev.images.filter((i) => i.role !== role)],
       }));
       toast.success("Photo uploaded. Remember to save the page.");
     } catch (e) {
@@ -41,6 +44,7 @@ export function PageEditor({ page }: { page: Page }) {
     }
   };
   const founder = v.images.find((i) => i.role === "founder");
+  const hero = v.images.find((i) => i.role === "hero");
   const story = v.images.filter((i) => i.role === "story");
   const setAlt = (path: string, alt: string) => setV({ ...v, images: v.images.map((i) => (i.path === path ? { ...i, alt } : i)) });
 
@@ -57,6 +61,14 @@ export function PageEditor({ page }: { page: Page }) {
           <Labeled label="Title" htmlFor="title" error={save.fields.title}>
             <TextInput id="title" value={v.title} onChange={(e) => setV({ ...v, title: e.target.value })} maxLength={120} />
           </Labeled>
+          {withImages ? (
+            <div className="bg-ivory px-4 py-3 text-body-sm text-ink/80">
+              <p>
+                Each <code>## Heading</code> starts a section. The first three become the story blocks, each beside a story image in order. A heading with
+                &ldquo;founder&rdquo; in it becomes the founder section (put the name in bold), and one with &ldquo;craft&rdquo; becomes the craft section.
+              </p>
+            </div>
+          ) : null}
           <Labeled label="Text" htmlFor="body">
             <MarkdownField id="body" rows={18} value={v.body} onChange={(body) => setV({ ...v, body })} />
           </Labeled>
@@ -65,6 +77,20 @@ export function PageEditor({ page }: { page: Page }) {
 
       {withImages ? (
         <Panel title="Photos">
+          <div className="mb-6">
+            <p className="mb-1.5 text-body-sm">Opening image (wide, under “Heirlooms, reimagined.”)</p>
+            {hero ? (
+              <div className="space-y-2">
+                <div className="relative aspect-[21/9] max-w-2xl overflow-hidden bg-ivory">
+                  <Image src={publicStorageUrl("site-media", hero.path)} alt={hero.alt} fill sizes="640px" className="object-cover" />
+                </div>
+                <TextInput aria-label="Opening image description" value={hero.alt} onChange={(e) => setAlt(hero.path, e.target.value)} maxLength={200} className="max-w-2xl" />
+              </div>
+            ) : (
+              <p className="mb-2 text-caption text-ink/60">Until you add one, the first homepage slide is used.</p>
+            )}
+            <DropZone className="mt-2 max-w-2xl" compact={Boolean(hero)} accept="image/jpeg,image/png,image/webp,image/avif" busy={busy === "hero"} onFile={(f) => upload(f, "hero")} label={hero ? "Replace" : "Upload opening image"} hint="Landscape" />
+          </div>
           <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
             <div>
               <p className="mb-1.5 text-body-sm">Founder photo</p>

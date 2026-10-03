@@ -86,7 +86,7 @@ const pageInput = z.object({
       z.object({
         path: z.string().regex(/^about\/[\w.-]+$/),
         alt: z.string().trim().min(1, "Describe each photo.").max(200),
-        role: z.enum(["founder", "story"]),
+        role: z.enum(["hero", "founder", "story"]),
       }),
     )
     .max(12),

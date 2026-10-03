@@ -106,6 +106,22 @@ Erayah doesn't use coupons or discount codes. To give someone credit, issue a gi
 
 At checkout they enter the code; the balance comes off their total and anything left stays on the card. The list shows each card's remaining balance and the orders it was used on. **Deactivate** stops a card from working.
 
+## Messages from the Contact page
+
+Messages people send through the form on the Contact page appear under **Messages**, newest first. The number next to it in the menu is how many you haven't read. Reply by tapping their email, phone or **WhatsApp**, then **Mark read**. The site never sends emails itself.
+
+## Editing the About page
+
+Open **Content → Pages → About**. The text is split into sections by lines that start with `## `:
+
+- The first three sections are the story blocks, each shown beside a photo.
+- The section whose heading mentions **founder** is the founder section. Put the name in bold, like `**Your Name**`.
+- The section whose heading mentions **craft** is the craft section.
+
+Under **Photos**, upload a wide opening image, the story images (in the order of the story blocks) and your portrait. Then tap **Save page**.
+
+Testimonials you add under **Content → Testimonials** appear on the About page as a slider, up to six.
+
 ## Everything else
 
 - **Homepage:**
@@ -121,7 +137,7 @@ At checkout they enter the code; the balance comes off their total and anything 
   - business name, address and GSTIN for invoices
   - GST rate
   - order number prefix
-  - WhatsApp number, Instagram link and support contacts
+  - WhatsApp number, Instagram link, support contacts and business hours (shown on the Contact page)
   - who can use the admin
 
 Every save shows a short confirmation at the top of the screen, and the shop updates straight away.

@@ -275,6 +275,7 @@ const SITE_SETTINGS = {
     "Some things are made to last a lifetime. Erayah makes things meant to outlast several. Heirlooms, reimagined, because some stories deserve a more beautiful way to continue.",
   brand_story_cta_label: "Our Story",
   brand_story_cta_url: "/about",
+  business_hours: "Monday to Saturday, 10 am to 7 pm",
 };
 
 const FAQS: { group: string; question: string; answer: string }[] = [
@@ -295,25 +296,25 @@ const FAQS: { group: string; question: string; answer: string }[] = [
     answer: "Shipping charges are calculated at checkout based on your delivery pincode.",
   },
   {
-    group: "Returns",
+    group: "Returns & Exchanges",
     question: "Can I return or exchange a piece?",
     answer:
       "Returns and exchanges are accepted only for products damaged in transit or incorrect products received. Items must be returned unworn and in their original packaging. Return and exchange shipping, courier and logistics charges are borne by the customer.",
   },
   {
-    group: "Returns",
+    group: "Returns & Exchanges",
     question: "My order arrived damaged. What should I do?",
     answer:
       "We are sorry. Message us on WhatsApp with your order number and photographs of the piece and its packaging, and we will guide you through a return or exchange.",
   },
   {
-    group: "Our jewellery",
+    group: "Care",
     question: "What is Erayah jewellery made of?",
     answer:
       "Every piece is silver alloy with 22kt gold plating, set with kundan, jadau and polki craftsmanship by traditional artisans.",
   },
   {
-    group: "Our jewellery",
+    group: "Care",
     question: "Why does my piece look slightly different from the photographs?",
     answer:
       "Our jewellery is handcrafted by traditional artisans, so slight variations in stones, finish and detailing are natural and make each piece unique. All products undergo quality checks before dispatch.",
@@ -342,7 +343,18 @@ const FAQS: { group: string; question: string; answer: string }[] = [
       "Yes. Mark your order as a gift at checkout and add a note. We will include your note with the piece.",
   },
   {
-    group: "Payment",
+    group: "Orders & Payment",
+    question: "How do I know my order is confirmed?",
+    answer:
+      "Once your payment goes through you see a confirmation page with your order number and your bill, with a PDF to download. Please save it or take a screenshot: we don't send it by email or SMS.",
+  },
+  {
+    group: "Orders & Payment",
+    question: "Can I change or cancel my order?",
+    answer: "Message us on WhatsApp with your order number as soon as you can. We can change or cancel an order until it has been shipped.",
+  },
+  {
+    group: "Orders & Payment",
     question: "How can I pay?",
     answer:
       "You can pay securely through Razorpay by UPI, credit or debit card, wallet or netbanking. Your invoice appears on the confirmation page once your order is placed, with a PDF to download.",
@@ -375,11 +387,17 @@ To request a return or exchange, message us on WhatsApp with your order number.
     seo_title: "About Erayah",
     seo_description:
       "Erayah means fortune's favourite. Handcrafted heirloom jewellery, rooted in heritage and made to be handed down.",
-    body: `Some things are made to last a lifetime. Erayah makes things meant to outlast several. Erayah means fortune's favourite. Not the kind that arrives by chance, but the kind that is chosen, cared for, and carried forward from one generation to the next.
+    body: `## Fortune's favourite
+
+Some things are made to last a lifetime. Erayah makes things meant to outlast several. Erayah means fortune's favourite. Not the kind that arrives by chance, but the kind that is chosen, cared for, and carried forward from one generation to the next.
+
+## Why the elephant
 
 The elephant was never chosen for its symbolism alone. It was chosen for how it moves, with weight, with grace, with the quiet certainty of something that knows its own worth.
 
 Look at the mark and you'll notice it isn't drawn so much as assembled. Each segment sits the way a jadau stone sits, placed with intention, held with precision. The trunk raised, as it always has been, the oldest gesture of optimism there is.
+
+## Made to be handed down
 
 Erayah's jewellery works the same way. Rooted in heritage, but not preserved by it. Contemporary in feeling, enduring in meaning, made to be worn, and eventually, handed down.
 
@@ -387,7 +405,17 @@ Heirlooms reimagined, because some stories deserve a more beautiful way to conti
 
 ## Our founder
 
+**[FOUNDER NAME]**
+
 [FOUNDER STORY TO BE ADDED]
+
+## The craft
+
+Every Erayah piece begins as silver alloy, finished in 22kt gold plating: the warmth of gold, with a lightness you can wear all evening.
+
+The settings are kundan, jadau and polki, the techniques of royal Indian jewellery, worked by hand by traditional artisans. Each stone is placed and held the way it has been for generations.
+
+Because every piece is made by hand, no two are quite alike. A slight difference in a stone's tone or a setting's line isn't a flaw. It is the mark of the hands that made it.
 `,
   },
   "privacy-policy": {

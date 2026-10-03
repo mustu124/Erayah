@@ -246,3 +246,21 @@ dialog.drawer[open]::backdrop {
 .prose-admin a { text-decoration: underline; text-underline-offset: 3px; }
 .prose-admin strong { font-weight: 600; }
 .prose-admin blockquote { border-left: 2px solid var(--color-gold); padding-left: 0.75rem; font-style: italic; }
+
+/* Content pages: markdown from /admin, set for reading. */
+.prose-erayah { color: color-mix(in srgb, var(--color-ink) 88%, transparent); font-size: 0.9375rem; line-height: 1.85; }
+.prose-erayah > * + * { margin-top: 1.1em; }
+.prose-erayah h2 { margin-top: 2.6em; font-family: var(--font-heading); font-size: 1.5rem; line-height: 1.3; color: var(--color-ink); }
+.prose-erayah h3 { margin-top: 2em; font-family: var(--font-heading); font-size: 1.1875rem; line-height: 1.35; color: var(--color-ink); }
+.prose-erayah h2:first-child, .prose-erayah h3:first-child { margin-top: 0; }
+.prose-erayah h2 + *, .prose-erayah h3 + * { margin-top: 0.75em; }
+.prose-erayah ul { list-style: disc; padding-left: 1.25rem; }
+.prose-erayah ol { list-style: decimal; padding-left: 1.25rem; }
+.prose-erayah li + li { margin-top: 0.4em; }
+.prose-erayah li::marker { color: var(--color-gold); }
+.prose-erayah a { color: var(--color-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--color-ink) 35%, transparent); text-underline-offset: 4px; }
+.prose-erayah a:hover { text-decoration-color: var(--color-ink); }
+.prose-erayah strong { font-weight: 500; color: var(--color-ink); }
+.prose-erayah em { font-family: var(--font-heading); font-style: italic; }
+.prose-erayah hr { border: 0; border-top: 1px solid var(--color-gold); margin: 2.5em auto; width: 4rem; }
+.prose-erayah blockquote { border-left: 1px solid var(--color-gold); padding-left: 1rem; font-family: var(--font-heading); font-style: italic; }

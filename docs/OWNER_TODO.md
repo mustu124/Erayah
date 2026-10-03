@@ -51,7 +51,10 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Review the homepage picks** (hero slides and category tiles, listed in `docs/DECISIONS.md`). Hero slides want dedicated portrait images; there are no Bracelets photos yet.
 - [ ] **Lifestyle images** to place between product rows on collection pages (set them up in /admin as lifestyle tiles: image, optional caption and link, and the product position they follow). Until then, collection pages use product photos as tiles. (Hero slides and category tiles now use imported photos; see above. The first hero slide is also the image in the desktop Shop menu.)
 - [ ] **Category descriptions** (one line under each collection title) are drafts in `src/lib/collection/scopes.ts`; the owner can set their own per category in /admin, along with SEO titles and descriptions.
-- [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
+- [ ] **About page photos**: in Admin → Content → Pages → About, upload a wide **opening image**, three **story images** (one per story block) and a **founder portrait**. Until then the page borrows homepage and product photography.
+- [ ] **Business hours** on the Contact page are a placeholder ("Monday to Saturday, 10 am to 7 pm"). Set the real hours in Admin → Settings, along with the support email and phone (hidden until set).
+- [ ] **FAQ drafts**: two new questions in "Orders & Payment" (order confirmation; changing or cancelling) are drafts like the rest. Edit them in Admin → Content.
+- [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER NAME] and [FOUNDER STORY TO BE ADDED] in the "Our founder" section until then (edit it in Admin → Content → Pages → About); the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).
 

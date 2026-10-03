@@ -31,6 +31,7 @@ const settingsInput = z.object({
     .refine((v) => !v || z.email().safeParse(v).success, "Enter a valid email.")
     .transform((v) => v || null),
   supportPhone: optionalText(30),
+  businessHours: optionalText(120),
   instagramUrl: z
     .string()
     .trim()
@@ -53,6 +54,7 @@ export const saveSettings = adminAction({ role: "owner", schema: settingsInput, 
         whatsapp_number: s.whatsappNumber,
         support_email: s.supportEmail,
         support_phone: s.supportPhone,
+        business_hours: s.businessHours,
         instagram_url: s.instagramUrl,
       })
       .eq("id", 1),
