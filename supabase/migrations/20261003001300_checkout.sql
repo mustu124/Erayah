@@ -5,13 +5,16 @@
 --   the Razorpay webhook. Idempotent: whichever arrives first wins.
 -- • Payments are online only (Razorpay); a gift card can cover the whole total.
 -- • Unpaid orders expire after 60 minutes (checked every 30).
+--
+-- Idempotent: safe to run again on a database where it was (partly) applied.
 
 alter table public.orders
   alter column payment_method set default 'razorpay',
-  add column idempotency_key text,
-  add column invoice_path text;
+  add column if not exists idempotency_key text,
+  add column if not exists invoice_path text;
 
-create unique index orders_idempotency_key_idx on public.orders (idempotency_key) where idempotency_key is not null;
+create unique index if not exists orders_idempotency_key_idx
+  on public.orders (idempotency_key) where idempotency_key is not null;
 
 -- ─── create_order ───────────────────────────────────────────────────────────
 -- payload:
@@ -307,7 +310,7 @@ grant execute on function public.create_order(jsonb) to service_role;
 -- released, e.g. a payment that arrived after the order expired.
 -- All or nothing: returns false and changes nothing if anything is short.
 
-create function public.reserve_order_stock(p_order_id uuid)
+create or replace function public.reserve_order_stock(p_order_id uuid)
 returns boolean
 language plpgsql
 security definer
@@ -370,7 +373,7 @@ $$;
 -- first one wins, later calls change nothing. Returns
 -- { order_id, order_number, access_token, status, newly_placed, needs_refund }.
 
-create function public.confirm_payment(
+create or replace function public.confirm_payment(
   p_razorpay_order_id text,
   p_payment_id        text,
   p_signature         text,
@@ -447,7 +450,7 @@ $$;
 -- A failed attempt. The order stays pending so the shopper can try again
 -- with the same Razorpay order; it expires if they don't.
 
-create function public.mark_payment_failed(p_razorpay_order_id text, p_payment_id text, p_reason text)
+create or replace function public.mark_payment_failed(p_razorpay_order_id text, p_payment_id text, p_reason text)
 returns void
 language plpgsql
 security definer
@@ -474,6 +477,12 @@ grant execute on function public.confirm_payment(text, text, text, integer, text
 grant execute on function public.mark_payment_failed(text, text, text) to service_role;
 
 -- ─── Expiry: every 30 minutes, orders unpaid for 60 minutes ─────────────────
+-- The only expiry mechanism (no Vercel Cron). Unschedule first so exactly one
+-- job with this name exists however many times this runs.
+
+create extension if not exists pg_cron;
+
+select cron.unschedule(jobid) from cron.job where jobname = 'expire-pending-orders';
 
 select cron.schedule(
   'expire-pending-orders',

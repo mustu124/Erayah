@@ -76,5 +76,8 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 - The first owner is added by hand once: create the user in Supabase Auth, then run `insert into admin_users (user_id, email, role) values ('<user id>', '<email>', 'owner');` in the SQL editor.
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration.
-- Migrations up to `20261003001300` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
-  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100 20261003001200 20261003001300`
+- **Migrations are idempotent and applied through the CLI**, never pasted into the dashboard. Without `supabase link`, use the session pooler with the database password from `.env.local` (`SUPABASE_DB_PASSWORD`):
+  `pnpm supabase db push --db-url "postgresql://postgres.ldntyhodgwdqsnxzmyhs:$SUPABASE_DB_PASSWORD@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres"`
+- Migrations 0100–1300 were first applied by pasting into the SQL editor, so Supabase's migration history doesn't know about them. Once, before the first push, mark 0100–1200 as applied (same `--db-url`); 1300 is idempotent, so the push simply re-runs it:
+  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100 20261003001200 --db-url "…"`
+- `pnpm test:db` applies every migration in PGlite, re-runs the checkout migration to prove it's idempotent, and checks there is exactly one expiry cron job.

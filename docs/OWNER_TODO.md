@@ -4,10 +4,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 
 ## Access and accounts
 - [ ] **Allow the CLAUDE.md "How you work (autonomy)" section and `.claude/settings.json`.** The assistant's safety check blocks it from editing its own instructions and permissions; add them yourself (text was given in chat on 2026-10-03).
-- [ ] **Run migration `supabase/migrations/20261003001100_remove_coupons.sql`** in the Supabase SQL editor (removes coupons). The assistant can't run SQL on your project until the CLI is linked.
-- [ ] **Run migration `supabase/migrations/20261003001200_search.sql`** in the Supabase SQL editor. Until then search uses a simpler fallback (no typo tolerance beyond the synonym list, plainer ranking) and searches with no results aren't logged.
-- [ ] **Run migration `supabase/migrations/20261003001300_checkout.sql`** in the SQL editor, after the search one. **Checkout doesn't work until this is applied** (the order summary shows "Please check your delivery details"). After it, run the checkout tests: `E2E_CHECKOUT=1 pnpm test:e2e e2e/checkout.spec.ts`.
-- [ ] **Supabase CLI login and link**, so migrations and type generation can run from here: `pnpm supabase login`, then `pnpm supabase link --project-ref <ref>` (asks for the DB password). Then run the `migration repair` command in `docs/DATABASE.md` once, and `pnpm db:types`.
+- [ ] **Database password, so migrations are applied from here** (you won't be asked to paste SQL again). Supabase → Project Settings → Database → Database password (reset it there if you don't have it). Add it to `.env.local`, which is never committed, as `SUPABASE_DB_PASSWORD=...`. That's the only value needed: the assistant connects through the session pooler (`aws-0-ap-northeast-2.pooler.supabase.com`, user `postgres.ldntyhodgwdqsnxzmyhs`), marks migrations 0100–1200 as applied (`supabase migration repair`) and runs `supabase db push`. Migrations 11, 12 and 13 are already live (13 from your first paste; the second paste failed harmlessly at its first line and changed nothing).
 - [ ] **Vercel**: run `pnpm vercel login`, import the GitHub repo `mustu124/Erayah` in the Vercel dashboard (so each push makes a preview), and add these env vars for Production and Preview:
   `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (Sensitive), `NEXT_PUBLIC_RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` (Sensitive), `RAZORPAY_WEBHOOK_SECRET` (Sensitive), `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`.
   If you added `RESEND_API_KEY`, `ORDER_EMAIL_FROM`/`NOTIFICATION_EMAIL_FROM` or `OWNER_NOTIFICATION_EMAIL` earlier, delete them.
@@ -56,7 +53,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Domain** and DNS (for launch).
 
 ## Before launch
-- [ ] **Remove test orders** (made by the checkout tests, emails ending `@erayah.test`; their stock was already put back) and test gift cards (codes starting `E2E`), then reset the order and invoice counters so real orders start at 00001. In the SQL editor:
+- [ ] **Remove test orders** (made by the checkout tests, emails ending `@erayah.test`; their stock was already put back) and test gift cards (codes starting `E2E`), then reset the order and invoice counters so real orders start at 00001. Ask the assistant to run this through the CLI:
   ```sql
   delete from orders where email like '%@erayah.test';
   delete from gift_cards where code like 'E2E%';

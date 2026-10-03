@@ -18,17 +18,26 @@ await db.exec(`create schema extensions; create schema auth; create schema stora
  create function auth.uid() returns uuid language sql stable as $$ select null::uuid $$;
  create table storage.buckets (id text primary key, name text, public boolean, file_size_limit bigint, allowed_mime_types text[]);
  create table storage.objects (id bigserial primary key, bucket_id text, name text);
- create table cron.jobs (name text primary key, schedule text, command text);
+ -- pg_cron stand-in. schedule() always inserts, so a duplicate job would show up.
+ create table cron.job (jobid bigserial primary key, jobname text, schedule text, command text);
  create function cron.schedule(n text, s text, c text) returns bigint language sql as
-   $$ insert into cron.jobs values (n, s, c) on conflict (name) do update set schedule = excluded.schedule, command = excluded.command; select 1::bigint $$;`);
-for (const f of fs.readdirSync(MIG).filter((f) => f.endsWith(".sql")).sort()) {
+   $$ insert into cron.job (jobname, schedule, command) values (n, s, c) returning jobid $$;
+ create function cron.unschedule(id bigint) returns boolean language sql as
+   $$ delete from cron.job where jobid = id returning true $$;`);
+const files = fs.readdirSync(MIG).filter((f) => f.endsWith(".sql")).sort();
+const apply = async (f) => {
   try {
-    await db.exec(fs.readFileSync(path.join(MIG, f), "utf8").replace(/create extension if not exists pg_cron;/, ""));
+    await db.exec(fs.readFileSync(path.join(MIG, f), "utf8").replace(/create extension if not exists pg_cron[^;]*;/g, ""));
   } catch (e) {
     console.error("FAILED", f, e.message);
     process.exit(1);
   }
-}
+};
+for (const f of files) await apply(f);
+// The checkout migration must be safe to run again.
+const checkoutMigration = files.find((f) => f.endsWith("_checkout.sql"));
+await apply(checkoutMigration);
+console.log(`✓ ${checkoutMigration} re-ran cleanly`);
 
 let fails = 0;
 const ok = (c, m) => {
@@ -52,8 +61,11 @@ await db.exec(`
   insert into gift_cards (code, initial_balance, balance, expires_at) values ('OLDCARD', 50000, 50000, now() - interval '1 day');
 `);
 
-const job = await one("select schedule, command from cron.jobs where name='expire-pending-orders'");
-ok(job.schedule === "*/30 * * * *" && job.command.includes("60 minutes"), "expiry job: every 30 min, 60-minute window");
+const jobs = (await db.query("select schedule, command from cron.job where jobname='expire-pending-orders'")).rows;
+ok(jobs.length === 1, `exactly one expiry job (found ${jobs.length})`);
+ok(jobs[0].schedule === "*/30 * * * *" && jobs[0].command.includes("60 minutes"), "expiry job: every 30 min, 60-minute window");
+const idx = await one("select count(*)::int n from pg_indexes where indexname = 'orders_idempotency_key_idx'");
+ok(idx.n === 1, "idempotency index exists once");
 ok(
   (await one("select column_default d from information_schema.columns where table_name='orders' and column_name='payment_method'")).d.includes("razorpay"),
   "payment_method defaults to razorpay",

@@ -23,7 +23,9 @@ const SUPABASE_STUBS = `
   create table storage.buckets (id text primary key, name text, public boolean,
     file_size_limit bigint, allowed_mime_types text[]);
   create table storage.objects (id bigserial primary key, bucket_id text, name text);
+  create table cron.job (jobid bigserial primary key, jobname text);
   create function cron.schedule(a text, b text, c text) returns bigint language sql as $$ select 1::bigint $$;
+  create function cron.unschedule(id bigint) returns boolean language sql as $$ select true $$;
 `;
 
 type Column = {
@@ -48,7 +50,7 @@ async function main() {
   const db = new PGlite({ extensions: { pg_trgm, unaccent, pgcrypto } });
   await db.exec(SUPABASE_STUBS);
   for (const file of fs.readdirSync(MIGRATIONS).filter((f) => f.endsWith(".sql")).sort()) {
-    const sql = fs.readFileSync(path.join(MIGRATIONS, file), "utf8").replace(/create extension if not exists pg_cron;/, "");
+    const sql = fs.readFileSync(path.join(MIGRATIONS, file), "utf8").replace(/create extension if not exists pg_cron[^;]*;/g, "");
     await db.exec(sql);
   }
 
