@@ -22,9 +22,13 @@ export const lineKey = (line: { productId: number; variantLabel?: string | null 
 
 type CartState = {
   lines: CartLine[];
+  /** Gift wrapping: a note to include, and whether to leave prices off the packing slip. */
+  isGift: boolean;
+  giftNote: string;
   add: (item: CartItem, quantity?: number) => void;
   setQuantity: (key: string, quantity: number) => void;
   remove: (key: string) => void;
+  setGift: (gift: { isGift?: boolean; giftNote?: string }) => void;
   clear: () => void;
 };
 
@@ -34,6 +38,8 @@ export const useCart = create<CartState>()(
   persist(
     (set) => ({
       lines: [],
+      isGift: false,
+      giftNote: "",
       add: (item, quantity = 1) =>
         set((state) => {
           const key = lineKey(item);
@@ -51,7 +57,8 @@ export const useCart = create<CartState>()(
           lines: state.lines.map((l) => (lineKey(l) === key ? { ...l, quantity: clamp(quantity) } : l)),
         })),
       remove: (key) => set((state) => ({ lines: state.lines.filter((l) => lineKey(l) !== key) })),
-      clear: () => set({ lines: [] }),
+      setGift: (gift) => set(gift),
+      clear: () => set({ lines: [], isGift: false, giftNote: "" }),
     }),
     {
       name: "erayah-cart",

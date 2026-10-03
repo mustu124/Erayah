@@ -19,4 +19,8 @@ export const routes = {
   shippingReturns: "/shipping-returns",
   privacyPolicy: "/privacy-policy",
   terms: "/terms",
+  checkout: "/checkout",
+  /** Confirmation and bill; the token is what lets this shopper see it. */
+  order: (orderNumber: string, token: string) => `/order/${orderNumber}?t=${token}`,
+  invoice: (orderNumber: string, token: string) => `/api/invoice/${orderNumber}?t=${token}`,
 } as const;

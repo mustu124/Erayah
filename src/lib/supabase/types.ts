@@ -429,13 +429,15 @@ export type Database = {
           created_at: string;
           paid_at: string | null;
           updated_at: string;
+          idempotency_key: string | null;
+          invoice_path: string | null;
         };
         Insert: {
           id?: string;
           order_number: string;
           access_token?: string;
           status?: Database["public"]["Enums"]["order_status"];
-          payment_method: Database["public"]["Enums"]["payment_method"];
+          payment_method?: Database["public"]["Enums"]["payment_method"];
           payment_status?: Database["public"]["Enums"]["payment_status"];
           customer_name: string;
           email?: string | null;
@@ -466,6 +468,8 @@ export type Database = {
           created_at?: string;
           paid_at?: string | null;
           updated_at?: string;
+          idempotency_key?: string | null;
+          invoice_path?: string | null;
         };
         Update: {
           id?: string;
@@ -503,6 +507,8 @@ export type Database = {
           created_at?: string;
           paid_at?: string | null;
           updated_at?: string;
+          idempotency_key?: string | null;
+          invoice_path?: string | null;
         };
         Relationships: [
         ];
@@ -903,14 +909,17 @@ export type Database = {
     Views: { [_ in never]: never };
     Functions: {
       assign_invoice_number: { Args: { p_order_id: string }; Returns: string };
+      confirm_payment: { Args: { p_razorpay_order_id: string; p_payment_id: string; p_signature: string; p_amount: number; p_source: string }; Returns: Json };
       create_order: { Args: { payload: Json }; Returns: Json };
       expire_pending_orders: { Args: { p_older_than?: unknown }; Returns: number };
       is_admin: { Args: never; Returns: boolean };
       is_owner: { Args: never; Returns: boolean };
       log_search_miss: { Args: { p_term: string }; Returns: undefined };
+      mark_payment_failed: { Args: { p_razorpay_order_id: string; p_payment_id: string; p_reason: string }; Returns: undefined };
       next_document_number: { Args: { p_kind: string; p_period: string }; Returns: number };
       pad_document_number: { Args: { n: number }; Returns: string };
       quote_shipping: { Args: { p_pincode: string; p_state: string; p_order_value: number }; Returns: { rule_id: number; fee: number; est_days_min: number; est_days_max: number }[] };
+      reserve_order_stock: { Args: { p_order_id: string }; Returns: boolean };
       restore_stock: { Args: { p_order_id: string }; Returns: boolean };
       search_products: { Args: { q: string; p_limit?: number; p_offset?: number }; Returns: { id: number; slug: string; name: string; price: number; rank: number; total: number }[] };
     };

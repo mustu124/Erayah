@@ -22,6 +22,8 @@ export const serverEnvSchema = publicEnvSchema.extend({
   SUPABASE_SERVICE_ROLE_KEY: required,
   RAZORPAY_KEY_SECRET: required,
   RAZORPAY_WEBHOOK_SECRET: required,
+  /** Overridden only by the end-to-end tests, which run a fake Razorpay API. */
+  RAZORPAY_API_BASE: z.url().default("https://api.razorpay.com/v1"),
 });
 
 export type PublicEnv = z.infer<typeof publicEnvSchema>;

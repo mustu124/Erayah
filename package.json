@@ -13,7 +13,8 @@
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "test:e2e": "playwright test",
     "db:types:local": "tsx scripts/gen-db-types.ts",
-    "import:images": "tsx --env-file=.env.local scripts/import-images.ts"
+    "import:images": "tsx --env-file=.env.local scripts/import-images.ts",
+    "test:db": "node supabase/tests/checkout.test.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
@@ -23,7 +24,6 @@
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.50.0",
     "next": "16.3.8",
-    "razorpay": "^2.9.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",

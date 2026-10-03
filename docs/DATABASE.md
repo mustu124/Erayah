@@ -32,7 +32,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 ### Orders
 | Table | Purpose |
 |---|---|
-| `orders` | One row per checkout: customer, address, every money amount, Razorpay ids, invoice number, internal-only courier/tracking/notes, and an `access_token` for the confirmation page. |
+| `orders` | One row per checkout attempt: customer, address, every money amount, Razorpay ids, invoice number and stored PDF path (`invoice_path`), internal-only courier/tracking/notes, the checkout's `idempotency_key`, and an `access_token` for the confirmation page. |
 | `order_items` | Line items with name, image, price and quantity snapshotted at order time. |
 | `order_events` | Timeline of status changes, payments and notes for each order. |
 | `document_counters` | Gap-free counters behind order numbers (per calendar year) and invoice numbers (per financial year). |
@@ -42,9 +42,12 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | Function | Who can call it | What it does |
 |---|---|---|
 | `is_admin()` / `is_owner()` | anyone (used by RLS) | Whether the signed-in user is in `admin_users` (as an owner). |
-| `create_order(payload jsonb)` | service role only | Places an order in one transaction: locks rows, re-reads prices, checks and takes stock, applies shipping, GST and gift card, writes the order, items and first event. Returns `{order_id, order_number, access_token, total, status, payment_method}`. Errors are stable codes such as `OUT_OF_STOCK:<id>` (full list at the top of the remove_coupons migration). |
+| `create_order(payload jsonb)` | service role only | Places an order in one transaction: locks rows, re-reads prices, checks and takes stock, applies shipping, GST and gift card, writes the order, items and first event. With `dry_run: true` it only prices the cart (the checkout summary). With an `idempotency_key` used before, it returns that order (`existing: true`) unchanged. Returns ids, status and the full breakdown (subtotal, shipping, gift card, GST, total, delivery estimate, lines). Errors are stable codes such as `OUT_OF_STOCK:<id>`, `GIFT_CARD_INVALID`, `NO_SHIPPING_RULE` (see `src/lib/checkout/errors.ts`). |
 | `restore_stock(order_id)` | service role only | Puts back stock and gift card balance for an order that won't be fulfilled. Safe to call twice. Does not change the status. |
-| `expire_pending_orders(interval)` | service role only (pg_cron) | Cancels Razorpay orders unpaid after 30 minutes and releases what they held. Runs every 10 minutes. |
+| `expire_pending_orders(interval)` | service role only (pg_cron) | Cancels Razorpay orders unpaid after 60 minutes and releases what they held. Runs every 30 minutes. |
+| `confirm_payment(razorpay_order_id, payment_id, signature, amount, source)` | service role only | Marks a Razorpay order paid and placed and gives it an invoice number. Called by `/api/checkout/verify` and the webhook (each checks the signature first); whichever is first wins, repeats change nothing. Rejects a wrong amount (`AMOUNT_MISMATCH`). A payment for an expired order takes the stock again if it is still there, otherwise records "REFUND NEEDED" on the order. Returns `newly_placed` so the invoice is made once. |
+| `mark_payment_failed(razorpay_order_id, payment_id, reason)` | service role only | Records a failed attempt (webhook). The order stays pending for a retry until it expires. |
+| `reserve_order_stock(order_id)` | service role only | All-or-nothing: takes an expired order's stock and gift card balance again (used by `confirm_payment`). |
 | `assign_invoice_number(order_id)` | service role only | Gives an order its GST invoice number (`ERY/26-27/00001`). Call it when a Razorpay payment is confirmed; gift-card-only orders get one automatically. |
 | `search_products(q, p_limit, p_offset)` | anyone (storefront) | Product search over published products: prefix full-text on `search_vector` (accents stripped), falling back to pg_trgm word similarity on name, category, styles and stones when full-text finds nothing. `q` is the app's synonym-expanded query: space-separated groups (AND), `\|`-separated alternatives (OR). Returns id, slug, name, price, rank and the total count. |
 | `log_search_miss(term)` | service role only | Adds 1 to a zero-result search term (lower-cased, trimmed). |
@@ -66,12 +69,12 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 |---|---|
 | `product-images` | Public read, admin write. Images and product videos (50 MB limit). |
 | `site-media` | Public read, admin write. Hero slides, category and lifestyle tiles, About page photos. |
-| `invoices` | Private. Files are read only through signed URLs made by the server. |
+| `invoices` | Private. One PDF per paid order (`<year>/<order number>.pdf`), streamed to the customer by `/api/invoice/<order number>?t=<token>`. |
 
 ## Things to know
-- A late Razorpay payment can arrive after its order has expired (cancelled, stock released). The payment webhook must handle that case: re-check stock and either restore the order or flag it for a refund.
+- A late Razorpay payment can arrive after its order has expired (cancelled, stock released). `confirm_payment` re-takes the stock if it can; otherwise the order stays cancelled with payment `paid` and a "REFUND NEEDED" note for the owner to refund from the Razorpay dashboard.
 - The first owner is added by hand once: create the user in Supabase Auth, then run `insert into admin_users (user_id, email, role) values ('<user id>', '<email>', 'owner');` in the SQL editor.
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration.
-- Migrations up to `20261003001200` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
-  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100 20261003001200`
+- Migrations up to `20261003001300` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
+  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100 20261003001200 20261003001300`

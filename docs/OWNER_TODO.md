@@ -6,11 +6,14 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Allow the CLAUDE.md "How you work (autonomy)" section and `.claude/settings.json`.** The assistant's safety check blocks it from editing its own instructions and permissions; add them yourself (text was given in chat on 2026-10-03).
 - [ ] **Run migration `supabase/migrations/20261003001100_remove_coupons.sql`** in the Supabase SQL editor (removes coupons). The assistant can't run SQL on your project until the CLI is linked.
 - [ ] **Run migration `supabase/migrations/20261003001200_search.sql`** in the Supabase SQL editor. Until then search uses a simpler fallback (no typo tolerance beyond the synonym list, plainer ranking) and searches with no results aren't logged.
+- [ ] **Run migration `supabase/migrations/20261003001300_checkout.sql`** in the SQL editor, after the search one. **Checkout doesn't work until this is applied** (the order summary shows "Please check your delivery details"). After it, run the checkout tests: `E2E_CHECKOUT=1 pnpm test:e2e e2e/checkout.spec.ts`.
 - [ ] **Supabase CLI login and link**, so migrations and type generation can run from here: `pnpm supabase login`, then `pnpm supabase link --project-ref <ref>` (asks for the DB password). Then run the `migration repair` command in `docs/DATABASE.md` once, and `pnpm db:types`.
 - [ ] **Vercel**: run `pnpm vercel login`, import the GitHub repo `mustu124/Erayah` in the Vercel dashboard (so each push makes a preview), and add these env vars for Production and Preview:
   `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (Sensitive), `NEXT_PUBLIC_RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` (Sensitive), `RAZORPAY_WEBHOOK_SECRET` (Sensitive), `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`.
   If you added `RESEND_API_KEY`, `ORDER_EMAIL_FROM`/`NOTIFICATION_EMAIL_FROM` or `OWNER_NOTIFICATION_EMAIL` earlier, delete them.
-- [ ] **Razorpay test keys** in `.env.local` (currently `rzp_test_placeholder`): Key ID, Key Secret, and a webhook secret. Live keys and KYC only at launch.
+- [ ] **Razorpay test keys** in `.env.local` and Vercel (currently `rzp_test_placeholder`): Dashboard (Test mode) → Account & Settings → API Keys → Key ID and Key Secret. Live keys and KYC only at launch.
+- [ ] **Razorpay webhook** (Test mode, then again in Live mode at launch): Account & Settings → Webhooks → Add. URL `https://<your site>/api/webhooks/razorpay` (a Vercel preview URL works for testing), events **payment.captured**, **order.paid** and **payment.failed**, and a secret of your choice, which goes in `RAZORPAY_WEBHOOK_SECRET`.
+- [ ] **Watch for "REFUND NEEDED"** in an order's timeline in /admin: a payment arrived after its order expired and the pieces had sold out meanwhile. Refund it from the Razorpay dashboard.
 - [ ] **Instagram profile URL** in `.env.local` (currently `https://www.instagram.com/`).
 - [ ] **Confirm the admin login.** `admin@forever.com` was made the owner in `admin_users` (it was the only Auth user). If that isn't the right account, say so.
 - [ ] **Turn off public sign-ups** in Supabase → Authentication → Sign In / Providers ("Allow new users to sign up"). Only admins log in; you can still invite admins from the dashboard.
@@ -51,3 +54,13 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).
+
+## Before launch
+- [ ] **Remove test orders** (made by the checkout tests, emails ending `@erayah.test`; their stock was already put back) and test gift cards (codes starting `E2E`), then reset the order and invoice counters so real orders start at 00001. In the SQL editor:
+  ```sql
+  delete from orders where email like '%@erayah.test';
+  delete from gift_cards where code like 'E2E%';
+  -- Only if no real orders exist yet:
+  delete from document_counters;
+  ```
+  Also delete their PDFs from the `invoices` bucket (Storage → invoices).

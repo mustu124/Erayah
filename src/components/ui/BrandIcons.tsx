@@ -1,4 +1,4 @@
-import { siInstagram, siWhatsapp } from "simple-icons";
+import { siGooglepay, siInstagram, siMastercard, siPaytm, siPhonepe, siVisa, siWhatsapp } from "simple-icons";
 
 type BrandIconProps = { size?: number; className?: string };
 
@@ -24,4 +24,17 @@ export function WhatsAppGlyph(props: BrandIconProps) {
 
 export function InstagramGlyph(props: BrandIconProps) {
   return <BrandGlyph path={siInstagram.path} {...props} />;
+}
+
+/** Payment logos shown at checkout, in the brand's ink rather than their own colours. */
+export const PAYMENT_LOGOS = [
+  { name: "Google Pay", path: siGooglepay.path },
+  { name: "PhonePe", path: siPhonepe.path },
+  { name: "Paytm", path: siPaytm.path },
+  { name: "Visa", path: siVisa.path },
+  { name: "Mastercard", path: siMastercard.path },
+] as const;
+
+export function PaymentLogo({ path, ...props }: BrandIconProps & { path: string }) {
+  return <BrandGlyph path={path} {...props} />;
 }

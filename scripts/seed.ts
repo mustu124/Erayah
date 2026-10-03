@@ -345,7 +345,7 @@ const FAQS: { group: string; question: string; answer: string }[] = [
     group: "Payment",
     question: "How can I pay?",
     answer:
-      "You can pay securely through Razorpay by UPI, credit or debit card, wallet or netbanking. We do not offer cash on delivery. Your invoice appears on the confirmation page once your order is placed, with a PDF to download.",
+      "You can pay securely through Razorpay by UPI, credit or debit card, wallet or netbanking. Your invoice appears on the confirmation page once your order is placed, with a PDF to download.",
   },
 ];
 
@@ -463,7 +463,7 @@ Your order is confirmed when payment succeeds and you see the confirmation page 
 
 ## Payment
 
-We accept UPI, credit and debit cards, wallets and netbanking through Razorpay. We do not offer cash on delivery.
+We accept UPI, credit and debit cards, wallets and netbanking through Razorpay.
 
 ## Shipping, returns and exchanges
 

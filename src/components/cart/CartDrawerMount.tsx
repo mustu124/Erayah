@@ -23,8 +23,13 @@ export function CartDrawerMount() {
         <p className="font-heading text-h3 text-ink">
           {hydrated && count ? `${count} ${count === 1 ? "piece" : "pieces"} in your cart` : "Your cart is empty"}
         </p>
-        <ButtonLink href={routes.shopAll} onClick={close}>
-          Shop All
+        {hydrated && count ? (
+          <ButtonLink href={routes.checkout} onClick={close} className="w-full">
+            Checkout
+          </ButtonLink>
+        ) : null}
+        <ButtonLink href={routes.shopAll} onClick={close} variant={hydrated && count ? "link" : "solid"}>
+          {hydrated && count ? "Continue shopping" : "Shop All"}
         </ButtonLink>
       </div>
     </Drawer>

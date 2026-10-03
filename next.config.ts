@@ -10,6 +10,13 @@ const supabaseHost = new URL(env.NEXT_PUBLIC_SUPABASE_URL).hostname;
 const nextConfig: NextConfig = {
   // Next 16 caching: "use cache" + cacheTag in src/lib/data, revalidated by tag from /admin.
   cacheComponents: true,
+  // The invoice PDF reads its fonts from disk; ship them with the routes that render it.
+  outputFileTracingIncludes: {
+    "/api/invoice/[number]": ["./src/fonts/**/*.ttf"],
+    "/api/checkout/create": ["./src/fonts/**/*.ttf"],
+    "/api/checkout/verify": ["./src/fonts/**/*.ttf"],
+    "/api/webhooks/razorpay": ["./src/fonts/**/*.ttf"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
