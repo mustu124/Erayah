@@ -9,9 +9,10 @@ import { INDIAN_STATES } from "./states";
 export const PINCODE_RE = /^[1-9]\d{5}$/;
 
 const text = (max: number) => z.string().trim().max(max);
+// Accepts "", null or missing (the browser sends its already-parsed form, where blanks are null).
 const optional = (max: number) =>
   text(max)
-    .optional()
+    .nullish()
     .transform((v) => v || null);
 
 export const cartItemSchema = z.object({
@@ -26,7 +27,7 @@ export const giftCardCodeSchema = z
   .string()
   .trim()
   .max(40)
-  .optional()
+  .nullish()
   .transform((v) => v?.toUpperCase() || null);
 
 export const contactSchema = z.object({

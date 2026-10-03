@@ -164,6 +164,7 @@ test.describe("checkout payments", () => {
     await expect(page.getByTestId("desktop-total")).toHaveText(`₹${new Intl.NumberFormat("en-IN").format(due / 100)}`);
 
     await placeOrder(page);
+    await expect(razorpay(page)).toBeVisible();
     expect(await page.evaluate(() => (window as unknown as { __rzpLast: { amount: number } }).__rzpLast.amount)).toBe(due);
     await razorpay(page).getByRole("button", { name: "Pay with UPI" }).click();
     await expect(page.getByText(`Paid by gift card ${code}`)).toBeVisible();
@@ -172,24 +173,26 @@ test.describe("checkout payments", () => {
   });
 
   test("the last piece, bought from two browsers at once: one wins", async ({ browser }) => {
+    test.setTimeout(90_000);
     const product = await productInStock(1);
     await db.from("products").update({ stock_qty: 1 }).eq("id", product.id);
     try {
       const pages = await Promise.all([browser.newPage(), browser.newPage()]);
-      for (const page of pages) {
-        await openCheckout(page, [{ productId: product.id, slug: product.slug, quantity: 1 }]);
-        await fillCheckout(page);
-      }
-      await Promise.all(pages.map(placeOrder));
-      const outcomes = await Promise.all(
-        pages.map((page) =>
-          Promise.race([
-            razorpay(page).waitFor().then(() => "paying"),
-            page.getByText("Sorry, one of your pieces has just sold out.").first().waitFor().then(() => "sold out"),
-          ]),
-        ),
+      await Promise.all(
+        pages.map(async (page) => {
+          await openCheckout(page, [{ productId: product.id, slug: product.slug, quantity: 1 }]);
+          await fillCheckout(page);
+        }),
       );
-      expect(outcomes.sort()).toEqual(["paying", "sold out"]);
+      await Promise.all(pages.map(placeOrder));
+      // Each page ends up either paying (Razorpay open) or told the piece sold out.
+      const outcome = async (page: Page) => {
+        const soldOut = page.locator("p[role=alert]", { hasText: "Sorry, one of your pieces has just sold out." });
+        await expect(razorpay(page).or(soldOut)).toBeVisible({ timeout: 20_000 });
+        return (await razorpay(page).isVisible()) ? "paying" : "sold out";
+      };
+      const outcomes = await Promise.all(pages.map(outcome));
+      expect([...outcomes].sort()).toEqual(["paying", "sold out"]);
       const loser = pages[outcomes.indexOf("sold out")];
       await expect(loser.getByRole("button", { name: "Remove it" }).first()).toBeVisible();
       await Promise.all(pages.map((p) => p.close()));

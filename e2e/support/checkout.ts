@@ -14,6 +14,10 @@ try {
 }
 
 export const TEST_EMAIL_DOMAIN = "erayah.test";
+
+// What this worker created, so cleanup never touches another worker's orders mid-test.
+const createdEmails = new Set<string>();
+const createdGiftCards = new Set<string>();
 export const MOCK_RAZORPAY = `http://localhost:${process.env.MOCK_RAZORPAY_PORT ?? 3199}`;
 
 export const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
@@ -112,8 +116,9 @@ export async function seedCart(page: Page, lines: CartSeed[], gift: { isGift?: b
 }
 
 export async function fillCheckout(page: Page, who = "Asha Rao") {
-  const tag = randomBytes(4).toString("hex");
-  await page.getByLabel("Email").fill(`e2e-${tag}@${TEST_EMAIL_DOMAIN}`);
+  const email = `e2e-${randomBytes(4).toString("hex")}@${TEST_EMAIL_DOMAIN}`;
+  createdEmails.add(email);
+  await page.getByLabel("Email").fill(email);
   await page.getByLabel("Mobile number").fill("9876543210");
   await page.getByLabel("Full name").fill(who);
   await page.getByLabel("Pincode").fill("400001");
@@ -148,18 +153,20 @@ export async function makeGiftCard(balance: number, expired = false) {
     note: "E2E test card",
   });
   if (error) throw error;
+  createdGiftCards.add(code);
   return code;
 }
 
 /**
- * Puts stock and gift card balances back for every test order and cancels
- * them (they're kept, marked, for the owner's pre-launch cleanup).
+ * Puts stock and gift card balances back for the orders this worker placed
+ * and cancels them (they're kept, marked, for the owner's pre-launch cleanup).
  */
 export async function cleanUpTestOrders() {
+  if (!createdEmails.size) return;
   const { data: orders } = await db
     .from("orders")
     .select("id, status, stock_released_at")
-    .like("email", `%@${TEST_EMAIL_DOMAIN}`)
+    .in("email", [...createdEmails])
     .is("stock_released_at", null);
   for (const order of orders ?? []) {
     if (order.status !== "cancelled") {
@@ -168,5 +175,5 @@ export async function cleanUpTestOrders() {
     const { error } = await db.rpc("restore_stock", { p_order_id: order.id });
     if (error) console.warn("restore_stock", order.id, error.message);
   }
-  await db.from("gift_cards").update({ is_active: false }).like("code", "E2E%");
+  if (createdGiftCards.size) await db.from("gift_cards").update({ is_active: false }).in("code", [...createdGiftCards]);
 }

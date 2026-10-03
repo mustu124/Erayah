@@ -106,4 +106,4 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - supabase/tests/ — `pnpm test:db` runs the checkout functions against all migrations in PGlite (no Docker or live database needed).
 - docs/DATABASE.md — one line per table, the order/stock functions, numbering and money rules. Read it before touching data code. Only DATABASE.md, DECISIONS.md and OWNER_TODO.md in docs/ are committed.
 - scripts/import-images.ts — `pnpm import:images` (`--dry-run`, `--only=<slug>`, `--products-only`, `--homepage-only`) uploads photos from /assets (local only, not in git) per import/mapping.json: WebP, hashed paths, replaces that product's image rows; also hero slides and category tiles.
-- Scripts: dev, build, lint, typecheck, test:e2e, db:push, db:types, db:types:local, seed, import:images.
+- Scripts: dev, build, lint, typecheck, test:e2e, test:db, db:push, db:migrations, db:types, db:types:local, seed, import:images. The db:* scripts go through scripts/supabase-db.mjs (session pooler + SUPABASE_DB_PASSWORD from .env.local).

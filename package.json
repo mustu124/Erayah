@@ -8,13 +8,14 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
-    "db:push": "supabase db push",
-    "db:types": "supabase gen types typescript --linked --schema public > src/lib/supabase/types.ts",
+    "db:push": "node scripts/supabase-db.mjs db push",
+    "db:types": "node scripts/supabase-db.mjs gen types typescript --schema public > src/lib/supabase/types.ts",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "test:e2e": "playwright test",
     "db:types:local": "tsx scripts/gen-db-types.ts",
     "import:images": "tsx --env-file=.env.local scripts/import-images.ts",
-    "test:db": "node supabase/tests/checkout.test.mjs"
+    "test:db": "node supabase/tests/checkout.test.mjs",
+    "db:migrations": "node scripts/supabase-db.mjs migration list"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",

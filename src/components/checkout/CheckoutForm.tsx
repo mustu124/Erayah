@@ -115,6 +115,9 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
             setQuoteError(null);
             return;
           }
+          // Our own pending order holds the stock, so a fresh quote can read "sold out"
+          // for it. Placing the order again reuses that hold; the server re-checks there.
+          if (res.error.field?.startsWith("item.") && attempt.current) return;
           if (res.error.field === "giftCardCode") {
             // Drop the card and price again without it.
             setGiftCardError(res.error.error);
