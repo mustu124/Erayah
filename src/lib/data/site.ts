@@ -34,6 +34,33 @@ export async function getSiteShell(): Promise<SiteShell> {
   };
 }
 
+export type BrandStory = {
+  text: string;
+  ctaLabel: string;
+  ctaUrl: string;
+};
+
+/** The homepage brand story (2–3 lines + CTA), from site settings. */
+export async function getBrandStory(): Promise<BrandStory | null> {
+  "use cache";
+  cacheTag(TAGS.home, TAGS.siteSettings);
+  cacheLife("days");
+
+  const { data, error } = await createPublicClient()
+    .from("site_settings")
+    .select("brand_story_text, brand_story_cta_label, brand_story_cta_url")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) console.error("getBrandStory:", error.message);
+  if (!data?.brand_story_text) return null;
+
+  return {
+    text: data.brand_story_text,
+    ctaLabel: data.brand_story_cta_label || "Our Story",
+    ctaUrl: data.brand_story_cta_url || routes.about,
+  };
+}
+
 export type MenuFeature = {
   imageUrl: string | null;
   alt: string;

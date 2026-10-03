@@ -1,14 +1,14 @@
-// Every storefront URL in one place. Collections cover categories and the
-// curated lists; styles filter Shop All.
+// Every storefront URL in one place. /shop is Shop All; /shop/<slug> covers
+// categories and the curated lists; styles filter Shop All.
 
 export const routes = {
   home: "/",
-  shopAll: "/collections/all",
-  collection: (slug: string) => `/collections/${slug}`,
-  newArrivals: "/collections/new-arrivals",
-  bestSellers: "/collections/best-sellers",
-  giftsForHer: "/collections/gifts-for-her",
-  style: (...styles: string[]) => `/collections/all?style=${encodeURIComponent(styles.join(","))}`,
+  shopAll: "/shop",
+  collection: (slug: string) => `/shop/${slug}`,
+  newArrivals: "/shop/new-arrivals",
+  bestSellers: "/shop/best-sellers",
+  giftsForHer: "/shop/gifts-for-her",
+  style: (...styles: string[]) => `/shop?style=${encodeURIComponent(styles.join(","))}`,
   product: (slug: string) => `/products/${slug}`,
   search: "/search",
   wishlist: "/wishlist",

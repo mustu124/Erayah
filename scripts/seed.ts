@@ -22,6 +22,8 @@ import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import { z } from "zod";
 
+import { ELEPHANT } from "../src/components/ui/logo-paths";
+
 // ─── Setup ──────────────────────────────────────────────────────────────────
 
 const env = z
@@ -39,7 +41,9 @@ const CATALOGUE = path.join(process.cwd(), "docs", "catalogue.md");
 
 const MATERIALS = ["Silver alloy", "22kt gold plating", "Kundan / Jadau craftsmanship"];
 const STOCK_PER_PRODUCT = 5;
-const PLACEHOLDER_PATH = "placeholders/ivory-1200x1500.jpg";
+const PLACEHOLDER_PATH = "placeholders/ivory-elephant-1200x1500.jpg";
+/** Earlier placeholder files; image rows pointing at them are moved to PLACEHOLDER_PATH. */
+const OLD_PLACEHOLDER_PATHS = ["placeholders/ivory-1200x1500.jpg"];
 const PLACEHOLDER_SIZE = { width: 1200, height: 1500 };
 const IVORY = { r: 0xf9, g: 0xee, b: 0xe1 };
 
@@ -610,16 +614,29 @@ function check<T>(result: { data: T; error: { message: string } | null }, what: 
 }
 
 async function ensurePlaceholderImage() {
-  const jpeg = await sharp({
-    create: { ...PLACEHOLDER_SIZE, channels: 3, background: IVORY },
-  })
-    .jpeg({ quality: 80 })
-    .toBuffer();
+  // Ivory with a faint elephant mark, so placeholder tiles read as intentional.
+  const [, , w, h] = ELEPHANT.viewBox.split(" ").map(Number);
+  const markHeight = PLACEHOLDER_SIZE.height * 0.16;
+  const scale = markHeight / h;
+  const x = (PLACEHOLDER_SIZE.width - w * scale) / 2;
+  const y = (PLACEHOLDER_SIZE.height - markHeight) / 2;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${PLACEHOLDER_SIZE.width}" height="${PLACEHOLDER_SIZE.height}">
+    <rect width="100%" height="100%" fill="#f9eee1"/>
+    <path transform="translate(${x} ${y}) scale(${scale})" fill="#311829" fill-opacity="0.07" fill-rule="evenodd" d="${ELEPHANT.d}"/>
+  </svg>`;
+  const jpeg = await sharp(Buffer.from(svg)).jpeg({ quality: 82 }).toBuffer();
 
   const { error } = await supabase.storage
     .from("product-images")
     .upload(PLACEHOLDER_PATH, jpeg, { contentType: "image/jpeg", upsert: true });
   if (error) throw new Error(`upload placeholder: ${error.message}`);
+
+  for (const oldPath of OLD_PLACEHOLDER_PATHS) {
+    check(
+      await supabase.from("product_images").update({ storage_path: PLACEHOLDER_PATH }).eq("storage_path", oldPath),
+      "move placeholder images",
+    );
+  }
 
   const tiny = await sharp({ create: { width: 8, height: 10, channels: 3, background: IVORY } })
     .png()

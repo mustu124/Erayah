@@ -99,6 +99,24 @@
   }
 }
 
+/* Product card heart: soft on touch screens; on desktop hidden until the
+   card is hovered or the heart is focused. Saved hearts always show. */
+.card-heart {
+  opacity: 0.6;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-heart {
+    opacity: 0;
+  }
+  .group:hover .card-heart,
+  .card-heart:focus-visible {
+    opacity: 1;
+  }
+}
+.card-heart[aria-pressed="true"] {
+  opacity: 1;
+}
+
 /* Drawer (native <dialog>): opacity fade in and out, no sliding. */
 dialog.drawer {
   opacity: 0;

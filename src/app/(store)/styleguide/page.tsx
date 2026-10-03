@@ -97,7 +97,7 @@ export default async function StyleguidePage() {
         <div className="flex flex-wrap items-center gap-4">
           <Button>Add to cart</Button>
           <Button variant="outline">View cart</Button>
-          <ButtonLink href="/collections/all" variant="link">
+          <ButtonLink href="/shop" variant="link">
             Shop All Best Sellers
           </ButtonLink>
           <Button disabled>Sold out</Button>

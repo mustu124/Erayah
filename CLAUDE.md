@@ -91,6 +91,7 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - src/lib/routes.ts (every URL) · src/lib/navigation.ts (menus and footer links) · src/lib/format/ (price in paise → ₹, month label).
 - src/components/ui/ — primitives (Button, IconButton, QuantityStepper, Price, Pill, SectionHeader, Hairline, Drawer, Accordion, Checkbox, Select, Input, Skeleton, Carousel, Icon, Logo). Review them at /styleguide (noindex, unlinked).
 - src/components/layout/ — announcement bar, header (desktop nav + mega-menu, mobile menu drawer, search), footer, WhatsApp button. src/app/(store)/layout.tsx composes the shell.
+- src/components/product/ProductCard.tsx — the one product card (4:5 image, name, price; heart; hover swap). Homepage sections: src/app/(store)/_components/. Catalogue reads: src/lib/data/catalog.ts.
 - src/stores/ — zustand: cart and wishlist (persisted to localStorage), ui (drawers, WhatsApp topic). Use useHydrated() before showing persisted values.
 - e2e/ — Playwright (Chromium + WebKit at 375px and 1280px): `pnpm test:e2e`.
 - supabase/ — CLI config and migrations · scripts/ — seed and one-off scripts.

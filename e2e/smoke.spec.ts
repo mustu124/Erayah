@@ -14,13 +14,13 @@ test.describe("smoke", () => {
     const response = await page.goto("/");
     expect(response?.status()).toBe(200);
 
-    await expect(page).toHaveTitle(/Erayah/);
-    await expect(page.getByRole("heading", { level: 1, name: "ERAYAH" })).toBeVisible();
+    await expect(page).toHaveTitle("Erayah — Heirlooms, Reimagined");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 
     // Brand fonts and colours are applied.
-    const heading = page.getByRole("heading", { level: 1 });
-    await expect(heading).toHaveCSS("font-family", /STIX Two Text/);
-    await expect(heading).toHaveCSS("color", "rgb(49, 24, 41)"); // --color-ink
+    const section = page.getByRole("heading", { name: "Shop by Category" });
+    await expect(section).toHaveCSS("font-family", /STIX Two Text/);
+    await expect(section).toHaveCSS("color", "rgb(49, 24, 41)"); // --color-ink
     await expect(page.locator("body")).toHaveCSS("font-family", /Montserrat/);
 
     // No horizontal scroll at any width.

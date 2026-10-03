@@ -66,7 +66,7 @@ Heroes in the first four slots, statement and minimal pieces alternating, prices
 - **Cache Components on** (`cacheComponents: true`). Storefront data is read in `src/lib/data/*` with `"use cache"` + `cacheTag` (tags in `src/lib/cache-tags.ts`) through a cookie-free anon client (`src/lib/supabase/public.ts`); admin edits will call `revalidateTag(tag, "max")`. `unstable_cache` is deprecated in Next 16.
 - **Database types without the CLI link:** `pnpm db:types:local` applies the migrations to PGlite and writes `src/lib/supabase/types.ts` in the `supabase gen types` shape (tables, relationships, functions, enums). Switch to `pnpm db:types` once linked.
 - **Logo traced to SVG.** `/docs/brand` only has PNGs, so the wordmark, tagline and elephant were traced (potrace) into inline SVG paths (`src/components/ui/logo-paths.ts`). Replace with the designer's SVGs when supplied.
-- **URL scheme:** `/collections/{all|earrings|necklace-sets|rings|bracelets|pendants|new-arrivals|best-sellers|gifts-for-her}`, styles as `/collections/all?style=…`, products `/products/[slug]`, `/search?q=`, `/wishlist`, and `/about`, `/contact`, `/faqs`, `/shipping-returns`, `/privacy-policy`, `/terms` (all in `src/lib/routes.ts`).
+- ~~URL scheme `/collections/…`~~ — replaced by `/shop/…` (see Homepage below). Other URLs: products `/products/[slug]`, `/search?q=`, `/wishlist`, and `/about`, `/contact`, `/faqs`, `/shipping-returns`, `/privacy-policy`, `/terms` (all in `src/lib/routes.ts`).
 - **Mega-menu headings are ink with a gold hairline**, not gold text: gold on off-white is ~2.3:1, below WCAG AA. The editorial tile uses the first active hero slide's image; until one exists it shows an ivory tile with the elephant mark.
 - **Mega-menu opens on hover or click/Enter**, not on focus (opening on focus re-opened it after Esc returned focus to SHOP).
 - **Drawers are native modal `<dialog>`s** (focus trap, inert page, Esc and backdrop close, focus returns), fading via CSS `@starting-style`; no slide animation.
@@ -77,3 +77,15 @@ Heroes in the first four slots, statement and minimal pieces alternating, prices
 - **Footer pattern strip** is a 96×40 ivory elephant-and-dot tile (`public/brand/elephant-pattern.svg`) at 12% opacity.
 - **Cart drawer** is mounted in the shell with an empty state; Prompt 9 fills it.
 - **Montserrat 600** is loaded for the small bold uppercase labels.
+
+## 2026-10-03 — Homepage
+- **Shop URLs are `/shop/…`** (the homepage prompt links to `/shop/new-arrivals`): `/shop` is Shop All, `/shop/<category>`, `/shop/new-arrivals`, `/shop/best-sellers`, `/shop/gifts-for-her`, styles as `/shop?style=…`. Changed once in `src/lib/routes.ts`.
+- **Hero falls back to the six hero products** (labelled with their category, linking to it) until the owner adds hero slides with real photographs.
+- **Hero crossfade is hand-built** (stacked slides, 400ms opacity, autoplay every 6s, paused on hover, touch, keyboard focus and prefers-reduced-motion; swipe on touch) rather than Embla, so the timing is exact. Art direction uses `<picture>` with `getImageProps` (mobile 4:5 image under 1024px); the first slide is eager with `fetchPriority="high"`. Next 16 deprecates `priority` in favour of `preload`.
+- **LCP:** with placeholder images the largest element is the faint giant ERAYAH text, which paints immediately (~0.6s desktop). Once real photography is in, the first hero image is the LCP candidate and is already prioritised.
+- **Placeholder image** now carries a faint elephant mark (`placeholders/ivory-elephant-1200x1500.jpg`); the seed moved all placeholder rows to it.
+- **Shop by Category shows Shop All on mobile too**, so the 3-column grid is complete at every width. "Coming soon" sits under the Bracelets name (an overlay on the small mobile tile wrapped).
+- **Category tile image:** the category's own image if set in admin, otherwise the worn close-up of its first product in the curated order.
+- **Product card heart:** 60% opacity on touch screens; on mouse devices hidden until the card is hovered or the heart is focused; saved hearts always show (filled). The hover image swap only happens on devices that can hover.
+- **New Arrivals band is ivory;** with placeholder images the cards blend into it. Real photographs will separate them.
+- **Homepage sections live in `src/app/(store)/_components/`** (page-specific); the reusable card is `src/components/product/ProductCard.tsx`.

@@ -2,6 +2,7 @@
 // revalidateTag(TAGS.x, "max") after editing the matching table.
 
 export const TAGS = {
+  home: "home",
   siteSettings: "site-settings",
   heroSlides: "hero-slides",
   categories: "categories",

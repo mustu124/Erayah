@@ -34,7 +34,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Review the product descriptions** written in Erayah's voice, especially the name meanings (e.g. Harakh = joy, Mārakat = emerald, Kamān = bow). Edit any that aren't right.
 - [ ] **Review the launch flags and order** (New Arrivals, Best Sellers, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
 - [ ] **Product photos**: four per product (worn close-up, lifestyle, product-only, detail), plus optional flat lay / video.
-- [ ] **Hero slides, category tile images, lifestyle images.** The first active hero slide also becomes the image in the desktop Shop menu.
+- [ ] **Hero slides, category tile images, lifestyle images.** Until hero slides exist, the homepage hero shows the six hero products. Hero slides want a portrait desktop image and a 4:5 mobile image. The first active hero slide also becomes the image in the desktop Shop menu.
 - [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).

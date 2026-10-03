@@ -36,12 +36,13 @@ test.describe("site shell", () => {
     await expect(shop).toHaveAttribute("aria-expanded", "false");
     await shop.hover();
     await expect(shop).toHaveAttribute("aria-expanded", "true");
+    const nav = page.getByRole("navigation", { name: "Main" });
     for (const heading of ["Shop by Category", "Discover", "Shop by Style"]) {
-      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+      await expect(nav.getByRole("heading", { name: heading })).toBeVisible();
     }
     await expect(page.getByRole("link", { name: "Jhumkas & Chaandbaalis" })).toHaveAttribute(
       "href",
-      "/collections/all?style=jhumkas%2Cchaandbaalis",
+      "/shop?style=jhumkas%2Cchaandbaalis",
     );
 
     await page.keyboard.press("Escape");
