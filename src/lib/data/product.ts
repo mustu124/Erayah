@@ -34,6 +34,8 @@ export type ProductDetail = {
   closure: string | null;
   chainLength: string | null;
   careOverride: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   category: { id: number; slug: string; name: string } | null;
   gallery: GalleryItem[];
   variants: { label: string; colour: string | null; stockQty: number }[];
@@ -50,7 +52,7 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
   const { data, error } = await createPublicClient()
     .from("products")
     .select(
-      "id, slug, name, price, stock_qty, short_description, description, materials, stones, closure, chain_length, care_override, categories(id, slug, name), product_images(storage_path, role, alt, width, height, blur_data_url, sort_order), product_variants(label, colour, stock_qty, sort_order)",
+      "id, slug, name, price, stock_qty, short_description, description, materials, stones, closure, chain_length, care_override, seo_title, seo_description, categories(id, slug, name), product_images(storage_path, role, alt, width, height, blur_data_url, sort_order), product_variants(label, colour, stock_qty, sort_order)",
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -84,6 +86,8 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
     closure: data.closure,
     chainLength: data.chain_length,
     careOverride: data.care_override,
+    seoTitle: data.seo_title,
+    seoDescription: data.seo_description,
     category: data.categories,
     gallery,
     variants: [...data.product_variants]

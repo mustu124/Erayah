@@ -44,6 +44,7 @@ Thumbs.db
 !/docs/DATABASE.md
 !/docs/DECISIONS.md
 !/docs/OWNER_TODO.md
+!/docs/ADMIN_GUIDE.md
 
 # playwright
 /test-results/

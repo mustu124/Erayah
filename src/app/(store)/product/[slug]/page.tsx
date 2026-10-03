@@ -30,9 +30,9 @@ export async function generateMetadata({ params }: PageProps<"/product/[slug]">)
   const product = await getProduct((await params).slug);
   if (!product) return {};
   const description =
-    product.shortDescription ?? product.description ?? `${product.name}, handcrafted by Erayah.`;
+    product.seoDescription ?? product.shortDescription ?? product.description ?? `${product.name}, handcrafted by Erayah.`;
   return {
-    title: product.name,
+    title: product.seoTitle ?? product.name,
     description,
     alternates: { canonical: routes.product(product.slug) },
     // The Open Graph image (worn close-up as JPEG) comes from opengraph-image.tsx.

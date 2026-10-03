@@ -36,6 +36,8 @@ export async function getSiteShell(): Promise<SiteShell> {
 
 export type BrandStory = {
   text: string;
+  /** The phrase set in script; null = "Heirlooms, Reimagined". */
+  highlight: string | null;
   ctaLabel: string;
   ctaUrl: string;
 };
@@ -48,7 +50,7 @@ export async function getBrandStory(): Promise<BrandStory | null> {
 
   const { data, error } = await createPublicClient()
     .from("site_settings")
-    .select("brand_story_text, brand_story_cta_label, brand_story_cta_url")
+    .select("brand_story_text, brand_story_highlight, brand_story_cta_label, brand_story_cta_url")
     .eq("id", 1)
     .maybeSingle();
   if (error) console.error("getBrandStory:", error.message);
@@ -56,6 +58,7 @@ export async function getBrandStory(): Promise<BrandStory | null> {
 
   return {
     text: data.brand_story_text,
+    highlight: data.brand_story_highlight,
     ctaLabel: data.brand_story_cta_label || "Our Story",
     ctaUrl: data.brand_story_cta_url || routes.about,
   };

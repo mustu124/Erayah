@@ -10,4 +10,5 @@ export const TAGS = {
   products: "products",
   pages: "pages",
   faqs: "faqs",
+  testimonials: "testimonials",
 } as const;

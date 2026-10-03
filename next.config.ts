@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     "/api/checkout/create": ["./src/fonts/**/*.ttf"],
     "/api/checkout/verify": ["./src/fonts/**/*.ttf"],
     "/api/webhooks/razorpay": ["./src/fonts/**/*.ttf"],
+    "/admin/orders/[number]/invoice": ["./src/fonts/**/*.ttf"],
   },
   images: {
     formats: ["image/avif", "image/webp"],

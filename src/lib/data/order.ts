@@ -36,6 +36,10 @@ export async function getOrderForCustomer(orderNumber: string, token: string | n
 
 export const getOrderById = (id: string) => loadOrder("id", id);
 
+/** For the admin panel only (no token check: callers have checked the admin). */
+export const getOrderByNumber = (orderNumber: string) =>
+  /^[A-Z0-9]{1,5}-\d{4}-\d{5,}$/.test(orderNumber) ? loadOrder("order_number", orderNumber) : Promise.resolve(null);
+
 export async function getInvoiceSettings(): Promise<InvoiceSettings> {
   const { data, error } = await createAdminClient()
     .from("site_settings")

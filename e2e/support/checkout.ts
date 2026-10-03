@@ -162,6 +162,7 @@ export async function makeGiftCard(balance: number, expired = false) {
  * and cancels them (they're kept, marked, for the owner's pre-launch cleanup).
  */
 export async function cleanUpTestOrders() {
+  if (createdGiftCards.size) await db.from("gift_cards").update({ is_active: false }).in("code", [...createdGiftCards]);
   if (!createdEmails.size) return;
   const { data: orders } = await db
     .from("orders")
@@ -175,5 +176,4 @@ export async function cleanUpTestOrders() {
     const { error } = await db.rpc("restore_stock", { p_order_id: order.id });
     if (error) console.warn("restore_stock", order.id, error.message);
   }
-  if (createdGiftCards.size) await db.from("gift_cards").update({ is_active: false }).in("code", [...createdGiftCards]);
 }

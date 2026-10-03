@@ -4,14 +4,16 @@ import { ButtonLink } from "@/components/ui/Button";
 import { ElephantMark } from "@/components/ui/Logo";
 import { getBrandStory, getSiteShell } from "@/lib/data/site";
 
-const HIGHLIGHT = /(heirlooms,?\s+reimagined)/i;
+const DEFAULT_HIGHLIGHT = /(heirlooms,?\s+reimagined)/i;
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** 2–3 lines, one highlighted phrase, "Our Story", and a quiet Instagram link. */
 export async function BrandStory() {
   const [story, shell] = await Promise.all([getBrandStory(), getSiteShell()]);
   if (!story) return null;
 
-  const parts = story.text.split(HIGHLIGHT);
+  const highlight = story.highlight ? new RegExp(`(${escape(story.highlight)})`, "i") : DEFAULT_HIGHLIGHT;
+  const parts = story.text.split(highlight);
 
   return (
     <section aria-labelledby="brand-story" className="px-6 py-24 lg:py-32">
@@ -22,7 +24,7 @@ export async function BrandStory() {
         </h2>
         <p className="mt-8 font-heading text-[19px] leading-[1.7] text-ink lg:text-[22px]">
           {parts.map((part, i) =>
-            HIGHLIGHT.test(part) ? (
+            i % 2 === 1 ? (
               <span key={i} className="font-script italic">
                 {part}
               </span>

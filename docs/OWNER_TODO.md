@@ -11,7 +11,11 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Razorpay webhook** (Test mode, then again in Live mode at launch): Account & Settings → Webhooks → Add. URL `https://<your site>/api/webhooks/razorpay` (a Vercel preview URL works for testing), events **payment.captured**, **order.paid** and **payment.failed**, and a secret of your choice, which goes in `RAZORPAY_WEBHOOK_SECRET`.
 - [ ] **Watch for "REFUND NEEDED"** in an order's timeline in /admin: a payment arrived after its order expired and the pieces had sold out meanwhile. Refund it from the Razorpay dashboard.
 - [ ] **Instagram profile URL** in `.env.local` (currently `https://www.instagram.com/`).
-- [ ] **Confirm the admin login.** `admin@forever.com` was made the owner in `admin_users` (it was the only Auth user). If that isn't the right account, say so.
+- [ ] **Supabase Auth for the admin:**
+  - In Supabase → Authentication → URL Configuration, set **Site URL** to your site and add `https://<your site>/admin/auth/callback` (and `http://localhost:3000/admin/auth/callback` for local use) to **Redirect URLs**. Sign-in links and admin invitations land there.
+  - Optionally customise the "Magic Link" and "Invite user" email templates in Authentication → Emails, since these emails come from Supabase. For production, set up custom SMTP there so they don't hit Supabase's low hourly limit.
+- [ ] **Read `docs/ADMIN_GUIDE.md`**: how to handle orders, add products with their 4 photos, reorder collections and issue gift cards.
+- [ ] **Confirm the admin login.** `admin@forever.com` was made the owner in `admin_users` (it was the only Auth user). If that isn't the right account, say so. To add another owner or staff member, use Settings → Admin users, or run `pnpm create-admin <email>` (`--staff` for staff).
 - [ ] **Turn off public sign-ups** in Supabase → Authentication → Sign In / Providers ("Allow new users to sign up"). Only admins log in; you can still invite admins from the dashboard.
 - [ ] **GitHub repo is public.** Consider making it private.
 

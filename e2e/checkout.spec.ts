@@ -174,6 +174,8 @@ test.describe("checkout payments", () => {
 
   test("the last piece, bought from two browsers at once: one wins", async ({ browser }) => {
     test.setTimeout(90_000);
+    // Release this worker's earlier test orders first, so the stock read below is the real figure.
+    await cleanUpTestOrders();
     const product = await productInStock(1);
     await db.from("products").update({ stock_qty: 1 }).eq("id", product.id);
     try {
