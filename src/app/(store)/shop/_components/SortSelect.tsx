@@ -13,8 +13,9 @@ import { useFilters } from "./FilterProvider";
  * as an outlined button with the current choice, for the mobile bar.
  */
 export function SortSelect({ variant = "inline", className }: { variant?: "inline" | "button"; className?: string }) {
-  const { filters, apply } = useFilters();
-  const current = SORTS.find((s) => s.value === filters.sort)?.label ?? "Curated";
+  const { filters, curatedLabel, apply } = useFilters();
+  const label = (value: string, fallback: string) => (value === "curated" ? curatedLabel : fallback);
+  const current = label(filters.sort, SORTS.find((s) => s.value === filters.sort)?.label ?? curatedLabel);
   const onChange = (value: string) => apply((f) => ({ ...f, sort: value as SortKey }));
 
   const select = (
@@ -30,7 +31,7 @@ export function SortSelect({ variant = "inline", className }: { variant?: "inlin
     >
       {SORTS.map((s) => (
         <option key={s.value} value={s.value}>
-          {s.label}
+          {label(s.value, s.label)}
         </option>
       ))}
     </select>

@@ -99,9 +99,13 @@ export function toSearchParams(filters: Filters): URLSearchParams {
   return params;
 }
 
+/** path + filters. A query already in `path` (e.g. /search?q=…) is kept, first. */
 export function hrefWith(path: string, filters: Filters): string {
-  const query = toSearchParams(filters).toString();
-  return query ? `${path}?${query}` : path;
+  const [base, existing] = path.split("?");
+  const params = new URLSearchParams(existing);
+  toSearchParams(filters).forEach((value, key) => params.set(key, value));
+  const query = params.toString();
+  return query ? `${base}?${query}` : base;
 }
 
 /** True when any filter (not sort or page) is applied. */

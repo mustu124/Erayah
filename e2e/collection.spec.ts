@@ -2,12 +2,13 @@ import { expect, test, type Page } from "@playwright/test";
 
 const isMobile = (projectName: string) => projectName.endsWith("-375");
 
-const cards = (page: Page) => page.locator("main article");
+// Visible only: Next keeps the previous page mounted but hidden for instant back navigation.
+const cards = (page: Page) => page.locator("main article").locator("visible=true");
 
 /** Navigates and waits until the page is interactive (hydrated). */
 async function open(page: Page, url: string) {
   await page.goto(url);
-  await page.waitForLoadState("networkidle");
+  await page.locator("html[data-hydrated]").waitFor();
 }
 const countText = (page: Page) => page.getByText(/^\d+ pieces?$/);
 

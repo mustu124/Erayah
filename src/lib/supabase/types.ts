@@ -751,6 +751,28 @@ export type Database = {
           },
         ];
       };
+      search_misses: {
+        Row: {
+          term: string;
+          count: number;
+          first_seen: string;
+          last_seen: string;
+        };
+        Insert: {
+          term: string;
+          count?: number;
+          first_seen?: string;
+          last_seen?: string;
+        };
+        Update: {
+          term?: string;
+          count?: number;
+          first_seen?: string;
+          last_seen?: string;
+        };
+        Relationships: [
+        ];
+      };
       shipping_rules: {
         Row: {
           id: number;
@@ -885,10 +907,12 @@ export type Database = {
       expire_pending_orders: { Args: { p_older_than?: unknown }; Returns: number };
       is_admin: { Args: never; Returns: boolean };
       is_owner: { Args: never; Returns: boolean };
+      log_search_miss: { Args: { p_term: string }; Returns: undefined };
       next_document_number: { Args: { p_kind: string; p_period: string }; Returns: number };
       pad_document_number: { Args: { n: number }; Returns: string };
       quote_shipping: { Args: { p_pincode: string; p_state: string; p_order_value: number }; Returns: { rule_id: number; fee: number; est_days_min: number; est_days_max: number }[] };
       restore_stock: { Args: { p_order_id: string }; Returns: boolean };
+      search_products: { Args: { q: string; p_limit?: number; p_offset?: number }; Returns: { id: number; slug: string; name: string; price: number; rank: number; total: number }[] };
     };
     Enums: {
       admin_role: "owner" | "staff";

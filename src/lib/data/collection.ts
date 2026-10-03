@@ -66,6 +66,9 @@ export async function resolveShopScope(slug: string): Promise<Scope | null> {
     showCategoryFilter: false,
     showGiftFilter: true,
     tileCategory: slug,
+    allowTiles: true,
+    productIds: null,
+    relevance: false,
   };
 }
 
@@ -99,6 +102,7 @@ function applyScope<Q extends Filterable<Q>>(query: Q, scope: Scope, categoryId:
   if (categoryId !== null) q = q.eq("category_id", categoryId);
   if (scope.list) q = q.eq(LIST_FLAG[scope.list], true);
   if (scope.styles) q = q.overlaps("styles", scope.styles);
+  if (scope.productIds) q = q.in("id", scope.productIds.length ? scope.productIds : [-1]);
   return q;
 }
 
@@ -170,6 +174,20 @@ export async function getCollectionPage(scope: Scope, filters: Filters): Promise
   }
 
   const from = (filters.page - 1) * PAGE_SIZE;
+
+  // Search relevance: matches are few (at most 200), so order them by rank here.
+  if (scope.relevance && scope.productIds && filters.sort === "curated") {
+    const { data, error } = await query;
+    if (error) console.error("getCollectionPage (relevance):", error.message);
+    const rank = new Map(scope.productIds.map((id, i) => [id, i]));
+    const sorted = (data ?? []).sort((a, b) => (rank.get(a.id) ?? 0) - (rank.get(b.id) ?? 0));
+    return {
+      products: sorted.slice(from, from + PAGE_SIZE).map(toCard),
+      total: sorted.length,
+      pageCount: Math.max(1, Math.ceil(sorted.length / PAGE_SIZE)),
+    };
+  }
+
   const { data, error, count } = await query.range(from, from + PAGE_SIZE - 1);
   if (error && error.code !== "PGRST103") console.error("getCollectionPage:", error.message); // PGRST103: page past the end
   const total = count ?? 0;

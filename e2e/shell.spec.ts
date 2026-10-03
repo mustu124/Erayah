@@ -21,7 +21,7 @@ test.describe("site shell", () => {
     }
     await expect(page.getByRole("button", { name: "Cart" })).toBeVisible();
 
-    const search = page.getByRole("searchbox", { name: "Search jewellery" }).locator("visible=true");
+    const search = page.getByRole("combobox", { name: "Search jewellery" }).locator("visible=true");
     await expect(search).toHaveCount(1);
     await search.fill("jhumka");
     await search.press("Enter");

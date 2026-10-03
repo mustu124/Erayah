@@ -93,6 +93,7 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - src/components/layout/ — announcement bar, header (desktop nav + mega-menu, mobile menu drawer, search), footer, WhatsApp button. src/app/(store)/layout.tsx composes the shell.
 - src/components/product/ProductCard.tsx — the one product card (4:5 image, name, price; heart; hover swap). Homepage sections: src/app/(store)/_components/. Catalogue reads: src/lib/data/catalog.ts.
 - Collections: src/app/(store)/shop/ (routes + _components: FilterProvider, FilterPanel, PriceRange, SortSelect, MobileFilterBar, ActiveFilters, ProductGrid with lifestyle tiles, Pagination, ScrollRestorer). URL params in src/lib/collection/params.ts, scopes in src/lib/collection/scopes.ts, queries in src/lib/data/collection.ts.
+- Search: src/lib/search/ (synonyms, quick chips), src/lib/data/search.ts (search_products RPC with a fallback, instant results, miss logging), src/app/api/search (dropdown JSON), src/app/(store)/search (results page reusing the collection body), header combobox in src/components/layout/SearchForm.tsx.
 - src/stores/ — zustand: cart and wishlist (persisted to localStorage), ui (drawers, WhatsApp topic). Use useHydrated() before showing persisted values.
 - e2e/ — Playwright (Chromium + WebKit at 375px and 1280px) against a production build: `pnpm test:e2e` (E2E_DEV=1 for the dev server).
 - supabase/ — CLI config and migrations · scripts/ — seed and one-off scripts.

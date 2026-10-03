@@ -26,6 +26,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | `testimonials` | Customer quotes shown on the site. |
 | `pages` | Editable content pages: about, shipping-returns, privacy-policy, terms (markdown). |
 | `admin_users` | Supabase Auth users who may use `/admin`, as `owner` or `staff`. Only owners can add or change admins. |
+| `search_misses` | Searches that found nothing (term, count, first and last seen), logged by the server for the owner to read in /admin. |
 | `contact_messages` | Contact form submissions, read in `/admin`. The site sends no email. |
 
 ### Orders
@@ -45,6 +46,8 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | `restore_stock(order_id)` | service role only | Puts back stock and gift card balance for an order that won't be fulfilled. Safe to call twice. Does not change the status. |
 | `expire_pending_orders(interval)` | service role only (pg_cron) | Cancels Razorpay orders unpaid after 30 minutes and releases what they held. Runs every 10 minutes. |
 | `assign_invoice_number(order_id)` | service role only | Gives an order its GST invoice number (`ERY/26-27/00001`). Call it when a Razorpay payment is confirmed; gift-card-only orders get one automatically. |
+| `search_products(q, p_limit, p_offset)` | anyone (storefront) | Product search over published products: prefix full-text on `search_vector` (accents stripped), falling back to pg_trgm word similarity on name, category, styles and stones when full-text finds nothing. `q` is the app's synonym-expanded query: space-separated groups (AND), `\|`-separated alternatives (OR). Returns id, slug, name, price, rank and the total count. |
+| `log_search_miss(term)` | service role only | Adds 1 to a zero-result search term (lower-cased, trimmed). |
 | `quote_shipping(pincode, state, order_value)` | service role only | The shipping fee and delivery estimate for an address; use it for the cart estimate too. |
 
 ## Numbering
@@ -70,5 +73,5 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 - The first owner is added by hand once: create the user in Supabase Auth, then run `insert into admin_users (user_id, email, role) values ('<user id>', '<email>', 'owner');` in the SQL editor.
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration.
-- Migrations up to `20261003001100` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
-  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100`
+- Migrations up to `20261003001200` are applied by pasting them into the SQL editor, so Supabase's migration history doesn't know about them. Before the first `pnpm db:push`, mark them as applied, or db push will try to run them again:
+  `pnpm supabase migration repair --status applied 20261003000100 20261003000200 20261003000300 20261003000400 20261003000500 20261003000600 20261003000700 20261003000800 20261003000900 20261003001000 20261003001100 20261003001200`

@@ -115,7 +115,7 @@ async function main() {
   const sqlToTs = (sqlType: string): string => {
     const t = sqlType.trim().toLowerCase();
     const map: Record<string, string> = {
-      integer: "number", bigint: "number", smallint: "number", numeric: "number",
+      integer: "number", bigint: "number", smallint: "number", numeric: "number", real: "number", "double precision": "number", void: "undefined",
       text: "string", uuid: "string", boolean: "boolean", jsonb: "Json", json: "Json",
       "timestamp with time zone": "string", interval: "unknown",
     };

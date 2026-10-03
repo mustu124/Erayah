@@ -8,6 +8,8 @@ import { hrefWith, type Filters } from "@/lib/collection/params";
 
 type FilterContext = {
   filters: Filters;
+  /** How the default order is named: "Curated", or "Relevance" on search. */
+  curatedLabel: string;
   pending: boolean;
   /** Applies new filters: updates the URL (page resets to 1) and re-renders on the server. */
   apply: (update: (current: Filters) => Filters) => void;
@@ -26,7 +28,17 @@ export function useFilters(): FilterContext {
  * transition, so Server Components re-render the grid without a page reload;
  * the selection shows immediately (optimistic) while the grid refreshes.
  */
-export function FilterProvider({ path, filters, children }: { path: string; filters: Filters; children: ReactNode }) {
+export function FilterProvider({
+  path,
+  filters,
+  curatedLabel = "Curated",
+  children,
+}: {
+  path: string;
+  filters: Filters;
+  curatedLabel?: string;
+  children: ReactNode;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [optimistic, setOptimistic] = useOptimistic(filters);
@@ -42,7 +54,7 @@ export function FilterProvider({ path, filters, children }: { path: string; filt
     [optimistic, path, router, setOptimistic],
   );
 
-  return <Context.Provider value={{ filters: optimistic, pending, apply }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ filters: optimistic, curatedLabel, pending, apply }}>{children}</Context.Provider>;
 }
 
 /** Softly fades its children while new results load. */

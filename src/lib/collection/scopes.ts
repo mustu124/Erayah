@@ -20,7 +20,15 @@ export type Scope = {
   showGiftFilter: boolean;
   /** lifestyle_tiles.category_id to read: a category slug, or null for the Shop All tiles. */
   tileCategory: string | null;
+  /** Lifestyle tiles between rows (not on search results). */
+  allowTiles: boolean;
+  /** Search results: only these products, in relevance order. */
+  productIds: number[] | null;
+  /** When true, the default ("curated") order is the order of productIds. */
+  relevance: boolean;
 };
+
+const BASE = { allowTiles: true, productIds: null, relevance: false } as const;
 
 export const LISTS: Record<ListSlug, { title: string; description: string; seoDescription: string }> = {
   "new-arrivals": {
@@ -59,6 +67,7 @@ export const STYLE_PAGES: Record<string, { title: string; styles: string[]; desc
   pearl: { title: "Pearl", styles: ["pearl"], description: "Pieces finished with faux pearls." },
   "mother-of-pearl": { title: "Mother-of-Pearl", styles: ["mother-of-pearl"], description: "Pieces in faux mother-of-pearl." },
   minimal: { title: "Minimal", styles: ["minimal"], description: "Quiet pieces for every day." },
+  polki: { title: "Polki", styles: ["polki"], description: "Pieces set with polki stones." },
   statement: { title: "Statement", styles: ["statement"], description: "Pieces for the occasions you will remember." },
   celestial: { title: "Celestial", styles: ["celestial"], description: "Moons and stars in polki and mother-of-pearl." },
   nature: { title: "Nature", styles: ["nature"], description: "Flowers, lotuses, leaves and birds." },
@@ -87,6 +96,7 @@ export function shopAllScope(): Scope {
     showCategoryFilter: true,
     showGiftFilter: true,
     tileCategory: null,
+    ...BASE,
   };
 }
 
@@ -106,6 +116,7 @@ export function listScope(slug: ListSlug): Scope {
     showCategoryFilter: true,
     showGiftFilter: slug !== "gifts-for-her",
     tileCategory: null,
+    ...BASE,
   };
 }
 
@@ -126,6 +137,29 @@ export function styleScope(slug: string): Scope | null {
     showCategoryFilter: true,
     showGiftFilter: true,
     tileCategory: null,
+    ...BASE,
+  };
+}
+
+/** Search results for q: the matching products (best first), filterable like a collection. */
+export function searchScope(q: string, productIds: number[]): Scope {
+  return {
+    key: `search:${q}`,
+    path: `/search?q=${encodeURIComponent(q)}`,
+    title: "Search",
+    description: null,
+    seoTitle: "Search",
+    seoDescription: "Search Erayah jewellery.",
+    category: null,
+    list: null,
+    styles: null,
+    comingSoon: false,
+    showCategoryFilter: true,
+    showGiftFilter: true,
+    tileCategory: null,
+    allowTiles: false,
+    productIds,
+    relevance: true,
   };
 }
 

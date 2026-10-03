@@ -10,6 +10,8 @@ export const POP_FLAG = "erayah:popstate";
  */
 export function HistoryFlag() {
   useEffect(() => {
+    // Marks the page as interactive (used by end-to-end tests to wait for hydration).
+    document.documentElement.dataset.hydrated = "true";
     const onPop = () => {
       try {
         sessionStorage.setItem(POP_FLAG, String(Date.now()));

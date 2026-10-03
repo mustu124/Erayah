@@ -43,9 +43,9 @@ export function CollectionView({ scope, crumbs, searchParams }: { scope: Scope; 
   );
 }
 
-async function CollectionBody({ scope, searchParams }: { scope: Scope; searchParams: SearchParams }) {
+export async function CollectionBody({ scope, searchParams }: { scope: Scope; searchParams: SearchParams }) {
   const filters = parseFilters(await searchParams);
-  const showTiles = filters.sort === "curated" && !hasActiveFilters(filters);
+  const showTiles = scope.allowTiles && filters.sort === "curated" && !hasActiveFilters(filters);
 
   const [page, facets, categories, configured, candidates] = await Promise.all([
     getCollectionPage(scope, filters),
@@ -63,7 +63,7 @@ async function CollectionBody({ scope, searchParams }: { scope: Scope; searchPar
   const countLabel = `${page.total} ${page.total === 1 ? "piece" : "pieces"}`;
 
   return (
-    <FilterProvider path={scope.path} filters={filters}>
+    <FilterProvider path={scope.path} filters={filters} curatedLabel={scope.relevance ? "Relevance" : "Curated"}>
       <ScrollRestorer />
       <div className="mt-6 lg:mt-10 lg:grid lg:grid-cols-[240px_1fr] lg:gap-12">
         <aside aria-labelledby="filters-heading" className="hidden lg:block">
@@ -118,7 +118,7 @@ function ComingSoon({ title }: { title: string }) {
   );
 }
 
-function CollectionSkeleton() {
+export function CollectionSkeleton() {
   return (
     <div className="mt-6 lg:mt-10 lg:grid lg:grid-cols-[240px_1fr] lg:gap-12">
       <div className="hidden space-y-6 lg:block">
