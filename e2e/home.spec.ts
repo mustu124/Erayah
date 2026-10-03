@@ -47,12 +47,12 @@ test.describe("homepage", () => {
   test("hero arrows and counter (desktop)", async ({ page }, testInfo) => {
     test.skip(isMobile(testInfo.project.name), "desktop only");
     const hero = page.getByRole("region", { name: "Featured pieces" });
-    await expect(hero.getByText("01/06")).toBeVisible();
+    await expect(hero.getByText("01/05")).toBeVisible();
     await hero.getByRole("button", { name: "Next slide" }).click();
-    await expect(hero.getByText("02/06")).toBeVisible();
+    await expect(hero.getByText("02/05")).toBeVisible();
     await hero.getByRole("button", { name: "Previous slide" }).click();
     await hero.getByRole("button", { name: "Previous slide" }).click();
-    await expect(hero.getByText("06/06")).toBeVisible();
+    await expect(hero.getByText("05/05")).toBeVisible();
   });
 
   test("wishlist heart updates the header count", async ({ page }, testInfo) => {
@@ -68,6 +68,53 @@ test.describe("homepage", () => {
     if (!isMobile(testInfo.project.name)) {
       await expect(page.getByRole("link", { name: "Wishlist, 1 saved" })).toBeVisible();
     }
+  });
+
+  test("real photography, light images, no layout shift", async ({ page }) => {
+    const served: { url: string; bytes: number }[] = [];
+    page.on("response", async (response) => {
+      if (response.url().includes("/_next/image")) {
+        served.push({ url: response.url(), bytes: (await response.body().catch(() => Buffer.alloc(0))).length });
+      }
+    });
+    await page.goto("/");
+
+    // Hero, category tiles and cards come from the imported photographs.
+    const hero = page.getByRole("region", { name: "Featured pieces" });
+    await expect(hero.locator("img").first()).toHaveAttribute("src", /site-media%2Fhero%2Fimport-/);
+    const tiles = page.locator("section[aria-labelledby=shop-by-category] img");
+    await expect(tiles).toHaveCount(4); // Bracelets and Shop All have no photo
+    for (const src of await tiles.evaluateAll((els) => els.map((e) => (e as HTMLImageElement).src))) {
+      expect(src).toContain("site-media%2Fcategories%2F");
+    }
+    const cardImages = page.locator("main article img");
+    for (const src of await cardImages.evaluateAll((els) => els.map((e) => (e as HTMLImageElement).src))) {
+      expect(src).toContain("product-images%2Fproducts%2F");
+    }
+    await expect(page.locator('main img[src*="placeholders"]')).toHaveCount(0);
+
+    // Scroll through so lazy images load, then check what was served.
+    for (let y = 0; y < 8; y++) {
+      await page.evaluate(() => window.scrollBy(0, 700));
+      await page.waitForTimeout(150);
+    }
+    await page.waitForLoadState("networkidle");
+    expect(served.length).toBeGreaterThan(5);
+    for (const image of served) expect(image.bytes, image.url).toBeLessThan(300 * 1024);
+
+    const shift = await page.evaluate(
+      () =>
+        new Promise<number>((resolve) => {
+          let total = 0;
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean })[]) {
+              if (!entry.hadRecentInput) total += entry.value;
+            }
+          }).observe({ type: "layout-shift", buffered: true });
+          setTimeout(() => resolve(total), 300);
+        }),
+    );
+    expect(shift).toBeLessThan(0.1);
   });
 
   test("brand story", async ({ page }) => {

@@ -33,8 +33,18 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Colours** for pieces described only as "stone polki" (several rings and pendants) are empty, so they don't show under a colour filter. Set them in /admin.
 - [ ] **Review the product descriptions** written in Erayah's voice, especially the name meanings (e.g. Harakh = joy, Mārakat = emerald, Kamān = bow). Edit any that aren't right.
 - [ ] **Review the launch flags and order** (New Arrivals, Best Sellers, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
-- [ ] **Product photos**: four per product (worn close-up, lifestyle, product-only, detail), plus optional flat lay / video.
-- [ ] **Hero slides, category tile images, lifestyle images.** Until hero slides exist, the homepage hero shows the six hero products. Hero slides want a portrait desktop image and a 4:5 mobile image. The first active hero slide also becomes the image in the desktop Shop menu.
+- [ ] **Product photos: still needed** (imported 2026-10-03 from `/assets`; details in `import/mapping.json`):
+  - **No photo at all** (placeholder shown): Rani Earrings (a Best Seller, hidden from the homepage until photographed), Mrina Earrings, Kamān Pendant – Mother-of-Pearl, Kamān Pendant – Polki, Soma Pendant, Beej Ring.
+  - **Only one photo each** for every other product (Harakh Earrings – White and the Chantara pendant have two). Each product should have four: worn close-up, styled lifestyle (the card's hover image; until then cards don't swap), product-only, and a detail shot.
+  - **Card image is not on a model** (hand-held, flat lay or bust), so a worn close-up would help most: Harakh – Pink, Mallika, Arohi, Boond, Reva, Chantara Earrings, Meher, Orva, Nevara, Jharna, Dahlia, Tavira, Inara, Avira, Vaani ×2, Juhi ×2, Misri, Nir, Rohini, Noor, Mayurika, Tara, Dwandva, Rangmil, Gajā I, Gajā III, Pākhi – Firozi, Kumud – Firozi, Vakra ×2, Kalāsh, Padma, Indu ×2, Mārakat, Aabha, Chantara Ring, Bindu.
+  - **Low-resolution sources** (under ~1300px wide; fine on cards, soft if enlarged): Aira, Harakh – Pink, Misri, Nir, Mithū, Ziya, Tara, Piku, Āhna, Dori.
+- [ ] **Check these photo matches in /admin:**
+  - Juhi Earrings – Red (**low**): the catalogue's photo for it shows only the green and blue pair.
+  - Shared photos (medium): Vaani – Blue and – Pink share one photo of both pairs; Juhi – Green & Blue shares with Juhi – Red; Harakh – Pink shares the hand-held photo of both colours with Harakh – White; Dori – White, – Green and – Pink share one photo of all three stacked; Vakra – Polki and – Multicolour share one photo of both.
+  - Channak Set (medium): matched by eye (crescent links with ghunghroo bells).
+  - Ziya Choker Set: the file is named `Gemini_Generated_Image…` (an AI-edited version of the catalogue photo). Confirm you're happy to use it.
+- [ ] **Review the homepage picks** (hero slides and category tiles, listed in `docs/DECISIONS.md`). Hero slides want dedicated portrait images; there are no Bracelets photos yet.
+- [ ] **Lifestyle images** to place between product rows on collection pages. (Hero slides and category tiles now use imported photos; see above. The first hero slide is also the image in the desktop Shop menu.)
 - [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).

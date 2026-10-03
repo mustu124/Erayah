@@ -1,0 +1,725 @@
+{
+  "assetsRoot": "assets/Product images",
+  "roles": "worn_closeup = card image; lifestyle = card hover. With no styled shot, lifestyle reuses the worn_closeup file.",
+  "products": {
+    "aira-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/9F57453B-0FEE-472D-B0FE-07587668F24E.PNG",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "harakh-earrings-white": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5456.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        },
+        {
+          "file": "Earrings_img/BFA4A855-BFF5-4743-8EA3-0EDD5E0AF50A.png",
+          "role": "product_only",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "harakh-earrings-pink": {
+      "images": [
+        {
+          "file": "Earrings_img/BFA4A855-BFF5-4743-8EA3-0EDD5E0AF50A.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "medium",
+      "note": "Shares a photo with Harakh Earrings – White (both colours in hand); no photo of the pink pair alone."
+    },
+    "mallika-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_0519.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "arohi-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_0532.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "boond-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_0618.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "reva-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_4230.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "chantara-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_4452-1.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "meher-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5418.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "orva-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5433.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "nevara-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5436.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "jharna-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5446.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "dahlia-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5527.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "tavira-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5544.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "inara-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_5555.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "avira-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_6191.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "gulbahar-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_6918.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "vaani-earrings-blue": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_9800.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "medium",
+      "note": "One photo shows both Vaani pairs (blue and pink); used for both products."
+    },
+    "vaani-earrings-pink": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_9800.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "medium",
+      "note": "One photo shows both Vaani pairs (blue and pink); used for both products."
+    },
+    "juhi-earrings-green-blue": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_9802.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "medium",
+      "note": "The catalogue uses this photo for both Juhi pairs; it shows the green and blue pair."
+    },
+    "juhi-earrings-red": {
+      "images": [
+        {
+          "file": "Earrings_img/IMG_9802.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "low",
+      "note": "The catalogue uses the Juhi green and blue photo for Juhi – Red too; the red pair is not visible in it."
+    },
+    "misri-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/View recent photos 4.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "nir-earrings": {
+      "images": [
+        {
+          "file": "Earrings_img/View recent photos 5.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "rohini-choker": {
+      "images": [
+        {
+          "file": "Necklace_img/86AFC211-17AE-4CDD-86D2-5D5591B4DA05.png",
+          "role": "worn_closeup",
+          "shot": "bust"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "mithu-necklace-set": {
+      "images": [
+        {
+          "file": "Necklace_img/FB3F29F5-0C35-4BEA-9378-9472B81ACE2D.PNG",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "ziya-choker-set": {
+      "images": [
+        {
+          "file": "Necklace_img/Gemini_Generated_Image_ucfgp8ucfgp8ucfg.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": "File is named Gemini_Generated_Image: an AI-edited version of the Ziya catalogue photo. Confirm you want to use it."
+    },
+    "noor-set": {
+      "images": [
+        {
+          "file": "Necklace_img/IMG_4412-1.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "mayurika-choker-set": {
+      "images": [
+        {
+          "file": "Necklace_img/IMG_4604-1.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "gul-choker-set": {
+      "images": [
+        {
+          "file": "Necklace_img/IMG_6163-1.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "channak-set": {
+      "images": [
+        {
+          "file": "Necklace_img/IMG_6172.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "medium",
+      "note": "Matched by eye (no catalogue photo matched by features): crescent links with ghunghroo bells, and matching earrings."
+    },
+    "tara-choker-set": {
+      "images": [
+        {
+          "file": "Necklace_img/View recent photos 3.png",
+          "role": "worn_closeup",
+          "shot": "bust"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "piku-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/5CFFBC20-AA50-4FD8-8E28-9A17407E9369.PNG",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "ahna-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/E3F63535-98A3-45A2-8FBB-BEB57D7457A3.PNG",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "dwandva-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_1082.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "rangmil-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_1159.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "gaja-i-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5587.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "pakhi-pendant-firozi": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5590.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "chantara-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5798 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        },
+        {
+          "file": "Pendants_img/IMG_5602.png",
+          "role": "product_only",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": "Worn photo matched by eye (star and crescent); product photo matched the catalogue."
+    },
+    "kumud-pendant-firozi": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5605.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "vakra-pendant-polki": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5614.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": "One photo shows both Vakra pendants; used for both."
+    },
+    "vakra-pendant-multicolour": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5614.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": "One photo shows both Vakra pendants; used for both."
+    },
+    "kalash-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_5817.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "gaja-ii-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_6805 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "gaja-iii-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_6840 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "padma-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_6871 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "ardh-pendant": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_7029 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "kumud-pendant-mother-of-pearl": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_7039 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "pakhi-pendant-mother-of-pearl": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_7065 4.36.41 PM.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "indu-pendant-polki": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_9030-1.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "indu-pendant-mother-of-pearl": {
+      "images": [
+        {
+          "file": "Pendants_img/IMG_9044-1.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "dori-ring-white": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_0383.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "medium",
+      "note": "One photo of all three Dori colours stacked on the hand; used for each colour."
+    },
+    "dori-ring-green": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_0383.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "medium",
+      "note": "One photo of all three Dori colours stacked on the hand; used for each colour."
+    },
+    "dori-ring-pink": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_0383.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "medium",
+      "note": "One photo of all three Dori colours stacked on the hand; used for each colour."
+    },
+    "marakat-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_0544.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "aabha-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_0545.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "harakh-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_5263.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "chantara-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_5517.png",
+          "role": "worn_closeup",
+          "shot": "flat"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "bindu-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_5518.png",
+          "role": "worn_closeup",
+          "shot": "hand"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    },
+    "ekam-ring": {
+      "images": [
+        {
+          "file": "Rings_img/IMG_9849-1.png",
+          "role": "worn_closeup",
+          "shot": "worn"
+        }
+      ],
+      "confidence": "high",
+      "note": ""
+    }
+  },
+  "hero": [
+    {
+      "file": "Necklace_img/IMG_6163-1.png",
+      "label": "Necklace Sets",
+      "category": "necklace-sets",
+      "alt": "Gul Choker Set worn with a white shirt"
+    },
+    {
+      "file": "Earrings_img/IMG_6918.png",
+      "label": "Earrings",
+      "category": "earrings",
+      "alt": "Gulbahar Earrings, worn"
+    },
+    {
+      "file": "Pendants_img/IMG_7039 4.36.41 PM.png",
+      "label": "Pendants",
+      "category": "pendants",
+      "alt": "Kumud Pendant in mother-of-pearl, worn with a white shirt"
+    },
+    {
+      "file": "Rings_img/IMG_5263.png",
+      "label": "Rings",
+      "category": "rings",
+      "alt": "Harakh Ring on a hand holding a lily"
+    },
+    {
+      "file": "Necklace_img/IMG_6172.png",
+      "label": "Necklace Sets",
+      "category": "necklace-sets",
+      "alt": "Channak Set, choker and earrings, worn"
+    }
+  ],
+  "categories": {
+    "earrings": {
+      "file": "Earrings_img/9F57453B-0FEE-472D-B0FE-07587668F24E.PNG",
+      "alt": "Aira Earrings, worn",
+      "position": "top"
+    },
+    "necklace-sets": {
+      "file": "Necklace_img/FB3F29F5-0C35-4BEA-9378-9472B81ACE2D.PNG",
+      "alt": "Mithū Necklace Set, worn"
+    },
+    "rings": {
+      "file": "Rings_img/IMG_9849-1.png",
+      "alt": "Ekam Ring, worn"
+    },
+    "pendants": {
+      "file": "Pendants_img/IMG_6805 4.36.41 PM.png",
+      "alt": "Gajā pendants, worn"
+    }
+  },
+  "unmatched": [],
+  "noPhotos": [
+    "rani-earrings",
+    "mrina-earrings",
+    "kaman-pendant-mother-of-pearl",
+    "kaman-pendant-polki",
+    "soma-pendant",
+    "beej-ring"
+  ]
+}

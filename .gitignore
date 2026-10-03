@@ -50,3 +50,6 @@ Thumbs.db
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# product photo originals (imported to Supabase by pnpm import:images; never deployed)
+/assets/

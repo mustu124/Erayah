@@ -97,4 +97,5 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - supabase/ — CLI config and migrations · scripts/ — seed and one-off scripts.
 - scripts/seed.ts — `pnpm seed` (or `pnpm seed --dry-run`) loads the catalogue from docs/catalogue.md (local only, not in git) plus descriptions, launch flags, merchandising order, FAQs and pages. Safe to re-run; never overwrites owner edits.
 - docs/DATABASE.md — one line per table, the order/stock functions, numbering and money rules. Read it before touching data code. Only DATABASE.md, DECISIONS.md and OWNER_TODO.md in docs/ are committed.
-- Scripts: dev, build, lint, typecheck, test:e2e, db:push, db:types, db:types:local, seed.
+- scripts/import-images.ts — `pnpm import:images` (`--dry-run`, `--only=<slug>`, `--products-only`, `--homepage-only`) uploads photos from /assets (local only, not in git) per import/mapping.json: WebP, hashed paths, replaces that product's image rows; also hero slides and category tiles.
+- Scripts: dev, build, lint, typecheck, test:e2e, db:push, db:types, db:types:local, seed, import:images.

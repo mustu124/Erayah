@@ -767,17 +767,17 @@ async function main() {
     );
   }
 
-  // Placeholder images: one per role, only where the product has none yet.
+  // Placeholder images (one per expected role) only for products with no
+  // images at all, so imported photography is never mixed with placeholders.
   const blur = await ensurePlaceholderImage();
   const images = check(
     await supabase.from("product_images").select("product_id, role"),
     "read images",
   ) as { product_id: number; role: string }[];
-  const hasRole = new Set(images.map((i) => `${i.product_id}:${i.role}`));
+  const hasImages = new Set(images.map((i) => i.product_id));
   const roles = ["worn_closeup", "lifestyle", "product_only", "detail"] as const;
-  const imageRows = products.flatMap((p) =>
+  const imageRows = products.filter((p) => !hasImages.has(p.id)).flatMap((p) =>
     roles
-      .filter((role) => !hasRole.has(`${p.id}:${role}`))
       .map((role) => ({
         product_id: p.id,
         storage_path: PLACEHOLDER_PATH,

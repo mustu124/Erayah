@@ -12,7 +12,8 @@
     "db:types": "supabase gen types typescript --linked --schema public > src/lib/supabase/types.ts",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "test:e2e": "playwright test",
-    "db:types:local": "tsx scripts/gen-db-types.ts"
+    "db:types:local": "tsx scripts/gen-db-types.ts",
+    "import:images": "tsx --env-file=.env.local scripts/import-images.ts"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",

@@ -54,6 +54,11 @@ function toCardImage(row: ImageRow | undefined): CardImage | null {
   };
 }
 
+const PLACEHOLDER_PREFIX = "placeholders/";
+
+/** True when the card would only show the ivory placeholder (no photography yet). */
+const hasPhoto = (card: ProductCardData) => !!card.image && !card.image.url.includes(`/${PLACEHOLDER_PREFIX}`);
+
 function toCard(row: {
   id: number;
   slug: string;
@@ -91,7 +96,8 @@ export async function getNewArrivals(): Promise<ProductCardData[]> {
     .order("new_arrival_position", { nullsFirst: false })
     .limit(15);
   if (error) console.error("getNewArrivals:", error.message);
-  return (data ?? []).map(toCard);
+  // The homepage only shows pieces that have photographs.
+  return (data ?? []).map(toCard).filter(hasPhoto);
 }
 
 /** Best Sellers in curated order. */
@@ -108,7 +114,8 @@ export async function getBestSellers(): Promise<ProductCardData[]> {
     .order("best_seller_position", { nullsFirst: false })
     .limit(15);
   if (error) console.error("getBestSellers:", error.message);
-  return (data ?? []).map(toCard);
+  // The homepage only shows pieces that have photographs.
+  return (data ?? []).map(toCard).filter(hasPhoto);
 }
 
 // ─── Hero ───────────────────────────────────────────────────────────────────
