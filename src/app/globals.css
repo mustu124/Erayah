@@ -175,6 +175,19 @@
   outline-offset: 2px;
 }
 
+/* Product page marquee: one slow loop, paused on hover. */
+.marquee-track {
+  animation: marquee 70s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* Drawer (native <dialog>): opacity fade in and out, no sliding. */
 dialog.drawer {
   opacity: 0;
@@ -211,5 +224,13 @@ dialog.drawer[open]::backdrop {
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+}
+
+/* Reduced motion: the marquee stands still (rather than racing through the
+   shortened animation above). */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
   }
 }

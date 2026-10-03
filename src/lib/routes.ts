@@ -10,7 +10,7 @@ export const routes = {
   bestSellers: "/shop/best-sellers",
   giftsForHer: "/shop/gifts-for-her",
   style: (slug: string) => `/shop/style/${slug}`,
-  product: (slug: string) => `/products/${slug}`,
+  product: (slug: string) => `/product/${slug}`,
   search: "/search",
   wishlist: "/wishlist",
   about: "/about",

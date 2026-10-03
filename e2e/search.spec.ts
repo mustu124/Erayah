@@ -40,7 +40,7 @@ test.describe("search", () => {
     await box.press("ArrowDown");
     await expect(box).toHaveAttribute("aria-activedescendant", /.+/);
     await box.press("Enter");
-    await expect(page).toHaveURL(/\/products\/(dahlia|rani)-earrings$/);
+    await expect(page).toHaveURL(/\/product\/(dahlia|rani)-earrings$/);
   });
 
   test("Enter opens /search with filters, sort and relevance", async ({ page }, testInfo) => {

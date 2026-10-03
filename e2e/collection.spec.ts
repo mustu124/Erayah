@@ -144,7 +144,7 @@ test.describe("collection pages", () => {
       }),
     );
     await target.nth(Math.max(0, index)).getByRole("link").first().click();
-    await expect(page).toHaveURL(/\/products\//);
+    await expect(page).toHaveURL(/\/product\//);
 
     await page.goBack();
     await expect(page).toHaveURL(startUrl);

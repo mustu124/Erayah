@@ -9,14 +9,22 @@ export const MAX_QUANTITY = 20;
 export type CartLine = {
   productId: number;
   slug: string;
+  /** Option label (e.g. "Pink") for products sold with variants, else null. */
+  variantLabel: string | null;
   quantity: number;
 };
 
+type CartItem = { productId: number; slug: string; variantLabel?: string | null };
+
+/** One line per product and option. */
+export const lineKey = (line: { productId: number; variantLabel?: string | null }) =>
+  `${line.productId}:${line.variantLabel ?? ""}`;
+
 type CartState = {
   lines: CartLine[];
-  add: (item: { productId: number; slug: string }, quantity?: number) => void;
-  setQuantity: (productId: number, quantity: number) => void;
-  remove: (productId: number) => void;
+  add: (item: CartItem, quantity?: number) => void;
+  setQuantity: (key: string, quantity: number) => void;
+  remove: (key: string) => void;
   clear: () => void;
 };
 
@@ -28,24 +36,33 @@ export const useCart = create<CartState>()(
       lines: [],
       add: (item, quantity = 1) =>
         set((state) => {
-          const existing = state.lines.find((l) => l.productId === item.productId);
-          if (existing) {
+          const key = lineKey(item);
+          if (state.lines.some((l) => lineKey(l) === key)) {
             return {
-              lines: state.lines.map((l) =>
-                l.productId === item.productId ? { ...l, quantity: clamp(l.quantity + quantity) } : l,
-              ),
+              lines: state.lines.map((l) => (lineKey(l) === key ? { ...l, quantity: clamp(l.quantity + quantity) } : l)),
             };
           }
-          return { lines: [...state.lines, { ...item, quantity: clamp(quantity) }] };
+          return {
+            lines: [...state.lines, { productId: item.productId, slug: item.slug, variantLabel: item.variantLabel ?? null, quantity: clamp(quantity) }],
+          };
         }),
-      setQuantity: (productId, quantity) =>
+      setQuantity: (key, quantity) =>
         set((state) => ({
-          lines: state.lines.map((l) => (l.productId === productId ? { ...l, quantity: clamp(quantity) } : l)),
+          lines: state.lines.map((l) => (lineKey(l) === key ? { ...l, quantity: clamp(quantity) } : l)),
         })),
-      remove: (productId) => set((state) => ({ lines: state.lines.filter((l) => l.productId !== productId) })),
+      remove: (key) => set((state) => ({ lines: state.lines.filter((l) => lineKey(l) !== key) })),
       clear: () => set({ lines: [] }),
     }),
-    { name: "erayah-cart", version: 1, storage: createJSONStorage(() => localStorage) },
+    {
+      name: "erayah-cart",
+      version: 2,
+      storage: createJSONStorage(() => localStorage),
+      // v1 lines had no variantLabel.
+      migrate: (persisted) => {
+        const state = persisted as { lines?: Partial<CartLine>[] };
+        return { lines: (state.lines ?? []).map((l) => ({ ...l, variantLabel: l.variantLabel ?? null })) as CartLine[] };
+      },
+    },
   ),
 );
 

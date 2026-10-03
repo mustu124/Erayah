@@ -41,7 +41,7 @@ test.describe("homepage", () => {
     await expect(card.getByRole("heading", { name: "Meher Earrings" })).toBeVisible();
     await expect(card.getByText("₹8,500")).toBeVisible();
     await expect(card.getByRole("heading")).toHaveCSS("font-family", /Montserrat/);
-    await expect(card.getByRole("link").first()).toHaveAttribute("href", "/products/meher-earrings");
+    await expect(card.getByRole("link").first()).toHaveAttribute("href", "/product/meher-earrings");
   });
 
   test("hero arrows and counter (desktop)", async ({ page }, testInfo) => {

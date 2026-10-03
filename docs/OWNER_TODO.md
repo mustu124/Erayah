@@ -24,6 +24,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Business details for invoices**: legal name, registered address, GSTIN, and whether prices include GST (assumed yes, 3%). Stored in `site_settings`.
 - [ ] **Shipping**: ₹100 flat is set "for now". Confirm the rate and whether there is a free-shipping threshold.
 - [ ] **Policies** for legal sign-off: Privacy Policy and Terms & Conditions are seeded as drafts marked "DRAFT – REVIEW BEFORE LAUNCH", with placeholders [LEGAL BUSINESS NAME], [REGISTERED ADDRESS], [EMAIL], [PHONE], [CITY], [DATE] and a Grievance Officer [NAME]. Shipping & Returns uses the catalogue text.
+- [ ] **Care instructions**: product pages show a default care text; set a per-product override in /admin where a piece needs different care.
 - [ ] **FAQs** — final text to be provided by the owner at the end. 12 drafts are seeded in the meantime.
 
 ## Content
