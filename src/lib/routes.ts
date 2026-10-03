@@ -1,5 +1,6 @@
 // Every storefront URL in one place. /shop is Shop All; /shop/<slug> covers
-// categories and the curated lists; styles filter Shop All.
+// categories and the curated lists; /shop/style/<slug> the style pages
+// (see STYLE_PAGES in src/lib/collection/scopes.ts).
 
 export const routes = {
   home: "/",
@@ -8,7 +9,7 @@ export const routes = {
   newArrivals: "/shop/new-arrivals",
   bestSellers: "/shop/best-sellers",
   giftsForHer: "/shop/gifts-for-her",
-  style: (...styles: string[]) => `/shop?style=${encodeURIComponent(styles.join(","))}`,
+  style: (slug: string) => `/shop/style/${slug}`,
   product: (slug: string) => `/products/${slug}`,
   search: "/search",
   wishlist: "/wishlist",

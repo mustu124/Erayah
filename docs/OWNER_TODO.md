@@ -44,7 +44,8 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
   - Channak Set (medium): matched by eye (crescent links with ghunghroo bells).
   - Ziya Choker Set: the file is named `Gemini_Generated_Image…` (an AI-edited version of the catalogue photo). Confirm you're happy to use it.
 - [ ] **Review the homepage picks** (hero slides and category tiles, listed in `docs/DECISIONS.md`). Hero slides want dedicated portrait images; there are no Bracelets photos yet.
-- [ ] **Lifestyle images** to place between product rows on collection pages. (Hero slides and category tiles now use imported photos; see above. The first hero slide is also the image in the desktop Shop menu.)
+- [ ] **Lifestyle images** to place between product rows on collection pages (set them up in /admin as lifestyle tiles: image, optional caption and link, and the product position they follow). Until then, collection pages use product photos as tiles. (Hero slides and category tiles now use imported photos; see above. The first hero slide is also the image in the desktop Shop menu.)
+- [ ] **Category descriptions** (one line under each collection title) are drafts in `src/lib/collection/scopes.ts`; the owner can set their own per category in /admin, along with SEO titles and descriptions.
 - [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER STORY TO BE ADDED] until then; the brand story uses the brand guidelines' text.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).

@@ -22,8 +22,8 @@ export const DISCOVER_LINKS: NavLink[] = [
 export const STYLE_LINKS: NavLink[] = [
   { label: "Studs", href: routes.style("studs") },
   { label: "Danglers", href: routes.style("danglers") },
-  { label: "Jhumkas & Chaandbaalis", href: routes.style("jhumkas", "chaandbaalis") },
-  { label: "Chokers", href: routes.style("choker") },
+  { label: "Jhumkas & Chaandbaalis", href: routes.style("jhumkas-chaandbaalis") },
+  { label: "Chokers", href: routes.style("chokers") },
   { label: "Pearl", href: routes.style("pearl") },
   { label: "Minimal", href: routes.style("minimal") },
 ];

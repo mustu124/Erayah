@@ -4,6 +4,7 @@ import { CartDrawerMount } from "@/components/cart/CartDrawerMount";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { HistoryFlag } from "@/components/layout/HistoryFlag";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { getMenuFeature, getSiteShell } from "@/lib/data/site";
 
@@ -27,6 +28,7 @@ export default async function StoreLayout({ children }: { children: ReactNode })
       <Footer instagramUrl={shell.instagramUrl} whatsappNumber={shell.whatsappNumber} />
       <WhatsAppButton number={shell.whatsappNumber} />
       <CartDrawerMount />
+      <HistoryFlag />
     </div>
   );
 }

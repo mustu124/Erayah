@@ -24,13 +24,16 @@ export default defineConfig({
     { name: "webkit-375", use: { ...devices["iPhone 13"], viewport: mobile } },
     { name: "webkit-1280", use: { ...devices["Desktop Safari"], viewport: desktop } },
   ],
-  // Reuses a running dev server; set E2E_BASE_URL to test a deployed preview.
+  // Tests a production build by default (closest to what shoppers get);
+  // E2E_DEV=1 uses the dev server instead, E2E_BASE_URL a deployed preview.
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `pnpm exec next dev --port ${PORT}`,
+        command: process.env.E2E_DEV
+          ? `pnpm exec next dev --port ${PORT}`
+          : `pnpm exec next build && pnpm exec next start --port ${PORT}`,
         url: baseURL,
         reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        timeout: 300_000,
       },
 });

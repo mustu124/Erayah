@@ -92,8 +92,9 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - src/components/ui/ — primitives (Button, IconButton, QuantityStepper, Price, Pill, SectionHeader, Hairline, Drawer, Accordion, Checkbox, Select, Input, Skeleton, Carousel, Icon, Logo). Review them at /styleguide (noindex, unlinked).
 - src/components/layout/ — announcement bar, header (desktop nav + mega-menu, mobile menu drawer, search), footer, WhatsApp button. src/app/(store)/layout.tsx composes the shell.
 - src/components/product/ProductCard.tsx — the one product card (4:5 image, name, price; heart; hover swap). Homepage sections: src/app/(store)/_components/. Catalogue reads: src/lib/data/catalog.ts.
+- Collections: src/app/(store)/shop/ (routes + _components: FilterProvider, FilterPanel, PriceRange, SortSelect, MobileFilterBar, ActiveFilters, ProductGrid with lifestyle tiles, Pagination, ScrollRestorer). URL params in src/lib/collection/params.ts, scopes in src/lib/collection/scopes.ts, queries in src/lib/data/collection.ts.
 - src/stores/ — zustand: cart and wishlist (persisted to localStorage), ui (drawers, WhatsApp topic). Use useHydrated() before showing persisted values.
-- e2e/ — Playwright (Chromium + WebKit at 375px and 1280px): `pnpm test:e2e`.
+- e2e/ — Playwright (Chromium + WebKit at 375px and 1280px) against a production build: `pnpm test:e2e` (E2E_DEV=1 for the dev server).
 - supabase/ — CLI config and migrations · scripts/ — seed and one-off scripts.
 - scripts/seed.ts — `pnpm seed` (or `pnpm seed --dry-run`) loads the catalogue from docs/catalogue.md (local only, not in git) plus descriptions, launch flags, merchandising order, FAQs and pages. Safe to re-run; never overwrites owner edits.
 - docs/DATABASE.md — one line per table, the order/stock functions, numbering and money rules. Read it before touching data code. Only DATABASE.md, DECISIONS.md and OWNER_TODO.md in docs/ are committed.

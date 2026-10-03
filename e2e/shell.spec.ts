@@ -42,7 +42,7 @@ test.describe("site shell", () => {
     }
     await expect(page.getByRole("link", { name: "Jhumkas & Chaandbaalis" })).toHaveAttribute(
       "href",
-      "/shop?style=jhumkas%2Cchaandbaalis",
+      "/shop/style/jhumkas-chaandbaalis",
     );
 
     await page.keyboard.press("Escape");

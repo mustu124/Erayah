@@ -16,6 +16,8 @@ type DrawerProps = {
   title: string;
   /** Custom top row (replaces the default title + close button). */
   header?: ReactNode;
+  /** Sticky bottom row (e.g. "Show 12 pieces"). */
+  footer?: ReactNode;
   children: ReactNode;
   className?: string;
 };
@@ -25,7 +27,7 @@ type DrawerProps = {
  * inside, the page behind is inert, Esc and a tap on the backdrop close it,
  * and focus returns to the opener. Fades in and out (opacity only).
  */
-export function Drawer({ open, onClose, side = "right", title, header, children, className }: DrawerProps) {
+export function Drawer({ open, onClose, side = "right", title, header, footer, children, className }: DrawerProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -77,6 +79,7 @@ export function Drawer({ open, onClose, side = "right", title, header, children,
           </h2>
         ) : null}
         <div className="flex-1 overflow-y-auto overscroll-contain">{children}</div>
+        {footer ? <div className="border-t border-mist bg-paper p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">{footer}</div> : null}
       </div>
     </dialog>
   );

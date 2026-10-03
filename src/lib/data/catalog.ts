@@ -29,7 +29,7 @@ export type ProductCardData = {
   hoverImage: CardImage | null;
 };
 
-type ImageRow = {
+export type ImageRow = {
   storage_path: string;
   role: Enums<"image_role">;
   alt: string;
@@ -39,11 +39,11 @@ type ImageRow = {
   sort_order: number;
 };
 
-const CARD_SELECT =
+export const CARD_SELECT =
   "id, slug, name, price, stock_qty, product_images(storage_path, role, alt, width, height, blur_data_url, sort_order)";
-const CARD_ROLES: Enums<"image_role">[] = ["worn_closeup", "lifestyle"];
+export const CARD_ROLES: Enums<"image_role">[] = ["worn_closeup", "lifestyle"];
 
-function toCardImage(row: ImageRow | undefined): CardImage | null {
+export function toCardImage(row: ImageRow | undefined): CardImage | null {
   if (!row) return null;
   return {
     url: publicStorageUrl("product-images", row.storage_path),
@@ -57,9 +57,9 @@ function toCardImage(row: ImageRow | undefined): CardImage | null {
 const PLACEHOLDER_PREFIX = "placeholders/";
 
 /** True when the card would only show the ivory placeholder (no photography yet). */
-const hasPhoto = (card: ProductCardData) => !!card.image && !card.image.url.includes(`/${PLACEHOLDER_PREFIX}`);
+export const hasPhoto = (card: ProductCardData) => !!card.image && !card.image.url.includes(`/${PLACEHOLDER_PREFIX}`);
 
-function toCard(row: {
+export function toCard(row: {
   id: number;
   slug: string;
   name: string;
