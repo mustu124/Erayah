@@ -7,9 +7,7 @@ import { env } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-import { requireAdmin } from "./auth";
-
-// Sign-in, sign-out and password for /admin. Only people in admin_users get
+// Sign-in and sign-out for /admin. Only people in admin_users get
 // in; anyone else is signed straight back out with "No access".
 
 export type SignInResult = { ok: true; message?: string } | { ok: false; error: string };
@@ -95,22 +93,4 @@ export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/admin/login");
-}
-
-const passwordInput = z
-  .object({ password: z.string().min(10, "Use at least 10 characters.").max(200), confirm: z.string() })
-  .refine((v) => v.password === v.confirm, { message: "The two passwords don't match.", path: ["confirm"] });
-
-export async function setPassword(input: z.input<typeof passwordInput>): Promise<SignInResult> {
-  try {
-    await requireAdmin();
-  } catch {
-    return { ok: false, error: "Please sign in again." };
-  }
-  const parsed = passwordInput.safeParse(input);
-  if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
-  const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
-  if (error) return { ok: false, error: error.message.includes("different") ? "Please choose a new password." : "Couldn't change the password. Please try again." };
-  return { ok: true, message: "Password saved." };
 }

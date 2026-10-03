@@ -6,9 +6,9 @@ Everything about running the shop happens at **erayah.com/admin** (your web addr
 
 1. Go to `/admin`. You'll see the sign-in page.
 2. Enter your email and password, or tap **Sign in with an email link instead** and we'll email you a link that signs you in.
-3. To set or change your password, open **My account**.
+3. Forgotten your password? Use the email link option to sign in.
 
-Only people you've added under **Settings → Admin users** can get in. Anyone else sees "No access".
+Only people added as admins can get in (ask your developer, who runs `pnpm create-admin <email>`). Anyone else sees "No access".
 
 - **Owner** can do everything.
 - **Staff** can only see and update orders and products.
@@ -138,6 +138,5 @@ Testimonials you add under **Content → Testimonials** appear on the About page
   - GST rate
   - order number prefix
   - WhatsApp number, Instagram link, support contacts and business hours (shown on the Contact page)
-  - who can use the admin
 
 Every save shows a short confirmation at the top of the screen, and the shop updates straight away.

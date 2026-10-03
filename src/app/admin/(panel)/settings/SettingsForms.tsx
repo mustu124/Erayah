@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { useAdminAction } from "@/components/admin/use-action";
-import { inputCls, Labeled, TextArea, TextInput, Toggle } from "@/components/admin/ui";
+import { Labeled, TextArea, TextInput, Toggle } from "@/components/admin/ui";
 import { Button } from "@/components/ui/Button";
-import { inviteAdmin, removeAdmin, saveSettings, setAdminRole } from "@/lib/admin/actions/settings";
+import { saveSettings } from "@/lib/admin/actions/settings";
 
 type Settings = {
   businessName: string;
@@ -80,70 +80,5 @@ export function SettingsForm({ initial }: { initial: Settings }) {
         {save.pending ? "Saving…" : "Save settings"}
       </Button>
     </form>
-  );
-}
-
-export type AdminUser = { userId: string; email: string; role: "owner" | "staff"; you: boolean };
-
-export function AdminUsers({ users }: { users: AdminUser[] }) {
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState<"owner" | "staff">("staff");
-  const invite = useAdminAction(inviteAdmin);
-  const changeRole = useAdminAction(setAdminRole);
-  const remove = useAdminAction(removeAdmin);
-  return (
-    <div className="space-y-5">
-      <ul className="divide-y divide-mist">
-        {users.map((u) => (
-          <li key={u.userId} className="flex flex-wrap items-center gap-3 py-3">
-            <span className="min-w-0 flex-1 truncate text-body-sm">
-              {u.email}
-              {u.you ? <span className="text-ink/55"> (you)</span> : null}
-            </span>
-            <label className="sr-only" htmlFor={`role-${u.userId}`}>
-              Role for {u.email}
-            </label>
-            <select
-              id={`role-${u.userId}`}
-              value={u.role}
-              disabled={u.you || changeRole.pending}
-              onChange={(e) => changeRole.run({ userId: u.userId, role: e.target.value as "owner" | "staff" })}
-              className={`${inputCls} h-9 w-32 text-body-sm`}
-            >
-              <option value="owner">Owner</option>
-              <option value="staff">Staff</option>
-            </select>
-            {u.you ? null : (
-              <Button variant="link" className="min-h-9 px-2 text-plum" onClick={() => window.confirm(`Remove ${u.email}'s access?`) && remove.run({ userId: u.userId })}>
-                Remove
-              </Button>
-            )}
-          </li>
-        ))}
-      </ul>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if ((await invite.run({ email, role })).ok) setEmail("");
-        }}
-        className="grid gap-3 border-t border-mist pt-4 sm:grid-cols-[minmax(0,1fr)_140px_auto]"
-      >
-        <Labeled label="Invite by email" htmlFor="invite-email" error={invite.fields.email}>
-          <TextInput id="invite-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </Labeled>
-        <Labeled label="Role" htmlFor="invite-role">
-          <select id="invite-role" value={role} onChange={(e) => setRole(e.target.value as "owner" | "staff")} className={inputCls}>
-            <option value="staff">Staff</option>
-            <option value="owner">Owner</option>
-          </select>
-        </Labeled>
-        <div className="flex items-end">
-          <Button type="submit" disabled={invite.pending}>
-            {invite.pending ? "Sending…" : "Invite"}
-          </Button>
-        </div>
-      </form>
-      <p className="text-caption text-ink/60">Staff can see and update orders and products. Owners can also change the homepage, merchandising, gift cards, shipping, content and these settings.</p>
-    </div>
   );
 }

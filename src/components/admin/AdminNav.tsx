@@ -26,7 +26,6 @@ export const ADMIN_NAV: Item[] = [
   { href: "/admin/shipping", label: "Shipping", owner: true },
   { href: "/admin/content", label: "Content", owner: true },
   { href: "/admin/settings", label: "Settings", owner: true },
-  { href: "/admin/account", label: "My account" },
 ];
 
 function Links({ role, unread, onNavigate }: { role: AdminRole; unread: number; onNavigate?: () => void }) {

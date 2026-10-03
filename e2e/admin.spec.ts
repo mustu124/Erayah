@@ -219,6 +219,5 @@ test.describe("admin", () => {
 
     await page.goto("/admin/settings");
     await expect(page.getByLabel("Legal business name")).toHaveValue(/.+/);
-    await expect(page.getByText(`${owner.email} (you)`)).toBeVisible();
   });
 });

@@ -4,22 +4,17 @@ import { PageHeader, Panel } from "@/components/admin/ui";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-import { type AdminUser, AdminUsers, SettingsForm } from "./SettingsForms";
+import { SettingsForm } from "./SettingsForms";
 
 export const metadata: Metadata = { title: "Settings" };
 
 export default async function SettingsPage() {
-  const me = await requireAdminPage("owner");
-  const db = createAdminClient();
-  const [{ data: s }, { data: admins }] = await Promise.all([
-    db.from("site_settings").select("*").eq("id", 1).single(),
-    db.from("admin_users").select("user_id, email, role").order("created_at"),
-  ]);
-  const users: AdminUser[] = (admins ?? []).map((a) => ({ userId: a.user_id, email: a.email, role: a.role, you: a.user_id === me.userId }));
+  await requireAdminPage("owner");
+  const { data: s } = await createAdminClient().from("site_settings").select("*").eq("id", 1).single();
 
   return (
     <>
-      <PageHeader title="Settings" description="Business details, contact links and who can use the admin." />
+      <PageHeader title="Settings" description="Business details and contact links." />
       <div className="space-y-6">
         <Panel>
           <SettingsForm
@@ -37,9 +32,6 @@ export default async function SettingsPage() {
               businessHours: s?.business_hours ?? "",
             }}
           />
-        </Panel>
-        <Panel title="Admin users">
-          <AdminUsers users={users} />
         </Panel>
       </div>
     </>

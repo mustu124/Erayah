@@ -4,9 +4,8 @@
 //   pnpm create-admin staff@example.com --staff    → staff
 //
 // If the email has no Supabase Auth account yet, one is created with a
-// random password, printed once here; they can change it under "My account"
-// or sign in with an email link instead. Safe to run again (it only
-// updates the role).
+// random password, printed once here; they can also sign in with an email
+// link instead. Safe to run again (it only updates the role).
 import { randomBytes } from "node:crypto";
 
 import { createClient } from "@supabase/supabase-js";
