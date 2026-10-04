@@ -171,7 +171,7 @@ export async function cleanUpTestOrders() {
     .is("stock_released_at", null);
   for (const order of orders ?? []) {
     if (order.status !== "cancelled") {
-      await db.from("orders").update({ status: "cancelled", internal_notes: "E2E test order" }).eq("id", order.id);
+      await db.from("orders").update({ status: "cancelled", is_test: true, internal_notes: "E2E test order" }).eq("id", order.id);
     }
     const { error } = await db.rpc("restore_stock", { p_order_id: order.id });
     if (error) console.warn("restore_stock", order.id, error.message);

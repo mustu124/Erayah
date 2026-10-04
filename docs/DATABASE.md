@@ -51,7 +51,11 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | `assign_invoice_number(order_id)` | service role only | Gives an order its GST invoice number (`ERY/26-27/00001`). Call it when a Razorpay payment is confirmed; gift-card-only orders get one automatically. |
 | `search_products(q, p_limit, p_offset)` | anyone (storefront) | Product search over published products: prefix full-text on `search_vector` (accents stripped), falling back to pg_trgm word similarity on name, category, styles and stones when full-text finds nothing. `q` is the app's synonym-expanded query: space-separated groups (AND), `\|`-separated alternatives (OR). Returns id, slug, name, price, rank and the total count. |
 | `log_search_miss(term)` | service role only | Adds 1 to a zero-result search term (lower-cased, trimmed). |
+| `analytics_*` (summary, sales_over_time, by_category, product_sales, low_stock, by_location, gift_cards, repeat_customers) | service role only | The figures on /admin/analytics, from orders and items. Each takes India-time dates and an "include test orders" flag, and refuses callers who are neither service role nor an admin. `analytics_sales(from, to, include_test)` is the shared definition of a sale. |
 | `quote_shipping(pincode, state, order_value)` | service role only | The shipping fee and delivery estimate for an address; use it for the cart estimate too. |
+
+## Test data
+- `orders.is_test` and `gift_cards.is_test` mark rows made by `pnpm seed:test-orders` (and gift cards left by end-to-end tests). Analytics ignores them; `pnpm clear:test-orders` deletes them.
 
 ## Numbering
 - **Order number:** `ERY-2026-00001`, restarts each calendar year (Asia/Kolkata).
@@ -77,5 +81,5 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 - Default shipping is ₹100 flat (no free-shipping threshold yet); change it in `/admin`.
 - Regenerate `src/lib/supabase/types.ts` with `pnpm db:types` after every migration (`pnpm db:types:local` builds them from the migration files without a connection).
 - **Realtime:** `orders` is in the `supabase_realtime` publication (migration 14); admins receive changes through RLS.
-- **Migrations are idempotent and applied through the CLI**, never pasted into the dashboard: `pnpm db:push` (also `pnpm db:migrations` to compare local and remote, `pnpm db:types` to regenerate types from the live schema). `scripts/supabase-db.mjs` connects through the session pooler (`aws-0-ap-northeast-2`) with `SUPABASE_DB_PASSWORD` from `.env.local`, so no `supabase login`/`link` is needed. The remote migration history is in sync up to `20261003001500` (0100–1200 were marked applied with `migration repair` on 2026-10-03, after being pasted earlier).
+- **Migrations are idempotent and applied through the CLI**, never pasted into the dashboard: `pnpm db:push` (also `pnpm db:migrations` to compare local and remote, `pnpm db:types` to regenerate types from the live schema). `scripts/supabase-db.mjs` connects through the session pooler (`aws-0-ap-northeast-2`) with `SUPABASE_DB_PASSWORD` from `.env.local`, so no `supabase login`/`link` is needed. The remote migration history is in sync up to `20261004001600` (0100–1200 were marked applied with `migration repair` on 2026-10-03, after being pasted earlier).
 - `pnpm test:db` applies every migration in PGlite, re-runs the checkout migration to prove it's idempotent, and checks there is exactly one expiry cron job.

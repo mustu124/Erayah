@@ -72,6 +72,6 @@ export async function createPaidTestOrder(opts: { isGift?: boolean; giftNote?: s
 
 /** Cancels a test order and puts its stock back (safe if already done). */
 export async function releaseTestOrder(orderId: string) {
-  await db.from("orders").update({ status: "cancelled", internal_notes: "E2E test order" }).eq("id", orderId);
+  await db.from("orders").update({ status: "cancelled", is_test: true, internal_notes: "E2E test order" }).eq("id", orderId);
   await db.rpc("restore_stock", { p_order_id: orderId });
 }

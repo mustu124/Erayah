@@ -39,9 +39,14 @@ test.describe("admin", () => {
     if (!runsHere(info.project.name)) return;
     [owner, staff, outsider] = await Promise.all([createTestUser("owner"), createTestUser("staff"), createTestUser(null)]);
   });
-  test.afterAll(async () => {
+  test.afterAll(async ({}, info) => {
     for (const id of orders) await releaseTestOrder(id);
     if (tempProductId) await db.from("products").delete().eq("id", tempProductId);
+    // Safety net: a draft copy made by a run that timed out before noting its id.
+    // (Only from the project that runs the product test; afterAll also runs in skipped workers.)
+    if (info.project.name === "chromium-1280") {
+      await db.from("products").delete().eq("is_published", false).or("slug.like.meher-earrings-copy%,slug.like.e2e-test-earrings-%");
+    }
     await Promise.all([deleteTestUser(owner), deleteTestUser(staff), deleteTestUser(outsider)]);
   });
 
@@ -144,15 +149,18 @@ test.describe("admin", () => {
     test.setTimeout(120_000);
     const { data: source } = await db.from("products").select("id, name").eq("slug", "meher-earrings").single();
     await signIn(page, owner, `/admin/products/${source!.id}`);
+    // Let the editor finish loading and become interactive before clicking.
+    await expect(page.getByRole("heading", { level: 1, name: source!.name })).toBeVisible();
+    await page.waitForLoadState("networkidle");
     await page.getByRole("button", { name: "Duplicate" }).click();
-    await expect(page.getByRole("heading", { name: `${source!.name} (copy)` })).toBeVisible();
+    await expect(page.getByRole("heading", { name: `${source!.name} (copy)` })).toBeVisible({ timeout: 30_000 });
     tempProductId = Number(page.url().split("/").pop());
     await expect(page.getByText("Draft (hidden from the shop)")).toBeVisible();
 
     await page.getByLabel("Name").fill("E2E Test Earrings");
     await page.getByLabel("Web address (slug)").fill(`e2e-test-earrings-${tempProductId}`);
     await page.getByRole("button", { name: "Save product" }).click();
-    await expect(page.getByText("Product saved.")).toBeVisible();
+    await expect(page.getByText("Product saved.")).toBeVisible({ timeout: 20_000 });
 
     // A photo goes through resize → WebP → storage → database.
     const png = await sharp({ create: { width: 3000, height: 3750, channels: 3, background: "#c9a96e" } }).png().toBuffer();
@@ -177,7 +185,7 @@ test.describe("admin", () => {
     await page.goto(`/admin/products/${tempProductId}`);
     page.once("dialog", (d) => d.accept());
     await page.getByRole("button", { name: "Delete" }).click();
-    await expect(page).toHaveURL(/\/admin\/products$/);
+    await expect(page).toHaveURL(/\/admin\/products$/, { timeout: 30_000 });
     const { count } = await db.from("products").select("id", { count: "exact", head: true }).eq("id", tempProductId);
     expect(count).toBe(0);
     tempProductId = null;

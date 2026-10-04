@@ -46,7 +46,11 @@ export default defineConfig({
             ? `pnpm exec next dev --port ${PORT}`
             : `pnpm exec next build && pnpm exec next start --port ${PORT}`,
           url: baseURL,
-          env: process.env.E2E_CHECKOUT ? { RAZORPAY_API_BASE: `http://localhost:${MOCK_RAZORPAY_PORT}/v1` } : {},
+          env: {
+            ...(process.env.E2E_CHECKOUT ? { RAZORPAY_API_BASE: `http://localhost:${MOCK_RAZORPAY_PORT}/v1` } : {}),
+            // Lets the analytics tests include seeded test orders (otherwise a development-only toggle).
+            ...(process.env.E2E_ADMIN ? { ANALYTICS_TEST_TOGGLE: "1" } : {}),
+          },
           reuseExistingServer: !process.env.CI,
           timeout: 300_000,
         },

@@ -106,6 +106,20 @@ Erayah doesn't use coupons or discount codes. To give someone credit, issue a gi
 
 At checkout they enter the code; the balance comes off their total and anything left stays on the card. The list shows each card's remaining balance and the orders it was used on. **Deactivate** stops a card from working.
 
+## Analytics
+
+**Analytics** shows how the shop is doing, worked out only from your orders (nothing tracks visitors).
+
+- Pick a period at the top: Today, Last 7 days, Last 30 days, This month, Last month, or your own dates. Every figure shows how it changed against the period just before, for example ▲ +18%.
+- **Total revenue**, **Orders** and **Average order value** come first. A sale is a paid order that wasn't cancelled, counted on the day it was paid. Refunded orders aren't counted; they're listed in small print under the revenue.
+- **Sales over time** has one chart for revenue and one for orders. Hover or tap a point for that day's figures.
+- **Sales by category**, **Best-selling products** (tap "Show versions" to see each colour) and **Sales by location** (switch to cities) show where the money comes from.
+- **Low stock alerts** lists pieces at or below your chosen number, with a rough "runs out in about N days" from the last 30 days of sales. Change the number there and tap **Save**. This part always shows today's stock, whatever period is chosen.
+- **Gift card usage** shows what you issued and what was redeemed in the period, and how much is still unspent.
+- **Repeat customers** recognises customers by phone number. Numbers are partly hidden on screen. Tap a name to see that customer's orders.
+
+Every section has **Download CSV** for a spreadsheet. The repeat-customers list, which has full phone numbers, can only be downloaded by the owner.
+
 ## Messages from the Contact page
 
 Messages people send through the form on the Contact page appear under **Messages**, newest first. The number next to it in the menu is how many you haven't read. Reply by tapping their email, phone or **WhatsApp**, then **Mark read**. The site never sends emails itself.

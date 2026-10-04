@@ -54,6 +54,8 @@ export type OrderFilters = {
   from: string;
   to: string;
   range: "today" | "";
+  /** An order number: show every order from the same phone (used by Analytics → Repeat customers, so no phone number appears in a link). */
+  customer: string;
   page: number;
 };
 
@@ -71,6 +73,7 @@ export function parseOrderFilters(params: Record<string, string | string[] | und
     from: one(params.from),
     to: one(params.to),
     range: one(params.range) === "today" ? "today" : "",
+    customer: /^[A-Z0-9]{1,5}-\d{4}-\d{5,}$/.test(one(params.customer)) ? one(params.customer) : "",
     page: Math.max(1, Math.min(1000, Number(one(params.page)) || 1)),
   };
 }
@@ -85,6 +88,12 @@ export async function listOrders(f: OrderFilters, opts: { all?: boolean; select?
     .select(opts.select ?? ORDER_LIST_SELECT, { count: "exact" })
     .order("created_at", { ascending: false });
 
+  if (f.customer) {
+    const { data: source } = await createAdminClient().from("orders").select("phone").eq("order_number", f.customer).maybeSingle();
+    const digits = source?.phone.replace(/\D/g, "").slice(-10);
+    if (!digits) return { orders: [], count: 0 };
+    query = query.ilike("phone", `%${digits}`);
+  }
   if (f.status && f.status !== "all") query = query.eq("status", f.status);
   else if (f.status !== "all") query = query.neq("status", "pending_payment");
   if (f.payment) query = query.eq("payment_status", f.payment);

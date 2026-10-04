@@ -192,6 +192,7 @@ export type Database = {
           id: number;
           initial_balance: number;
           is_active: boolean;
+          is_test: boolean;
           note: string | null;
         };
         Insert: {
@@ -202,6 +203,7 @@ export type Database = {
           id?: never;
           initial_balance: number;
           is_active?: boolean;
+          is_test?: boolean;
           note?: string | null;
         };
         Update: {
@@ -212,6 +214,7 @@ export type Database = {
           id?: never;
           initial_balance?: number;
           is_active?: boolean;
+          is_test?: boolean;
           note?: string | null;
         };
         Relationships: [];
@@ -406,6 +409,7 @@ export type Database = {
           invoice_number: string | null;
           invoice_path: string | null;
           is_gift: boolean;
+          is_test: boolean;
           landmark: string | null;
           order_number: string;
           paid_at: string | null;
@@ -445,6 +449,7 @@ export type Database = {
           invoice_number?: string | null;
           invoice_path?: string | null;
           is_gift?: boolean;
+          is_test?: boolean;
           landmark?: string | null;
           order_number: string;
           paid_at?: string | null;
@@ -484,6 +489,7 @@ export type Database = {
           invoice_number?: string | null;
           invoice_path?: string | null;
           is_gift?: boolean;
+          is_test?: boolean;
           landmark?: string | null;
           order_number?: string;
           paid_at?: string | null;
@@ -832,6 +838,7 @@ export type Database = {
           id: number;
           instagram_url: string | null;
           invoice_prefix: string;
+          low_stock_threshold: number;
           prices_include_gst: boolean;
           support_email: string | null;
           support_phone: string | null;
@@ -852,6 +859,7 @@ export type Database = {
           id?: number;
           instagram_url?: string | null;
           invoice_prefix?: string;
+          low_stock_threshold?: number;
           prices_include_gst?: boolean;
           support_email?: string | null;
           support_phone?: string | null;
@@ -872,6 +880,7 @@ export type Database = {
           id?: number;
           instagram_url?: string | null;
           invoice_prefix?: string;
+          low_stock_threshold?: number;
           prices_include_gst?: boolean;
           support_email?: string | null;
           support_phone?: string | null;
@@ -912,6 +921,111 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      analytics_by_category: {
+        Args: { p_from: string; p_include_test?: boolean; p_to: string };
+        Returns: {
+          category: string;
+          category_id: number;
+          revenue: number;
+          units: number;
+        }[];
+      };
+      analytics_by_location: {
+        Args: { p_from: string; p_include_test?: boolean; p_level?: string; p_to: string };
+        Returns: {
+          city: string;
+          orders: number;
+          revenue: number;
+          state: string;
+        }[];
+      };
+      analytics_gift_cards: { Args: { p_from: string; p_include_test?: boolean; p_to: string }; Returns: Json };
+      analytics_guard: { Args: Record<PropertyKey, never>; Returns: undefined };
+      analytics_low_stock: {
+        Args: { p_include_test?: boolean; p_threshold?: number };
+        Returns: {
+          days_left: number;
+          name: string;
+          product_id: number;
+          sold_30d: number;
+          stock: number;
+          variant_label: string;
+        }[];
+      };
+      analytics_product_sales: {
+        Args: { p_from: string; p_include_test?: boolean; p_to: string };
+        Returns: {
+          family: string;
+          image_path: string;
+          name: string;
+          product_id: number;
+          revenue: number;
+          units: number;
+          variant_label: string;
+        }[];
+      };
+      analytics_repeat_customers: {
+        Args: { p_from: string; p_include_test?: boolean; p_limit?: number; p_to: string };
+        Returns: Json;
+      };
+      analytics_sales: {
+        Args: { p_from: string; p_include_test?: boolean; p_to: string };
+        Returns: {
+          access_token: string;
+          address_line1: string;
+          address_line2: string | null;
+          city: string;
+          country: string;
+          courier_name: string | null;
+          created_at: string;
+          customer_name: string;
+          email: string | null;
+          gift_card_amount: number;
+          gift_card_code: string | null;
+          gift_note: string | null;
+          gst_amount: number;
+          id: string;
+          idempotency_key: string | null;
+          internal_notes: string | null;
+          invoice_number: string | null;
+          invoice_path: string | null;
+          is_gift: boolean;
+          is_test: boolean;
+          landmark: string | null;
+          order_number: string;
+          paid_at: string | null;
+          payment_method: Database["public"]["Enums"]["payment_method"];
+          payment_status: Database["public"]["Enums"]["payment_status"];
+          phone: string;
+          pincode: string;
+          razorpay_order_id: string | null;
+          razorpay_payment_id: string | null;
+          razorpay_signature: string | null;
+          shipping_fee: number;
+          state: string;
+          status: Database["public"]["Enums"]["order_status"];
+          stock_released_at: string | null;
+          subtotal: number;
+          total: number;
+          tracking_number: string | null;
+          updated_at: string;
+        }[];
+        SetofOptions: {
+          from: "*";
+          to: "orders";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      analytics_sales_over_time: {
+        Args: { p_bucket?: string; p_from: string; p_include_test?: boolean; p_to: string };
+        Returns: {
+          bucket: string;
+          orders: number;
+          revenue: number;
+        }[];
+      };
+      analytics_summary: { Args: { p_from: string; p_include_test?: boolean; p_to: string }; Returns: Json };
       assign_invoice_number: { Args: { p_order_id: string }; Returns: string };
       confirm_payment: {
         Args: {

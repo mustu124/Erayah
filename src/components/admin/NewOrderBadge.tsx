@@ -57,7 +57,11 @@ function connect() {
   const channel = supabase
     .channel(`admin-orders-${Math.random().toString(36).slice(2)}`)
     .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => load())
-    .subscribe();
+    // Count again once the connection is live (and after a reconnect), so an
+    // order that arrived while it was connecting isn't missed.
+    .subscribe((status) => {
+      if (status === "SUBSCRIBED") load();
+    });
   return () => {
     live = false;
     supabase.removeChannel(channel);

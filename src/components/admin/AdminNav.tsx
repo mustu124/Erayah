@@ -19,6 +19,7 @@ export const ADMIN_NAV: Item[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/merchandising", label: "Merchandising", owner: true },
   { href: "/admin/homepage", label: "Homepage", owner: true },

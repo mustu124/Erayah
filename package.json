@@ -14,9 +14,11 @@
     "test:e2e": "playwright test",
     "db:types:local": "tsx scripts/gen-db-types.ts",
     "import:images": "tsx --env-file=.env.local scripts/import-images.ts",
-    "test:db": "node supabase/tests/checkout.test.mjs",
+    "test:db": "node supabase/tests/checkout.test.mjs && node supabase/tests/analytics.test.mjs",
     "db:migrations": "node scripts/supabase-db.mjs migration list",
-    "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts"
+    "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts",
+    "seed:test-orders": "tsx --env-file=.env.local scripts/seed-test-orders.ts",
+    "clear:test-orders": "tsx --env-file=.env.local scripts/clear-test-orders.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -32,6 +34,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-markdown": "^10.1.0",
+    "recharts": "^3.10.1",
     "server-only": "^0.0.1",
     "sharp": "^0.35.5",
     "simple-icons": "^16.33.0",

@@ -28,6 +28,15 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
         }
       />
 
+      {filters.customer ? (
+        <p className="mb-4 border border-mist bg-paper px-4 py-3 text-body-sm">
+          Showing every order from the same customer as {filters.customer}.{" "}
+          <Link href="/admin/orders" className="underline underline-offset-4">
+            Show all orders
+          </Link>
+        </p>
+      ) : null}
+
       <form method="get" className="mb-4 grid gap-3 border border-mist bg-paper p-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))_auto]">
         <div className="sm:col-span-2 lg:col-span-1">
           <label htmlFor="q" className="mb-1 block text-caption text-ink/70">
