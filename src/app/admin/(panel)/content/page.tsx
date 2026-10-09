@@ -18,7 +18,7 @@ const TABS = [
 
 const PAGE_HINTS: Record<string, string> = {
   about: "Your story, with a founder photo and story images.",
-  "shipping-returns": "Delivery times, returns and exchanges.",
+  "shipping-returns": "Delivery times and returns.",
   "privacy-policy": "How customer details are used. Needs legal review.",
   terms: "Terms & Conditions. Needs legal review.",
 };

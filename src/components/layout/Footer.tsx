@@ -17,7 +17,7 @@ export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
   return (
     <footer className="bg-ink text-ivory">
       {/* Brand pattern from the guidelines: elephants and dots, very faint. */}
-      <div aria-hidden="true" className="h-10 bg-[url(/brand/elephant-pattern.svg)] bg-[length:96px_40px] bg-repeat-x opacity-[0.12]" />
+      <div aria-hidden="true" className="h-10 bg-[url(/brand/elephant-pattern.svg)] bg-[length:96px_40px] bg-center bg-repeat-space opacity-[0.12]" />
 
       <div className="mx-auto grid max-w-[1440px] gap-12 px-6 pt-10 pb-14 md:px-10 lg:grid-cols-[1.5fr_repeat(4,1fr)] lg:gap-10 lg:pt-14 lg:pb-20">
         <div>
@@ -27,7 +27,7 @@ export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
           <p className="mt-5 font-heading text-h3 text-ivory/90 italic">Heirlooms, Reimagined.</p>
         </div>
 
-        <FooterColumn title="Shop" links={[...CATEGORY_LINKS, { label: "Shop All", href: routes.shopAll }]} />
+        <FooterColumn title="Shop" links={[...CATEGORY_LINKS, { label: "Shop All", href: routes.shopAll }]} className="hidden lg:block" />
         <FooterColumn title="Help" links={FOOTER_HELP_LINKS} />
         <FooterColumn title="Erayah" links={FOOTER_ERAYAH_LINKS} />
 
@@ -62,10 +62,10 @@ export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
   );
 }
 
-function FooterColumn({ title, links }: { title: string; links: NavLink[] }) {
+function FooterColumn({ title, links, className }: { title: string; links: NavLink[]; className?: string }) {
   const id = `footer-${title.toLowerCase()}`;
   return (
-    <nav aria-labelledby={id}>
+    <nav aria-labelledby={id} className={className}>
       <h2 id={id} className="font-body text-label font-medium text-ivory/60 uppercase">
         {title}
       </h2>

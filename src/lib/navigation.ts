@@ -7,7 +7,7 @@ export type NavLink = { label: string; href: string };
 
 export const CATEGORY_LINKS: NavLink[] = [
   { label: "Earrings", href: routes.collection("earrings") },
-  { label: "Necklace Sets", href: routes.collection("necklace-sets") },
+  { label: "Necklace Set", href: routes.collection("necklace-sets") },
   { label: "Rings", href: routes.collection("rings") },
   { label: "Bracelets", href: routes.collection("bracelets") },
   { label: "Pendants", href: routes.collection("pendants") },
@@ -15,17 +15,41 @@ export const CATEGORY_LINKS: NavLink[] = [
 
 export const DISCOVER_LINKS: NavLink[] = [
   { label: "New Arrivals", href: routes.newArrivals },
-  { label: "Best Sellers", href: routes.bestSellers },
-  { label: "Gifts for Her", href: routes.giftsForHer },
+  { label: "Most Loved", href: routes.mostLoved },
+  { label: "Gifts for Her (Under ₹3K)", href: routes.giftsForHer },
 ];
 
-export const STYLE_LINKS: NavLink[] = [
-  { label: "Studs", href: routes.style("studs") },
-  { label: "Danglers", href: routes.style("danglers") },
-  { label: "Jhumkas & Chaandbaalis", href: routes.style("jhumkas-chaandbaalis") },
-  { label: "Chokers", href: routes.style("chokers") },
-  { label: "Pearl", href: routes.style("pearl") },
-  { label: "Minimal", href: routes.style("minimal") },
+/** Subcategories shown under Earrings and Necklace Set in the Shop menu. */
+export const SUBCATEGORY_GROUPS: { title: string; links: NavLink[] }[] = [
+  {
+    title: "Earrings",
+    links: [
+      { label: "All Earrings", href: routes.collection("earrings") },
+      { label: "Studs", href: routes.subcategory("earrings", "studs") },
+      { label: "Danglers", href: routes.subcategory("earrings", "danglers") },
+      { label: "Jhumkas", href: routes.subcategory("earrings", "jhumkas") },
+      { label: "Chaandbaalis", href: routes.subcategory("earrings", "chaandbaalis") },
+      { label: "Balis", href: routes.subcategory("earrings", "bali") },
+      { label: "Ear Cuffs", href: routes.subcategory("earrings", "ear cuff") },
+      { label: "Shoulder Drops", href: routes.subcategory("earrings", "shoulder drops") },
+    ],
+  },
+  {
+    title: "Necklace Set",
+    links: [
+      { label: "All Necklace Sets", href: routes.collection("necklace-sets") },
+      { label: "Chokers", href: routes.subcategory("necklace-sets", "choker") },
+      { label: "Long Necklace Sets", href: routes.subcategory("necklace-sets", "necklace set") },
+    ],
+  },
+];
+
+/** The categories without subcategories, then Shop All. */
+export const MORE_CATEGORY_LINKS: NavLink[] = [
+  { label: "Rings", href: routes.collection("rings") },
+  { label: "Bracelets", href: routes.collection("bracelets") },
+  { label: "Pendants", href: routes.collection("pendants") },
+  { label: "Shop All", href: routes.shopAll },
 ];
 
 export const PRIMARY_LINKS: NavLink[] = [

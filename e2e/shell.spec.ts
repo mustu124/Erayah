@@ -10,7 +10,7 @@ async function openHome(page: Page) {
 test.describe("site shell", () => {
   test("announcement bar, header and search", async ({ page }, testInfo) => {
     await openHome(page);
-    await expect(page.getByText("Handcrafted in India · Delivered in 7–10 working days")).toBeVisible();
+    await expect(page.getByText("Jadau, Reimagined · Free shipping above ₹6,000 · Delivered in 7–10 days")).toBeVisible();
 
     if (!isMobile(testInfo.project.name)) {
       const nav = page.getByRole("navigation", { name: "Main" });
@@ -37,13 +37,13 @@ test.describe("site shell", () => {
     await shop.hover();
     await expect(shop).toHaveAttribute("aria-expanded", "true");
     const nav = page.getByRole("navigation", { name: "Main" });
-    for (const heading of ["Shop by Category", "Discover", "Shop by Style"]) {
+    for (const heading of ["Earrings", "Necklace Set", "More to Shop", "Discover"]) {
       await expect(nav.getByRole("heading", { name: heading })).toBeVisible();
     }
-    await expect(page.getByRole("link", { name: "Jhumkas & Chaandbaalis" })).toHaveAttribute(
-      "href",
-      "/shop/style/jhumkas-chaandbaalis",
-    );
+    await expect(nav.getByRole("heading", { name: "Shop by Style" })).toHaveCount(0);
+    await expect(nav.getByRole("link", { name: "Studs" })).toHaveAttribute("href", "/shop/earrings?style=studs");
+    await expect(nav.getByRole("link", { name: "Chokers" })).toHaveAttribute("href", "/shop/necklace-sets?style=choker");
+    await expect(nav.getByRole("link", { name: "Most Loved" })).toHaveAttribute("href", "/shop/most-loved");
 
     await page.keyboard.press("Escape");
     await expect(shop).toHaveAttribute("aria-expanded", "false");
@@ -56,11 +56,14 @@ test.describe("site shell", () => {
     await page.getByRole("button", { name: "Menu" }).click();
     const menu = page.getByRole("dialog", { name: "Menu" });
     await expect(menu).toBeVisible();
-    for (const label of ["New Arrivals", "Best Sellers", "Gifts for Her", "About Erayah", "Contact", "FAQs"]) {
+    for (const label of ["New Arrivals", "Most Loved", "Gifts for Her (Under ₹3K)", "Rings", "Pendants", "About Erayah", "Contact", "FAQs"]) {
       await expect(menu.getByRole("link", { name: label })).toBeVisible();
     }
-    await menu.getByText("Category", { exact: true }).click();
-    await expect(menu.getByRole("link", { name: "Necklace Sets" })).toBeVisible();
+    await menu.getByText("Earrings", { exact: true }).click();
+    await expect(menu.getByRole("link", { name: "Jhumkas" })).toBeVisible();
+    await menu.getByText("Necklace Set", { exact: true }).click();
+    await expect(menu.getByRole("link", { name: "Chokers" })).toBeVisible();
+    await expect(menu.getByText("Style", { exact: true })).toHaveCount(0);
     await expect(menu.getByText(/track/i)).toHaveCount(0);
     await expect(menu.getByText(/account|log ?in|sign ?in/i)).toHaveCount(0);
 
@@ -78,7 +81,7 @@ test.describe("site shell", () => {
     await expect(cart).toBeHidden();
   });
 
-  test("floating WhatsApp button and footer", async ({ page }) => {
+  test("floating WhatsApp button and footer", async ({ page }, testInfo) => {
     await openHome(page);
 
     const whatsapp = page.getByRole("link", { name: "Chat with Erayah on WhatsApp" }).last();
@@ -88,9 +91,11 @@ test.describe("site shell", () => {
     expect(box?.width).toBe(52);
 
     const footer = page.getByRole("contentinfo");
-    for (const group of ["Shop", "Help", "Erayah", "Follow"]) {
+    for (const group of ["Help", "Erayah", "Follow"]) {
       await expect(footer.getByRole("navigation", { name: group })).toBeAttached();
     }
+    // The Shop column is for desktop only.
+    await expect(footer.getByRole("navigation", { name: "Shop" })).toHaveCount(isMobile(testInfo.project.name) ? 0 : 1);
     await expect(footer.getByRole("link", { name: "Shipping & Returns" })).toBeAttached();
     await expect(footer.getByText(/track order/i)).toHaveCount(0);
     await expect(footer.getByText(/my account/i)).toHaveCount(0);

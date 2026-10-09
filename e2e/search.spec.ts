@@ -21,7 +21,7 @@ test.describe("search", () => {
     await box.click();
     await expect(box).toHaveAttribute("aria-expanded", "true");
     const popular = page.getByRole("listbox", { name: "Popular searches" }).locator("visible=true");
-    for (const chip of ["Studs", "Jhumkas", "Pearl", "Minimal", "Polki", "Necklace Sets"]) {
+    for (const chip of ["Studs", "Jhumkas", "Pearl", "Minimal", "Polki", "Necklace Set"]) {
       await expect(popular.getByRole("option", { name: chip })).toBeVisible();
     }
     await page.keyboard.press("Escape");
@@ -85,7 +85,7 @@ test.describe("search", () => {
   test("no results", async ({ page }) => {
     await open(page, "/search?q=xyzzyq");
     await expect(page.getByText("We couldn’t find that piece")).toBeVisible(SLOW);
-    await expect(page.getByRole("link", { name: "Necklace Sets", exact: true }).first()).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Best Sellers" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Necklace Set", exact: true }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Most Loved" })).toBeVisible();
   });
 });

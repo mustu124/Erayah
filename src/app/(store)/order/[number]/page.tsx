@@ -11,7 +11,6 @@ import { Price } from "@/components/ui/Price";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { getOrderForCustomer } from "@/lib/data/order";
 import { publicEnv } from "@/lib/env/public";
-import { IVORY_BLUR } from "@/lib/images";
 import { routes } from "@/lib/routes";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -131,8 +130,6 @@ async function Order({ params, searchParams }: PageProps<"/order/[number]">) {
                     fill
                     sizes="72px"
                     className="object-cover"
-                    placeholder="blur"
-                    blurDataURL={IVORY_BLUR}
                   />
                 ) : null}
               </div>

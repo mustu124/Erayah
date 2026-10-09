@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { searchScope } from "@/lib/collection/scopes";
 import { getBestSellers } from "@/lib/data/catalog";
 import { logSearchMiss, searchProductIds } from "@/lib/data/search";
+import { routes } from "@/lib/routes";
 import { QUICK_SEARCHES } from "@/lib/search/quick";
 import { normaliseQuery } from "@/lib/search/synonyms";
 
@@ -80,11 +81,11 @@ async function SearchResults({ searchParams }: { searchParams: Promise<SearchPar
 async function NoResultsBestSellers() {
   return (
     <ProductCarouselSection
-      id="search-best-sellers"
-      title="Best Sellers"
+      id="search-most-loved"
+      title="Most Loved"
       products={await getBestSellers()}
-      href="/shop/best-sellers"
-      linkLabel="Shop All Best Sellers"
+      href={routes.mostLoved}
+      linkLabel="Shop All Most Loved"
     />
   );
 }

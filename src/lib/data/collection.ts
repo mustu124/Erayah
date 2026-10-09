@@ -4,7 +4,7 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { TAGS } from "@/lib/cache-tags";
 import { COLOURS, PAGE_SIZE, STYLES, type Filters } from "@/lib/collection/params";
-import { CATEGORY_DESCRIPTIONS, isListSlug, listScope, type Scope } from "@/lib/collection/scopes";
+import { isListSlug, listScope, type Scope } from "@/lib/collection/scopes";
 import { routes } from "@/lib/routes";
 import { createPublicClient } from "@/lib/supabase/public";
 import { publicStorageUrl } from "@/lib/supabase/storage";
@@ -49,7 +49,8 @@ export async function resolveShopScope(slug: string): Promise<Scope | null> {
   if (isListSlug(slug)) return listScope(slug);
   const category = (await getCategories()).find((c) => c.slug === slug);
   if (!category) return null;
-  const description = category.description ?? CATEGORY_DESCRIPTIONS[slug] ?? null;
+  // The line under the title shows only when the owner has written one in admin.
+  const description = category.description || null;
   return {
     key: `category:${slug}`,
     path: routes.collection(slug),
@@ -76,13 +77,13 @@ export async function resolveShopScope(slug: string): Promise<Scope | null> {
 
 const LIST_FLAG = {
   "new-arrivals": "is_new_arrival",
-  "best-sellers": "is_best_seller",
+  "most-loved": "is_best_seller",
   "gifts-for-her": "is_gift_for_her",
 } as const;
 
 const CURATED_COLUMN = {
   "new-arrivals": "new_arrival_position",
-  "best-sellers": "best_seller_position",
+  "most-loved": "best_seller_position",
   "gifts-for-her": "merch_position",
 } as const;
 

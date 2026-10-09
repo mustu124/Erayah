@@ -9,7 +9,6 @@ import { Icon } from "@/components/ui/Icon";
 import { Pill } from "@/components/ui/Pill";
 import { cn } from "@/lib/cn";
 import type { GalleryItem } from "@/lib/data/product";
-import { IVORY_BLUR } from "@/lib/images";
 
 import { Lightbox } from "./Lightbox";
 
@@ -67,8 +66,6 @@ export function Gallery({ items, name }: { items: GalleryItem[]; name: string })
                       sizes="(min-width: 1440px) 760px, (min-width: 1024px) 52vw, 100vw"
                       preload={i === 0}
                       loading={i === 0 ? "eager" : "lazy"}
-                      placeholder="blur"
-                      blurDataURL={item.blurDataUrl ?? IVORY_BLUR}
                       className="object-cover"
                     />
                   </button>

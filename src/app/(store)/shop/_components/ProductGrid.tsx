@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { ProductCard } from "@/components/product/ProductCard";
 import { cn } from "@/lib/cn";
-import { IVORY_BLUR } from "@/lib/images";
 
 import type { GridItem, TileView } from "./grid-items";
 
@@ -35,8 +34,6 @@ function TileItem({ tile }: { tile: TileView }) {
           alt={tile.image.alt}
           fill
           sizes="(min-width: 1024px) 45vw, 100vw"
-          placeholder="blur"
-          blurDataURL={tile.image.blurDataUrl ?? IVORY_BLUR}
           className="object-cover transition-opacity duration-300 group-hover:opacity-95"
         />
       </div>

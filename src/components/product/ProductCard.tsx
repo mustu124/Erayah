@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ElephantMark } from "@/components/ui/Logo";
 import { Price } from "@/components/ui/Price";
 import type { ProductCardData } from "@/lib/data/catalog";
-import { IVORY_BLUR } from "@/lib/images";
 import { routes } from "@/lib/routes";
 
 import { WishlistHeart } from "./WishlistHeart";
@@ -37,8 +36,6 @@ export function ProductCard({ product, sizes, preload = false }: ProductCardProp
               fill
               sizes={sizes}
               preload={preload}
-              placeholder="blur"
-              blurDataURL={image.blurDataUrl ?? IVORY_BLUR}
               className="object-cover"
             />
           ) : (

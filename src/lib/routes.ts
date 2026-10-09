@@ -6,8 +6,10 @@ export const routes = {
   home: "/",
   shopAll: "/shop",
   collection: (slug: string) => `/shop/${slug}`,
+  /** A category narrowed to one style (the Style filter, pre-set). */
+  subcategory: (slug: string, style: string) => `/shop/${slug}?style=${encodeURIComponent(style)}`,
   newArrivals: "/shop/new-arrivals",
-  bestSellers: "/shop/best-sellers",
+  mostLoved: "/shop/most-loved",
   giftsForHer: "/shop/gifts-for-her",
   style: (slug: string) => `/shop/style/${slug}`,
   product: (slug: string) => `/product/${slug}`,

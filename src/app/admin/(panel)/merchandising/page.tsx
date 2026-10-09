@@ -24,7 +24,7 @@ export default async function MerchandisingPage({ searchParams }: PageProps<"/ad
   const options = [
     ...categories.map((c) => ({ value: String(c.id), label: c.name, href: routes.collection(c.slug) })),
     { value: "new-arrivals", label: "New Arrivals", href: routes.newArrivals },
-    { value: "best-sellers", label: "Best Sellers", href: routes.bestSellers },
+    { value: "best-sellers", label: "Most Loved", href: routes.mostLoved },
     { value: "shop-all", label: "Shop All", href: routes.shopAll },
   ];
   const current = options.find((o) => o.value === value) ?? options[0];

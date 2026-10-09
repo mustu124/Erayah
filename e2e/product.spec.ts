@@ -17,7 +17,7 @@ test.describe("product page", () => {
     await expect(page.getByText("₹8,500").first()).toBeVisible();
     await expect(page.getByText("Inclusive of all taxes")).toBeVisible();
     await expect(page.getByText("In stock", { exact: true })).toBeVisible();
-    await expect(page.getByText("Delivered in 7–10 working days").first()).toBeVisible();
+    await expect(page.getByText("Delivery in 7–10 working days").first()).toBeVisible();
 
     // Description open, the rest closed.
     await expect(page.locator("details", { hasText: "Description" })).toHaveAttribute("open", "");
@@ -43,7 +43,15 @@ test.describe("product page", () => {
     await page.getByRole("button", { name: "Add to cart" }).first().click();
     const cart = page.getByRole("dialog", { name: /My cart/ });
     await expect(cart).toBeVisible();
-    await expect(cart.getByText("2 pieces in your cart")).toBeVisible();
+    // The drawer lists the piece, lets the shopper change the quantity or remove it, and leads to checkout.
+    await expect(cart.getByRole("link", { name: "Dahlia Earrings" })).toBeVisible();
+    const quantity = cart.getByRole("group", { name: "Quantity of Dahlia Earrings" });
+    await expect(quantity).toContainText("2");
+    await quantity.getByRole("button", { name: "Decrease quantity" }).click();
+    await expect(quantity).toContainText("1");
+    await expect(cart.getByRole("link", { name: "Checkout" })).toHaveAttribute("href", "/checkout");
+    await cart.getByRole("button", { name: "Remove Dahlia Earrings from cart" }).click();
+    await expect(cart.getByText("Your cart is empty")).toBeVisible();
     await page.keyboard.press("Escape");
 
     const heart = page.getByRole("button", { name: "Save Dahlia Earrings to wishlist" }).first();
@@ -69,7 +77,7 @@ test.describe("product page", () => {
     await page.getByRole("button", { name: "Check delivery to your pincode" }).click();
     await page.getByLabel("Pincode").fill("400001");
     await page.getByRole("button", { name: "Check", exact: true }).click();
-    await expect(page.getByText("Shipping to 400001: ₹100 · delivered in 7–10 working days")).toBeVisible();
+    await expect(page.getByText("Free shipping to 400001 · delivered in 7–10 working days")).toBeVisible();
   });
 
   test("mobile sticky add-to-cart bar", async ({ page }, testInfo) => {

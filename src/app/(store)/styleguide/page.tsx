@@ -89,7 +89,7 @@ export default async function StyleguidePage() {
       </Block>
 
       <Block title="Section header">
-        <SectionHeader title="Best Sellers" label={month} />
+        <SectionHeader title="Most Loved" label={month} />
         <SectionHeader title="New Arrivals" label={month} className="mt-8" />
       </Block>
 
@@ -98,7 +98,7 @@ export default async function StyleguidePage() {
           <Button>Add to cart</Button>
           <Button variant="outline">View cart</Button>
           <ButtonLink href="/shop" variant="link">
-            Shop All Best Sellers
+            Shop All Most Loved
           </ButtonLink>
           <Button disabled>Sold out</Button>
         </div>

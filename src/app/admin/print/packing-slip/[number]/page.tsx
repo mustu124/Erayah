@@ -99,7 +99,7 @@ async function Slip({ params }: PageProps<"/admin/print/packing-slip/[number]">)
 
       <footer className="mt-8 text-center text-[10px] text-ink/70">
         <p>Thank you for choosing Erayah. Handcrafted pieces carry small, natural variations.</p>
-        <p className="mt-1">Returns and exchanges only for transit damage or an incorrect piece, unworn and in original packaging.</p>
+        <p className="mt-1">Returns only for transit damage or an incorrect piece, unworn and in original packaging. Credit is issued as a gift card.</p>
       </footer>
       <PrintOnLoad />
     </article>

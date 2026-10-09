@@ -37,7 +37,7 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **Stock**: every product was seeded with 5, including each colour of Dori Ring and Harakh Earrings (now separate products). Set real stock in /admin.
 - [ ] **Colours** for pieces described only as "stone polki" (several rings and pendants) are empty, so they don't show under a colour filter. Set them in /admin.
 - [ ] **Review the product descriptions** written in Erayah's voice, especially the name meanings (e.g. Harakh = joy, Mārakat = emerald, Kamān = bow). Edit any that aren't right.
-- [ ] **Review the launch flags and order** (New Arrivals, Best Sellers, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
+- [ ] **Review the launch flags and order** (New Arrivals, Most Loved, Gifts for Her, hero pieces, category order) listed in `docs/DECISIONS.md`.
 - [ ] **Product photos: still needed** (imported 2026-10-03 from `/assets`; details in `import/mapping.json`):
   - **No photo at all** (placeholder shown): Rani Earrings (a Best Seller, hidden from the homepage until photographed), Mrina Earrings, Kamān Pendant – Mother-of-Pearl, Kamān Pendant – Polki, Soma Pendant, Beej Ring.
   - **Only one photo each** for every other product (Harakh Earrings – White and the Chantara pendant have two). Each product should have four: worn close-up, styled lifestyle (the card's hover image; until then cards don't swap), product-only, and a detail shot.
@@ -50,11 +50,13 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
   - Ziya Choker Set: the file is named `Gemini_Generated_Image…` (an AI-edited version of the catalogue photo). Confirm you're happy to use it.
 - [ ] **Review the homepage picks** (hero slides and category tiles, listed in `docs/DECISIONS.md`). Hero slides want dedicated portrait images; there are no Bracelets photos yet.
 - [ ] **Lifestyle images** to place between product rows on collection pages (set them up in /admin as lifestyle tiles: image, optional caption and link, and the product position they follow). Until then, collection pages use product photos as tiles. (Hero slides and category tiles now use imported photos; see above. The first hero slide is also the image in the desktop Shop menu.)
-- [ ] **Category descriptions** (one line under each collection title) are drafts in `src/lib/collection/scopes.ts`; the owner can set their own per category in /admin, along with SEO titles and descriptions.
+- [ ] **Category descriptions** (one line under each collection title) were removed at the owner's request (to be supplied for all categories together); the owner can set their own per category in /admin, along with SEO titles and descriptions.
 - [ ] **About page photos**: in Admin → Content → Pages → About, upload a wide **opening image**, three **story images** (one per story block) and a **founder portrait**. Until then the page borrows homepage and product photography.
 - [ ] **Business hours** on the Contact page are a placeholder ("Monday to Saturday, 10 am to 7 pm"). Set the real hours in Admin → Settings, along with the support email and phone (hidden until set).
 - [ ] **FAQ drafts**: two new questions in "Orders & Payment" (order confirmation; changing or cancelling) are drafts like the rest. Edit them in Admin → Content.
-- [ ] **Founder story** — to be provided by the owner at the end. The About page shows [FOUNDER NAME] and [FOUNDER STORY TO BE ADDED] in the "Our founder" section until then (edit it in Admin → Content → Pages → About); the brand story uses the brand guidelines' text.
+- [ ] **UPI in Razorpay** — the edits list says "No UPI in Razorpay". The site doesn't hide any payment method; Razorpay decides which ones to show. In test mode, or before the account's KYC is complete, UPI is often missing. Check Razorpay Dashboard → Account & Settings → Payment methods. (If you meant UPI should *not* be offered, say so and it will be switched off.)
+- [ ] **Homepage photos** and **revised product descriptions** — to come from the owner (edits 6 and 17).
+- [ ] **Founder name** — the founder story is in; add the name in Admin → Content → Pages → About if you want it shown.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).
 

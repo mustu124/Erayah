@@ -9,7 +9,6 @@ import { Icon } from "@/components/ui/Icon";
 import { Price } from "@/components/ui/Price";
 import { cn } from "@/lib/cn";
 import type { InstantResults } from "@/lib/data/search";
-import { IVORY_BLUR } from "@/lib/images";
 import { routes } from "@/lib/routes";
 import { QUICK_SEARCHES } from "@/lib/search/quick";
 
@@ -215,8 +214,6 @@ export function SearchForm({ id, className }: { id: string; className?: string }
                             alt=""
                             fill
                             sizes="48px"
-                            placeholder="blur"
-                            blurDataURL={IVORY_BLUR}
                             className="object-cover"
                           />
                         ) : null}

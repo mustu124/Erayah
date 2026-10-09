@@ -7,7 +7,7 @@ import { ElephantMark } from "@/components/ui/Logo";
 import { getBestSellers } from "@/lib/data/catalog";
 import { routes } from "@/lib/routes";
 
-/** "This piece seems to have wandered off." with search and Best Sellers. */
+/** "This piece seems to have wandered off." with search and Most Loved. */
 export function NotFoundContent() {
   return (
     <>
@@ -30,5 +30,5 @@ export function NotFoundContent() {
 }
 
 async function BestSellers() {
-  return <ProductCarouselSection id="not-found-best-sellers" title="Best Sellers" products={await getBestSellers()} href={routes.bestSellers} linkLabel="Shop All Best Sellers" />;
+  return <ProductCarouselSection id="not-found-most-loved" title="Most Loved" products={await getBestSellers()} href={routes.mostLoved} linkLabel="Shop All Most Loved" />;
 }

@@ -7,5 +7,5 @@ export const QUICK_SEARCHES = [
   { label: "Pearl", href: routes.style("pearl") },
   { label: "Minimal", href: routes.style("minimal") },
   { label: "Polki", href: routes.style("polki") },
-  { label: "Necklace Sets", href: routes.collection("necklace-sets") },
+  { label: "Necklace Set", href: routes.collection("necklace-sets") },
 ] as const;

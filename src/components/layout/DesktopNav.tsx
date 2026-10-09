@@ -7,9 +7,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ElephantMark } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 import type { MenuFeature } from "@/lib/data/site";
-import { IVORY_BLUR } from "@/lib/images";
-import { CATEGORY_LINKS, DISCOVER_LINKS, PRIMARY_LINKS, STYLE_LINKS, type NavLink } from "@/lib/navigation";
-import { routes } from "@/lib/routes";
+import { DISCOVER_LINKS, MORE_CATEGORY_LINKS, PRIMARY_LINKS, SUBCATEGORY_GROUPS, type NavLink } from "@/lib/navigation";
 
 const NAV_LINK = "flex h-11 items-center text-[11px] font-medium tracking-[0.16em] text-ink uppercase transition-opacity duration-300 hover:opacity-70";
 
@@ -71,10 +69,12 @@ export function DesktopNav({ feature }: { feature: MenuFeature }) {
             open ? "visible opacity-100" : "invisible opacity-0",
           )}
         >
-          <div className="mx-auto grid max-w-[1440px] grid-cols-[1fr_1fr_1fr_1.1fr] gap-10 px-10 pt-8 pb-10">
-            <MenuColumn title="Shop by Category" links={[...CATEGORY_LINKS, { label: "Shop All", href: routes.shopAll }]} onNavigate={() => setOpen(false)} />
+          <div className="mx-auto grid max-w-[1440px] grid-cols-[1fr_1fr_1fr_1fr_1.1fr] gap-8 px-10 pt-8 pb-10">
+            {SUBCATEGORY_GROUPS.map((group) => (
+              <MenuColumn key={group.title} title={group.title} links={group.links} onNavigate={() => setOpen(false)} />
+            ))}
+            <MenuColumn title="More to Shop" links={MORE_CATEGORY_LINKS} onNavigate={() => setOpen(false)} />
             <MenuColumn title="Discover" links={DISCOVER_LINKS} onNavigate={() => setOpen(false)} />
-            <MenuColumn title="Shop by Style" links={STYLE_LINKS} onNavigate={() => setOpen(false)} />
             <FeatureTile feature={feature} onNavigate={() => setOpen(false)} />
           </div>
         </div>
@@ -120,8 +120,6 @@ function FeatureTile({ feature, onNavigate }: { feature: MenuFeature; onNavigate
             alt={feature.alt}
             fill
             sizes="(min-width: 1440px) 340px, 24vw"
-            placeholder="blur"
-            blurDataURL={IVORY_BLUR}
             className="object-cover transition-opacity duration-300 group-hover:opacity-90"
           />
         ) : (

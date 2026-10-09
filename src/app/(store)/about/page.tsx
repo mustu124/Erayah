@@ -10,7 +10,6 @@ import { ButtonLink } from "@/components/ui/Button";
 import { ElephantMark } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 import { getAboutFallbackImages, getContactDetails, getPage, getTestimonials, type PageImage } from "@/lib/data/content";
-import { IVORY_BLUR } from "@/lib/images";
 import { routes } from "@/lib/routes";
 
 import { GiantWordmark } from "../_components/GiantWordmark";
@@ -53,8 +52,6 @@ function Photo({ img, sizes, className, priority, position }: { img: Img | null;
           preload={priority}
           className="object-cover"
           style={position ? { objectPosition: position } : undefined}
-          placeholder="blur"
-          blurDataURL={img.blurDataUrl ?? IVORY_BLUR}
         />
       ) : (
         <ElephantMark className="absolute top-1/2 left-1/2 h-16 w-auto -translate-x-1/2 -translate-y-1/2 text-gold/50" />
@@ -87,8 +84,10 @@ export default async function AboutPage() {
       {/* Opening */}
       <header className="relative overflow-hidden px-4 pt-16 pb-10 text-center lg:pt-24">
         <GiantWordmark className="top-6 lg:top-4" />
-        <p className="relative text-[11px] font-medium tracking-[0.18em] text-gold uppercase">{page.title}</p>
-        <h1 className="relative mx-auto mt-5 max-w-3xl font-heading text-[40px] leading-[1.1] text-ink lg:text-[72px]">Heirlooms, reimagined.</h1>
+        <h1 className="relative mx-auto max-w-3xl font-heading text-[40px] leading-[1.1] text-ink lg:text-[72px]">Heirlooms, reimagined.</h1>
+        <p className="relative mx-auto mt-6 max-w-md font-heading text-[17px] leading-relaxed text-ink/75 italic lg:text-[19px]">
+          Jewellery that can move from your wardrobe to the next generation.
+        </p>
         {intro ? <Prose className="relative mx-auto mt-6 max-w-xl">{intro}</Prose> : null}
       </header>
       <Photo img={hero} sizes="100vw" priority position={ownHero ? undefined : "50% 62%"} className="mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[16/9] lg:aspect-[21/9]" />
@@ -146,7 +145,7 @@ export default async function AboutPage() {
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xs border border-ink px-7 text-[12px] font-medium tracking-[0.12em] text-ink uppercase transition-colors duration-300 hover:bg-ink hover:text-ivory"
           >
             <InstagramGlyph size={16} />
-            Follow {contact.instagramHandle}
+            Follow
           </a>
           <ButtonLink href={routes.shopAll}>Shop the collection</ButtonLink>
         </div>

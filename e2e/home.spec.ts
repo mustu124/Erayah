@@ -13,7 +13,7 @@ test.describe("homepage", () => {
     await expect(sections.nth(0)).toHaveAttribute("aria-label", "Featured pieces");
     await expect(sections.nth(1)).toHaveAttribute("aria-labelledby", "shop-by-category");
     await expect(sections.nth(2)).toHaveAttribute("aria-labelledby", "new-arrivals");
-    await expect(sections.nth(3)).toHaveAttribute("aria-labelledby", "best-sellers");
+    await expect(sections.nth(3)).toHaveAttribute("aria-labelledby", "most-loved");
     await expect(sections.nth(4)).toHaveAttribute("aria-labelledby", "brand-story");
   });
 
@@ -26,20 +26,22 @@ test.describe("homepage", () => {
     await expect(grid.nth(5).getByRole("link")).toHaveAttribute("href", "/shop");
   });
 
-  test("new arrivals and best sellers carousels", async ({ page }) => {
+  test("new arrivals (four pieces) and the most loved carousel", async ({ page }) => {
     const newArrivals = page.locator("section[aria-labelledby=new-arrivals]");
     await expect(newArrivals.getByRole("heading", { name: "New Arrivals" })).toBeVisible();
     await expect(newArrivals.getByText(/^[A-Z][a-z]+ \d{4}$/)).toBeAttached(); // month label
     await expect(newArrivals.getByRole("link", { name: "Shop All New Arrivals" })).toHaveAttribute("href", "/shop/new-arrivals");
-    await expect(newArrivals.locator("article")).toHaveCount(13);
+    await expect(newArrivals.locator("article")).toHaveCount(4);
 
-    const bestSellers = page.locator("section[aria-labelledby=best-sellers]");
-    await expect(bestSellers.getByRole("link", { name: "Shop All Best Sellers" })).toHaveAttribute("href", "/shop/best-sellers");
+    const bestSellers = page.locator("section[aria-labelledby=most-loved]");
+    await expect(bestSellers.getByRole("heading", { name: "Most Loved" })).toBeVisible();
+    await expect(bestSellers.getByRole("link", { name: "Shop All Most Loved" })).toHaveAttribute("href", "/shop/most-loved");
 
     // A card shows only image, name and price (plus the heart).
-    const card = bestSellers.locator("article").first();
-    await expect(card.getByRole("heading", { name: "Meher Earrings" })).toBeVisible();
-    await expect(card.getByText("₹8,500")).toBeVisible();
+    // Starting range first, statement pieces last.
+    const card = bestSellers.locator("article").last();
+    await expect(card.getByRole("heading", { name: "Meher Earrings" })).toBeAttached();
+    await expect(card.getByText("₹8,500")).toBeAttached();
     await expect(card.getByRole("heading")).toHaveCSS("font-family", /Montserrat/);
     await expect(card.getByRole("link").first()).toHaveAttribute("href", "/product/meher-earrings");
   });

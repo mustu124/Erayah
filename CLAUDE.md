@@ -16,7 +16,7 @@ A mobile-first, premium e-commerce website for Erayah, an Indian handcrafted jew
 Copy the STRUCTURE of the reference site in /docs/source/Reference_layout-compressed.pdf (Anu Merton). Use Erayah's colours, fonts and content, never the reference's brand name, images or copy. Key patterns to copy:
 - Thin announcement bar on top in the dark accent colour with small light text.
 - Header: wordmark on the left, nav links (SHOP, ABOUT, CONTACT, FAQS) in small uppercase tracking-wide text, a wide inline search field with a square dark search button, then wishlist and cart icons with a count badge. No account icon, no currency selector.
-- Desktop SHOP opens a full-width mega-menu panel with uppercase column headings and light-weight links.
+- Desktop SHOP opens a full-width mega-menu panel with uppercase column headings and light-weight links (Earrings, Necklace Set, More to Shop, Discover).
 - Mobile: wordmark left, cart and hamburger right, full-width search bar under the header. Hamburger opens a full-height drawer with the elephant mark top-left, cart and close top-right, and accordion groups with + / − toggles.
 - Hero: one centred portrait image with the word ERAYAH set huge and very faint behind it across the full width, thin outlined oval arrow buttons left and right, a slide counter ("02/05") bottom-left, a pill label naming the category bottom-centre, dot indicators bottom-right.
 - Section headers: section title on the left and a small date-style label (e.g. the current month and year) on the right, joined by a thin hairline.
@@ -24,8 +24,8 @@ Copy the STRUCTURE of the reference site in /docs/source/Reference_layout-compre
 - Collection page: "Filters" rail on the left on desktop (availability checkboxes, price histogram range slider, category list), product grid on the right, "SORT BY" select above the grid. On mobile, a FILTERS button and a SORT BY button above a 2-column grid.
 - Product page: large image left with thumbnails, details right; mobile stacks image, thumbnail strip, then details. Quantity stepper beside a dark ADD TO CART button, with a heart button.
 - A marquee band with the brand mark between repeating words, used ONLY on the product page above "Complete the Look".
-- Dark footer block with the wordmark in large light type and link columns.
-- Floating round WhatsApp button fixed bottom-right on every page.
+- Dark footer block with the wordmark in large light type and link columns (the Shop column is desktop only).
+- Floating round WhatsApp button (WhatsApp green) fixed bottom-right on every page.
 - Cart opens as a right-side drawer.
 
 ## Brand system (from the Erayah Brand Guidelines)
@@ -54,11 +54,11 @@ Voice: quiet, assured, warm, heritage-meets-contemporary. Short sentences. No ex
 - Accessibility: WCAG AA contrast, focus states visible, all images have alt text, tap targets ≥ 44px.
 
 ## Information architecture
-Categories: Earrings, Necklace Sets, Rings, Bracelets, Pendants (Bracelets shows a graceful "Coming soon" until it has products).
-Nav: Shop (New Arrivals, Best Sellers, Gifts for Her, all 5 categories, Shop All), About Erayah, Contact, FAQs.
+Categories: Earrings, Necklace Set, Rings, Bracelets, Pendants (Bracelets shows a graceful "Coming soon" until it has products).
+Nav: Shop (New Arrivals, Most Loved, Gifts for Her (Under ₹3K), all 5 categories with subcategories under Earrings and Necklace Set, Shop All; there is no "Shop by Style"), About Erayah, Contact, FAQs.
 There is NO Track Order anywhere and NO customer account anywhere.
 Footer links: Shop, About Erayah, Contact, FAQs, Shipping & Returns, Privacy Policy, Terms & Conditions, Instagram, WhatsApp.
-Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals, Best Sellers, Brand Story (2–3 lines + CTA), Footer.
+Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals (four pieces only), Most Loved, Brand Story (2–3 lines + CTA), Footer. "Best Sellers" is called "Most Loved" everywhere the shopper sees it.
 
 ## Commerce rules
 - Guest checkout only. Payment: Razorpay only (UPI, cards, wallets, netbanking). There is NO Cash on Delivery.
@@ -67,13 +67,13 @@ Homepage sections, strictly in this order and nothing else: Hero, Shop by Catego
 - There are NO coupons or discount codes anywhere.
 - The site sends NO email at all (no email service is used). The owner sees new orders in /admin, and contact form messages are saved to the database and read in /admin.
 - The owner manages everything in /admin (products, images, merchandising order, homepage, orders, gift cards, shipping rates, content, settings).
-- Shipping policy text (use verbatim on product pages and Shipping & Returns): delivery in 7–10 working days; express on request; handcrafted variations are natural; returns/exchanges only for transit damage or wrong product, unworn and in original packaging; return shipping is paid by the customer.
+- Shipping policy text (use verbatim on product pages and Shipping & Returns): delivery in 7–10 working days; express on request; handcrafted variations are natural; returns only (no exchanges) for transit damage or wrong product, unworn and in original packaging; no refunds, a credit note is issued as a gift card valid for 12 months; return shipping is paid by the customer.
 
 ## Engineering rules
 - Server Components and server actions/route handlers for data; client components only where interactive.
 - Never expose SUPABASE_SERVICE_ROLE_KEY or RAZORPAY_KEY_SECRET to the browser.
 - Row Level Security on every table.
-- Use next/image everywhere, with explicit sizes and blur placeholders.
+- Use next/image everywhere, with explicit sizes. No blur placeholders: a loading image shows the elephant mark (the `img[data-nimg]` rule in globals.css).
 - Revalidate cached pages with revalidateTag when admin edits data.
 - Keep components small, typed and in /components/{ui,layout,product,cart,admin}.
 - Target: Lighthouse mobile performance ≥ 90, LCP < 2.5s, page load < 3s on 4G.
@@ -98,6 +98,7 @@ Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older
 - Collections: src/app/(store)/shop/ (routes + _components: FilterProvider, FilterPanel, PriceRange, SortSelect, MobileFilterBar, ActiveFilters, ProductGrid with lifestyle tiles, Pagination, ScrollRestorer). URL params in src/lib/collection/params.ts, scopes in src/lib/collection/scopes.ts, queries in src/lib/data/collection.ts.
 - Search: src/lib/search/ (synonyms, quick chips), src/lib/data/search.ts (search_products RPC with a fallback, instant results, miss logging), src/app/api/search (dropdown JSON), src/app/(store)/search (results page reusing the collection body), header combobox in src/components/layout/SearchForm.tsx.
 - Product page: src/app/(store)/product/[slug]/ (page, opengraph-image). Components in src/components/product/ (Gallery, Lightbox, ProductPurchase with sticky bar, PincodeCheck, Marquee, RecentlyViewed, ProductCard, WishlistHeart). Data: src/lib/data/product.ts. APIs: /api/shipping-quote, /api/products/cards.
+- Cart drawer: src/components/cart/CartDrawerMount.tsx (lines, quantity, remove, subtotal, Checkout). Wishlist page: src/app/(store)/wishlist. Both read card data with src/lib/use-product-cards.ts.
 - src/stores/ — zustand: cart (lines keyed by product + variant), wishlist and recently viewed (persisted to localStorage), ui (drawers, WhatsApp product, sticky bar). Use useHydrated() before showing persisted values.
 - e2e/ — Playwright (Chromium + WebKit at 375px and 1280px) against a production build: `pnpm test:e2e` (E2E_DEV=1 for the dev server). e2e/checkout.spec.ts (`E2E_CHECKOUT=1`, fake Razorpay) and most of e2e/admin.spec.ts, content.spec.ts and analytics.spec.ts (`E2E_ADMIN=1`; analytics also needs `pnpm seed:test-orders`) are opt-in because they write test data; helpers in e2e/support/.
 - supabase/ — CLI config and migrations · scripts/ — seed and one-off scripts.

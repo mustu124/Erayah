@@ -13,6 +13,8 @@ type RazorpayOptions = {
   amount: number;
   currency: string;
   name: string;
+  /** Logo in the payment window's header (URL or data URI). */
+  image?: string;
   description: string;
   prefill: { name: string; email: string; contact: string };
   notes?: Record<string, string>;

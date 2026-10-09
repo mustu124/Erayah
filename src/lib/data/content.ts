@@ -34,7 +34,7 @@ export async function getPage(slug: string): Promise<ContentPage | null> {
 export type Faq = { id: number; question: string; answer: string; group: string };
 
 /** The six groups, in the order /faqs shows them; any other group follows. */
-export const FAQ_GROUPS = ["Orders & Payment", "Shipping", "Returns & Exchanges", "Care", "Gifting", "Sizing"];
+export const FAQ_GROUPS = ["Orders & Payment", "Shipping", "Returns", "Care", "Gifting", "Sizing"];
 
 export async function getFaqGroups(): Promise<{ group: string; faqs: Faq[] }[]> {
   "use cache";

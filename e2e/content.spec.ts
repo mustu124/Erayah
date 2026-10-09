@@ -17,9 +17,9 @@ test.describe("content pages", () => {
     for (const title of ["Fortune's favourite", "Why the elephant", "Made to be handed down", "Our founder"]) {
       await expect(page.getByRole("heading", { name: title })).toBeVisible();
     }
-    await expect(page.getByText("fortune's favourite.", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("Erayah was born from that feeling.", { exact: false }).first()).toBeVisible();
     await expect(page.getByRole("heading", { name: "The craft" })).toBeVisible();
-    await expect(page.getByRole("link", { name: /^Follow @/ })).toHaveAttribute("href", /instagram\.com/);
+    await expect(page.getByRole("link", { name: "Follow", exact: true })).toHaveAttribute("href", /instagram\.com/);
     await expect(page.getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
 
@@ -39,7 +39,7 @@ test.describe("content pages", () => {
   test("FAQs: grouped accordions in order, with FAQPage structured data", async ({ page }) => {
     await open(page, "/faqs");
     const groups = await page.locator("main section h2").allTextContents();
-    expect(groups.slice(0, 6)).toEqual(["Orders & Payment", "Shipping", "Returns & Exchanges", "Care", "Gifting", "Sizing"]);
+    expect(groups.slice(0, 6)).toEqual(["Orders & Payment", "Shipping", "Returns", "Care", "Gifting", "Sizing"]);
     const question = page.getByText("How long does delivery take?");
     await question.click();
     await expect(page.getByText("Orders are delivered within 7–10 working days.")).toBeVisible();
@@ -54,7 +54,7 @@ test.describe("content pages", () => {
 
   test("Policy pages render their markdown", async ({ page }) => {
     for (const [url, title, text] of [
-      ["/shipping-returns", "Shipping & Returns", "Returns and exchanges"],
+      ["/shipping-returns", "Shipping & Returns", "credit note is issued as a gift card"],
       ["/privacy-policy", "Privacy Policy", "Digital Personal Data Protection Act"],
       ["/terms", "Terms & Conditions", "Razorpay"],
     ]) {
@@ -64,12 +64,12 @@ test.describe("content pages", () => {
     }
   });
 
-  test("an unknown address shows the 404 with search and Best Sellers", async ({ page }) => {
+  test("an unknown address shows the 404 with search and Most Loved", async ({ page }) => {
     const response = await open(page, "/this-piece-is-missing");
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "This piece seems to have wandered off." })).toBeVisible();
     await expect(page.getByRole("combobox").filter({ visible: true }).last()).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Best Sellers" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Most Loved" })).toBeVisible();
     await expect(page.locator("footer")).toBeVisible();
   });
 });

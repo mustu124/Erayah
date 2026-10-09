@@ -1,6 +1,6 @@
 // What a collection page lists: Shop All, a category, a curated list or a style.
 
-export type ListSlug = "new-arrivals" | "best-sellers" | "gifts-for-her";
+export type ListSlug = "new-arrivals" | "most-loved" | "gifts-for-her";
 
 /** Serializable description of a collection (passed into cached queries). */
 export type Scope = {
@@ -36,14 +36,14 @@ export const LISTS: Record<ListSlug, { title: string; description: string; seoDe
     description: "The newest pieces from the Erayah studio.",
     seoDescription: "New handcrafted jewellery from Erayah: kundan, jadau and polki earrings, necklace sets, rings and pendants.",
   },
-  "best-sellers": {
-    title: "Best Sellers",
+  "most-loved": {
+    title: "Most Loved",
     description: "The pieces our customers return to.",
     seoDescription: "Erayah's most-loved handcrafted pieces in 22kt gold-plated silver alloy with polki, kundan and jadau.",
   },
   "gifts-for-her": {
-    title: "Gifts for Her",
-    description: "Pieces chosen for giving.",
+    title: "Gifts for Her (Under ₹3K)",
+    description: "Pieces chosen for giving, all under ₹3,000.",
     seoDescription: "Handcrafted jewellery gifts from Erayah: pendants and pieces under ₹3,000, with a gift note at checkout.",
   },
 };
@@ -71,14 +71,6 @@ export const STYLE_PAGES: Record<string, { title: string; styles: string[]; desc
   statement: { title: "Statement", styles: ["statement"], description: "Pieces for the occasions you will remember." },
   celestial: { title: "Celestial", styles: ["celestial"], description: "Moons and stars in polki and mother-of-pearl." },
   nature: { title: "Nature", styles: ["nature"], description: "Flowers, lotuses, leaves and birds." },
-};
-
-/** One line under the category title, used when the category has no description set in admin. */
-export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  earrings: "Jhumkas, chaandbaalis, danglers and studs in polki and kundan.",
-  "necklace-sets": "Chokers and necklaces with their earrings, made to be worn together.",
-  rings: "Adjustable rings in polki, from slim stacking bands to one-of-a-kind pieces.",
-  pendants: "Elephants, moons, lotuses and wings on fine chains.",
 };
 
 export function shopAllScope(): Scope {

@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { ElephantMark } from "@/components/ui/Logo";
 import { getCategoryTiles, type CategoryTile } from "@/lib/data/catalog";
-import { IVORY_BLUR } from "@/lib/images";
 import { routes } from "@/lib/routes";
 
 import { GiantWordmark } from "./GiantWordmark";
@@ -35,8 +34,6 @@ export async function ShopByCategory() {
                     alt=""
                     fill
                     sizes={SIZES}
-                    placeholder="blur"
-                    blurDataURL={tile.image.blurDataUrl ?? IVORY_BLUR}
                     className="object-cover transition-opacity duration-300 group-hover:opacity-90"
                   />
                 ) : (

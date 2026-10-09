@@ -33,7 +33,7 @@ export default async function HomepageAdminPage() {
     <>
       <PageHeader
         title="Homepage"
-        description="Hero, Shop by Category, New Arrivals, Best Sellers and the brand story, in that order."
+        description="Hero, Shop by Category, New Arrivals, Most Loved and the brand story, in that order."
         actions={
           <a href="/" target="_blank" rel="noopener noreferrer" className={buttonClasses("outline")}>
             Preview ↗
@@ -68,7 +68,7 @@ export default async function HomepageAdminPage() {
           </div>
         </Panel>
 
-        <Panel title="New Arrivals and Best Sellers">
+        <Panel title="New Arrivals and Most Loved">
           <p className="text-body-sm text-ink/75">
             Switch “New Arrival” or “Best Seller” on in a product, then set the order on the merchandising screen.
           </p>
@@ -77,7 +77,7 @@ export default async function HomepageAdminPage() {
               Order New Arrivals
             </Link>
             <Link href="/admin/merchandising?scope=best-sellers" className={buttonClasses("outline", "px-4")}>
-              Order Best Sellers
+              Order Most Loved
             </Link>
           </div>
         </Panel>

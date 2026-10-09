@@ -10,7 +10,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "FAQs",
-  description: "Orders and payment, shipping, returns and exchanges, care, gifting and sizing: answers to common questions about Erayah jewellery.",
+  description: "Orders and payment, shipping, returns, care, gifting and sizing: answers to common questions about Erayah jewellery.",
   alternates: { canonical: routes.faqs },
 };
 

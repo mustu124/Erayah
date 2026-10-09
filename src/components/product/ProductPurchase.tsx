@@ -132,7 +132,7 @@ export function ProductPurchase({ product, url, whatsappNumber }: ProductPurchas
 
       <div className="mt-6 space-y-1 text-body-sm">
         <p className={cn("font-medium", soldOut ? "text-plum" : "text-ink")}>{availability}</p>
-        <p className="text-ink/75">Delivered in 7–10 working days</p>
+        <p className="text-ink/75">Delivery in 7–10 working days</p>
         <PincodeCheck slug={product.slug} quantity={qty} />
       </div>
 

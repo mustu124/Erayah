@@ -22,6 +22,7 @@ import { useCart } from "@/stores/cart";
 import { Field } from "./Field";
 import { OrderSummary } from "./OrderSummary";
 import { loadRazorpay, type RazorpaySuccess } from "./razorpay";
+import { RAZORPAY_LOGO } from "./razorpay-logo";
 
 const PAYMENT_FAILED = "Payment didn't go through. Your cart is safe, please try again.";
 
@@ -199,6 +200,7 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
       amount: order.amount,
       currency: order.currency,
       name: "Erayah",
+      image: RAZORPAY_LOGO,
       description: `Order ${order.orderNumber}`,
       prefill: order.prefill,
       notes: { order_number: order.orderNumber },

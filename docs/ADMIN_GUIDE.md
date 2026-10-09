@@ -45,7 +45,7 @@ Other things you can do on an order:
 - **WhatsApp the customer** with a ready-written message that fits the order's status. You can edit it before sending.
 - **Invoice** downloads the customer's bill as a PDF, if they ask for it again.
 - **Cancel** (before it ships) puts the pieces back in stock. If the customer paid, refund them from the **Razorpay dashboard**, then mark the order **Refunded**. The Razorpay links on the order page take you straight there.
-- **Returned** also puts the pieces back in stock.
+- **Returned** also puts the pieces back in stock. Returns are not refunded: create a gift card for the order value in **Gift cards** (expiry 12 months from today) and send the code to the customer.
 - If an order's timeline shows **REFUND NEEDED** in red, the payment arrived after the pieces had sold out. Refund it in Razorpay.
 
 On **Orders** you can search by order number, name, phone or email, and filter by status, payment or dates. **Export CSV** downloads the orders you're looking at, for a spreadsheet.
@@ -87,7 +87,7 @@ Other things you can do with products:
 
 ## Reordering a collection
 
-1. Open **Merchandising** and choose a category, **New Arrivals** or **Best Sellers**.
+1. Open **Merchandising** and choose a category, **New Arrivals** or **Most Loved**. The homepage shows the first four New Arrivals.
 2. You see the pieces exactly as customers do, four to a row. Drag a piece by its grip (top-left corner) to a new place. On a phone, press and hold the grip first.
 3. Tap **Save order**. The shop updates immediately.
 

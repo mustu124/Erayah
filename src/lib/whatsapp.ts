@@ -8,7 +8,7 @@ export function whatsappUrl(
   about?: { name: string; url: string } | { orderNumber: string } | null,
 ): string {
   const message = !about
-    ? "Hi Erayah, I have a question about "
+    ? "Hi Erayah, I would like to know more about your jewellery."
     : "orderNumber" in about
       ? `Hi Erayah, about my order ${about.orderNumber}: `
       : `Hi Erayah, I'm interested in the ${about.name} (${about.url}).`;

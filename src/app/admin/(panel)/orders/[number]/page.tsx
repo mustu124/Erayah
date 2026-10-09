@@ -13,7 +13,6 @@ import { NEXT_STATUSES } from "@/lib/admin/orders";
 import { formatDateTimeLong } from "@/lib/admin/time";
 import { getOrderByNumber } from "@/lib/data/order";
 import { formatPrice } from "@/lib/format/price";
-import { IVORY_BLUR } from "@/lib/images";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 
@@ -112,7 +111,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                 <li key={item.id} className="flex gap-4 py-3 first:pt-0">
                   <div className="relative size-16 shrink-0 overflow-hidden bg-ivory">
                     {item.image_path_snapshot ? (
-                      <Image src={publicStorageUrl("product-images", item.image_path_snapshot)} alt="" fill sizes="64px" className="object-cover" placeholder="blur" blurDataURL={IVORY_BLUR} />
+                      <Image src={publicStorageUrl("product-images", item.image_path_snapshot)} alt="" fill sizes="64px" className="object-cover" />
                     ) : null}
                   </div>
                   <div className="min-w-0 flex-1 text-body-sm">

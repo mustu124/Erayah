@@ -9,7 +9,7 @@ import { Drawer } from "@/components/ui/Drawer";
 import { Icon } from "@/components/ui/Icon";
 import { CountBadge, IconButton } from "@/components/ui/IconButton";
 import { ElephantMark } from "@/components/ui/Logo";
-import { CATEGORY_LINKS, DISCOVER_LINKS, STYLE_LINKS } from "@/lib/navigation";
+import { DISCOVER_LINKS, MORE_CATEGORY_LINKS, SUBCATEGORY_GROUPS } from "@/lib/navigation";
 import { routes } from "@/lib/routes";
 import { useHydrated } from "@/lib/use-hydrated";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -61,28 +61,28 @@ export function MobileMenu({ instagramUrl, whatsappNumber }: MobileMenuProps) {
               </li>
             ))}
           </ul>
-          <Accordion title="Category" size="sm">
-            <ul className="pl-1">
-              {[{ label: "All", href: routes.shopAll }, ...CATEGORY_LINKS].map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} onClick={close} className={SUB_LINK}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Accordion>
-          <Accordion title="Style" size="sm">
-            <ul className="pl-1">
-              {STYLE_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} onClick={close} className={SUB_LINK}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Accordion>
+          {SUBCATEGORY_GROUPS.map((group) => (
+            <Accordion key={group.title} title={group.title} size="sm">
+              <ul className="pl-1">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} onClick={close} className={SUB_LINK}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Accordion>
+          ))}
+          <ul>
+            {MORE_CATEGORY_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} onClick={close} className={BOLD_LINK}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Accordion>
 
         <ul>

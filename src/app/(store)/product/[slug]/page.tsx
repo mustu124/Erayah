@@ -136,8 +136,9 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
               <div className="space-y-3 text-body-sm text-ink/80">
                 <p>Orders are delivered within 7–10 working days. Express shipping on request can be arranged.</p>
                 <p>
-                  Returns and exchanges are accepted only for products damaged in transit or incorrect products received.
-                  Items must be returned unworn and in their original packaging. Return shipping is paid by the customer.
+                  Returns are accepted only for products damaged in transit or incorrect products received. Items must be
+                  returned unworn and in their original packaging. We don&apos;t offer exchanges or refunds: a credit note is
+                  issued as a gift card for a future purchase, valid for 12 months. Return shipping is paid by the customer.
                 </p>
                 <Link href={routes.shippingReturns} className="inline-flex min-h-11 items-center text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
                   Read our Shipping & Returns policy

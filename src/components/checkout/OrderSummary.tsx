@@ -9,7 +9,6 @@ import { Price } from "@/components/ui/Price";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { QuoteResponse } from "@/lib/checkout/types";
 import { cn } from "@/lib/cn";
-import { IVORY_BLUR } from "@/lib/images";
 
 type OrderSummaryProps = {
   /** Distinguishes the two copies (mobile and desktop) so ids stay unique. */
@@ -54,8 +53,6 @@ export function OrderSummary({
                     fill
                     sizes="72px"
                     className="object-cover"
-                    placeholder="blur"
-                    blurDataURL={IVORY_BLUR}
                   />
                 ) : null}
                 <span className="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-ink text-[10px] text-ivory tabular-nums">

@@ -19,6 +19,8 @@
   --color-paper: #ffffff;
   --color-paper-warm: #fdf9f4;
   --color-mist: #e5e5e5;
+  /* WhatsApp's green, a shade deeper so the white glyph keeps 3:1 contrast. Only for the WhatsApp button. */
+  --color-whatsapp: #1da851;
 
   /* Fonts: next/font (src/app/fonts.ts) sets --font-stix/-montserrat/-sloop. */
   --font-heading: var(--font-stix), "STIX Two Text", Georgia, serif;
@@ -264,3 +266,8 @@ dialog.drawer[open]::backdrop {
 .prose-erayah em { font-family: var(--font-heading); font-style: italic; }
 .prose-erayah hr { border: 0; border-top: 1px solid var(--color-gold); margin: 2.5em auto; width: 4rem; }
 .prose-erayah blockquote { border-left: 1px solid var(--color-gold); padding-left: 1rem; font-family: var(--font-heading); font-style: italic; }
+
+/* While a photo is loading (or buffering), the elephant mark shows in its place. */
+img[data-nimg] {
+  background: url("/brand/elephant-loading.svg") center / min(22%, 64px) auto no-repeat;
+}

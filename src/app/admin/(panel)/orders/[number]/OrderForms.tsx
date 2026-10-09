@@ -12,8 +12,8 @@ const HINTS: Record<string, string> = {
   packed: "It's packed and waiting for the courier.",
   shipped: "Handed to the courier. Add the courier and tracking number below for your records.",
   delivered: "The customer has received it.",
-  cancelled: "Puts the pieces back in stock. Refund any payment from the Razorpay dashboard.",
-  returned: "The pieces came back. They go back into stock.",
+  cancelled: "Puts the pieces back in stock. If the customer has paid, refund it from the Razorpay dashboard.",
+  returned: "The pieces came back and go back into stock. No refund: issue a gift card for the order value (Gift cards → New, expiry 12 months) and send the code to the customer.",
   refunded: "You've refunded the payment in Razorpay.",
 };
 

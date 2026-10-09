@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
     "/api/webhooks/razorpay": ["./src/fonts/**/*.ttf"],
     "/admin/orders/[number]/invoice": ["./src/fonts/**/*.ttf"],
   },
+  // "Best Sellers" became "Most Loved"; old links (Instagram, bookmarks) keep working.
+  redirects: async () => [{ source: "/shop/best-sellers", destination: "/shop/most-loved", permanent: true }],
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
