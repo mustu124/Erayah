@@ -55,11 +55,14 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
     ...(product.category ? [{ name: product.category.name, path: routes.collection(product.category.slug) }] : []),
     { name: product.name, path: routes.product(product.slug) },
   ];
-  const catalogueLine = [
-    product.stones.length ? `Stones: ${product.stones.join(", ")}` : null,
-    product.closure ? `Closure: ${product.closure}` : null,
-    product.chainLength ? `Chain: ${product.chainLength}` : null,
-  ].filter(Boolean);
+  // Each fact appears once: the story under Description, the details under Material & Craft.
+  const sentence = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const details = [
+    product.materials.length ? { label: "Material", value: product.materials.join(", ") } : null,
+    product.stones.length ? { label: "Stones", value: sentence(product.stones.join(", ")) } : null,
+    product.closure ? { label: "Closure", value: product.closure } : null,
+    product.chainLength ? { label: "Chain", value: sentence(product.chainLength) } : null,
+  ].filter((d) => d !== null);
 
   return (
     <>
@@ -112,22 +115,17 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
 
           <div className="mt-10 border-t border-mist">
             <Accordion title="Description" size="md" defaultOpen>
-              <div className="space-y-3 text-body text-ink/85">
-                {product.description ? <p>{product.description}</p> : null}
-                {product.shortDescription ? <p className="text-body-sm text-ink/70">{product.shortDescription}</p> : null}
-                {catalogueLine.length ? (
-                  <ul className="space-y-0.5 text-body-sm text-ink/70">
-                    {catalogueLine.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
+              <p className="text-body text-ink/85">{product.description ?? product.shortDescription}</p>
             </Accordion>
             <Accordion title="Material & Craft" size="md">
-              <p className="text-body-sm text-ink/80">
-                {[...product.materials, ...product.stones.map((s) => s.charAt(0).toUpperCase() + s.slice(1))].join(" · ")}
-              </p>
+              <dl className="space-y-1.5 text-body-sm text-ink/80">
+                {details.map((d) => (
+                  <div key={d.label} className="flex gap-3">
+                    <dt className="w-20 shrink-0 text-ink/60">{d.label}</dt>
+                    <dd>{d.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </Accordion>
             <Accordion title="Care Instructions" size="md">
               <p className="text-body-sm text-ink/80">{product.careOverride ?? DEFAULT_CARE}</p>
