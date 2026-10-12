@@ -134,11 +134,14 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
             </Accordion>
             <Accordion title="Shipping & Returns" size="md">
               <div className="space-y-3 text-body-sm text-ink/80">
-                <p>Orders are delivered within 7–10 working days. Express shipping on request can be arranged.</p>
                 <p>
-                  Returns are accepted only for products damaged in transit or incorrect products received. Items must be
-                  returned unworn and in their original packaging. We don&apos;t offer exchanges or refunds: a credit note is
-                  issued as a gift card for a future purchase, valid for 12 months. Return shipping is paid by the customer.
+                  Free shipping on orders above ₹6,000. Delivered within 7–10 working days. Express shipping can be arranged on
+                  request.
+                </p>
+                <p>
+                  We do not accept returns or offer refunds. Exchanges are permitted only for products damaged in transit or
+                  incorrect products received. To be eligible for an exchange, items must be unworn and returned in their
+                  original packaging. Exchange shipping costs are to be borne by the customer.
                 </p>
                 <Link href={routes.shippingReturns} className="inline-flex min-h-11 items-center text-ink underline decoration-ink/40 underline-offset-4 hover:decoration-ink">
                   Read our Shipping & Returns policy

@@ -75,11 +75,11 @@ test.describe("search", () => {
     await expect(cards(page).first()).toBeVisible(SLOW);
     if (isMobile(testInfo.project.name)) {
       await page.getByRole("button", { name: /^Filters/ }).click();
-      await page.getByRole("dialog", { name: "Filters" }).getByRole("button", { name: "Turquoise", exact: true }).click();
+      await page.getByRole("dialog", { name: "Filters" }).getByRole("switch", { name: "Show gifts only" }).click();
     } else {
-      await page.getByRole("complementary", { name: "Filters" }).getByRole("button", { name: "Turquoise", exact: true }).click();
+      await page.getByRole("complementary", { name: "Filters" }).getByRole("switch", { name: "Show gifts only" }).click();
     }
-    await expect(page).toHaveURL(/\/search\?q=pendant&colour=turquoise$/, SLOW);
+    await expect(page).toHaveURL(/\/search\?q=pendant&gift=1$/, SLOW);
   });
 
   test("no results", async ({ page }) => {

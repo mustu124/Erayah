@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 
 import { CartDrawerMount } from "@/components/cart/CartDrawerMount";
 import { getMenuFeature, getSiteShell } from "@/lib/data/site";
@@ -7,6 +7,7 @@ import { AnnouncementBar } from "./AnnouncementBar";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { HistoryFlag } from "./HistoryFlag";
+import { PageTransition } from "./PageTransition";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 /** The shell around every storefront page (also used by the site-wide 404). */
@@ -27,6 +28,9 @@ export async function StoreShell({ children }: { children: ReactNode }) {
       <WhatsAppButton number={shell.whatsappNumber} />
       <CartDrawerMount />
       <HistoryFlag />
+      <Suspense>
+        <PageTransition />
+      </Suspense>
     </div>
   );
 }

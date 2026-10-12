@@ -13,6 +13,10 @@ import type { Facets } from "@/lib/data/collection";
 import { toggle, useFilters } from "./FilterProvider";
 import { PriceRange } from "./PriceRange";
 
+// Hidden at the owner's request; Style comes back when there are more products.
+const SHOW_COLOUR_FILTER = false;
+const SHOW_STYLE_FILTER = false;
+
 export const SWATCH: Record<string, string> = {
   white: "#ffffff",
   green: "#3e7a5a",
@@ -58,7 +62,7 @@ export function FilterPanel({ scope, facets }: { scope: Scope; facets: Facets })
         </Group>
       ) : null}
 
-      {facets.colours.length ? (
+      {SHOW_COLOUR_FILTER && facets.colours.length ? (
         <Group title="Colour">
           <div className="flex flex-wrap gap-x-1 gap-y-2">
             {facets.colours.map(({ value }) => {
@@ -105,7 +109,7 @@ export function FilterPanel({ scope, facets }: { scope: Scope; facets: Facets })
         </Group>
       ) : null}
 
-      {facets.styles.length ? (
+      {SHOW_STYLE_FILTER && facets.styles.length ? (
         <Group title="Style">
           {facets.styles.map((s) => (
             <Checkbox

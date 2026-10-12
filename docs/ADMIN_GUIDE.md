@@ -45,7 +45,7 @@ Other things you can do on an order:
 - **WhatsApp the customer** with a ready-written message that fits the order's status. You can edit it before sending.
 - **Invoice** downloads the customer's bill as a PDF, if they ask for it again.
 - **Cancel** (before it ships) puts the pieces back in stock. If the customer paid, refund them from the **Razorpay dashboard**, then mark the order **Refunded**. The Razorpay links on the order page take you straight there.
-- **Returned** also puts the pieces back in stock. Returns are not refunded: create a gift card for the order value in **Gift cards** (expiry 12 months from today) and send the code to the customer.
+- **Returned** also puts the pieces back in stock (use it when a piece comes back for an exchange; there are no returns or refunds).
 - If an order's timeline shows **REFUND NEEDED** in red, the payment arrived after the pieces had sold out. Refund it in Razorpay.
 
 On **Orders** you can search by order number, name, phone or email, and filter by status, payment or dates. **Export CSV** downloads the orders you're looking at, for a spreadsheet.

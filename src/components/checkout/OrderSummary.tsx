@@ -1,9 +1,11 @@
 "use client";
 
+import { X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
 import { Price } from "@/components/ui/Price";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -66,7 +68,17 @@ export function OrderSummary({
                   {line.quantity} × <Price amount={line.unit_price} />
                 </p>
               </div>
-              <Price amount={line.line_total} className="text-body-sm text-ink" />
+              <div className="flex flex-col items-end justify-between">
+                <Price amount={line.line_total} className="text-body-sm text-ink" />
+                <button
+                  type="button"
+                  onClick={() => onRemoveLine(line.product_id)}
+                  aria-label={`Remove ${line.name} from cart`}
+                  className="-mr-3 -mb-2 flex size-11 items-center justify-center text-ink transition-opacity duration-300 hover:opacity-60"
+                >
+                  <Icon icon={X} size={18} />
+                </button>
+              </div>
             </li>
           ))}
         </ul>

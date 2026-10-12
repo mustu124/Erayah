@@ -97,30 +97,30 @@ const MERCH_ORDER: Record<Exclude<CategorySlug, "bracelets">, string[]> = {
 /** New Arrivals, in order. The first four are the ones on the homepage and span the price range. */
 const NEW_ARRIVALS = [
   "ekam-ring",
-  "mithu-necklace-set",
-  "gul-choker-set",
-  "noor-set",
   "gulbahar-earrings",
-  "arohi-earrings",
-  "rohini-choker",
-  "rangmil-pendant",
-  "channak-set",
-  "mallika-earrings",
-  "ziya-choker-set",
   "tara-choker-set",
+  "channak-set",
+  "arohi-earrings",
   "mayurika-choker-set",
+  "mallika-earrings",
+  "rangmil-pendant",
+  "noor-set",
+  "gul-choker-set",
+  "ziya-choker-set",
+  "rohini-choker",
+  "mithu-necklace-set",
 ];
 
 /** Most Loved (is_best_seller), in carousel order: starting range first. */
 const BEST_SELLERS = [
   "gaja-i-pendant",
   "kumud-pendant-mother-of-pearl",
-  "juhi-earrings-red",
-  "harakh-ring",
-  "dahlia-earrings",
-  "rani-earrings",
   "gul-choker-set",
+  "dahlia-earrings",
+  "harakh-ring",
   "meher-earrings",
+  "rani-earrings",
+  "juhi-earrings-red",
 ];
 
 const HEROES = [
@@ -286,7 +286,7 @@ const DESCRIPTIONS: Record<string, string> = {
 // ─── Site content ───────────────────────────────────────────────────────────
 
 const SITE_SETTINGS = {
-  announcement_text: "Jadau, Reimagined · Free shipping above ₹6,000 · Delivered in 7–10 days",
+  announcement_text: "Handcrafted in India · Free shipping above ₹6,000",
   brand_story_text:
     "Some things are made to last a lifetime. Erayah makes pieces meant to outlast several. Heirlooms, reimagined, because some stories deserve a more beautiful way to continue.",
   brand_story_cta_label: "Our Story",
@@ -312,16 +312,16 @@ const FAQS: { group: string; question: string; answer: string }[] = [
     answer: "Shipping charges are calculated at checkout based on your delivery pincode. Shipping is free on orders above ₹6,000.",
   },
   {
-    group: "Returns",
-    question: "Can I return a piece?",
+    group: "Exchanges",
+    question: "Can I return or exchange a piece?",
     answer:
-      "Returns are accepted only for products damaged in transit or incorrect products received. Items must be returned unworn and in their original packaging. We do not offer exchanges or refunds: a credit note is issued as a gift card for a future purchase, valid for 12 months. Return shipping, courier and logistics charges are borne by the customer.",
+      "We do not accept returns or offer refunds. Exchanges are permitted only for products damaged in transit or incorrect products received. To be eligible for an exchange, items must be unworn and returned in their original packaging. Exchange shipping costs are to be borne by the customer.",
   },
   {
-    group: "Returns",
+    group: "Exchanges",
     question: "My order arrived damaged. What should I do?",
     answer:
-      "We are sorry. Message us on WhatsApp with your order number and photographs of the piece and its packaging, and we will guide you through a return.",
+      "We are sorry. Message us on WhatsApp with your order number and photographs of the piece and its packaging, and we will guide you through an exchange.",
   },
   {
     group: "Care",
@@ -381,55 +381,63 @@ const PAGES: Record<string, { body: string; seo_title: string; seo_description: 
   "shipping-returns": {
     seo_title: "Shipping & Returns",
     seo_description:
-      "Delivery in 7–10 working days across India, free above ₹6,000. Returns for transit damage or incorrect products.",
+      "Free shipping above ₹6,000, delivered within 7–10 working days. Exchanges only for transit damage or incorrect products.",
     body: `## Shipping
 
-Shipping charges are calculated at checkout based on your delivery pincode, and shipping is free on orders above ₹6,000. Orders are delivered within 7–10 working days. Express shipping on request can be arranged.
+Shipping charges are calculated at checkout based on your delivery pincode.
+
+Free shipping on orders above ₹6,000.
+
+Delivered within 7–10 working days.
+
+Express shipping can be arranged on request.
 
 ## Handcrafted by artisans
 
 Our jewellery is handcrafted by traditional artisans, so slight variations in stones, finish and detailing are natural and make each piece unique. All products undergo quality checks before dispatch.
 
-## Returns
+## Returns and exchanges
 
-Returns are accepted ONLY for products damaged in transit or incorrect products received. Items must be returned unworn and in their original packaging.
+We do not accept returns or offer refunds. Exchanges are permitted only for products damaged in transit or incorrect products received. To be eligible for an exchange, items must be unworn and returned in their original packaging.
 
-We do not offer exchanges or refunds. For an accepted return, a credit note is issued as a gift card for a future purchase, valid for 12 months.
+Exchange shipping costs are to be borne by the customer.
 
-Return shipping, courier and logistics charges for all domestic and international orders are borne by the customer.
-
-To request a return, message us on WhatsApp with your order number.
+To request an exchange, message us on WhatsApp with your order number.
 `,
   },
   about: {
     seo_title: "About Erayah",
     seo_description:
-      "Erayah means fortune's favourite. Handcrafted heirloom jewellery, rooted in heritage and made to be handed down.",
-    body: `## Fortune's favourite
+      "Heirlooms, reimagined. Inspired by the past, made for the present, and treasured for what comes next.",
+    body: `## Where It Began
 
-Some moments just make you feel lucky. A celebration, a new beginning, a piece of jewellery that somehow becomes part of a memory. **Erayah was born from that feeling.** We make jewellery for those fortunate little moments, and for the stories that make us feel even luckier to have lived them.
+I often found myself reaching for the same pair of golden hoops, despite growing up around beautiful Indian jewellery. Much of what I admired remained reserved for special occasions. I began to wonder why jewellery so rich in heritage felt so removed from the way we dressed and lived today.
 
-## Why the elephant
+ERAYAH grew from that thought: a desire to bring the beauty of Indian jewellery into contemporary life, without losing what makes it meaningful.
 
-There's a reason the elephant has always held such a special place in Indian culture. It represents **strength, wisdom, protection and good fortune**, but there's also something wonderfully gentle about it. For us, it captures the spirit of Erayah perfectly: rooted, graceful and quietly powerful, with a little faith and fortune along the way.
+## Jadau, Reconsidered
 
-## Made to be handed down
+Rooted in Rajasthan's Jadau tradition, ERAYAH brings the artistry of Indian heritage into a contemporary design language. We bring together intricate detailing and modern sensibilities to create pieces that feel equally at home with everyday dressing and traditional attire. **For us, heritage isn't something to dress up for occasionally. It's something to make your own.**
 
-We've always believed jewellery should be worn, not kept away for "someday." **Erayah reimagines Jadau, an ancient craft rooted in Rajasthan, and gives it a contemporary life.** Pieces you can wear with a sari, a dress, or your everyday wardrobe, collecting stories along the way until they become someone else's to carry.
+## Beyond the Occasion
+
+We believe jewellery becomes meaningful through the life it lives with us. It may mark a milestone, become part of a familiar ritual, or gather significance over years of being worn. ERAYAH creates space for Indian craftsmanship in the present, with the hope that today's favourite pieces become tomorrow's heirlooms.
 
 ## Our founder
 
-Erayah started with a feeling I couldn't quite find in my own jewellery box. Everything seemed to sit at one of two ends: too western or entirely traditional. There was little that spoke to the modern Indian woman whose life moves at full speed, while her heart remains rooted in culture, rituals and the beauty of meaningful traditions.
+"Some things are too beautiful to be saved for another day. I believe jewellery is one of them.
 
-Erayah grew from that space in between. Indian at heart, contemporary in spirit, and rooted in the timeless craft of Jadau. Jewellery that belongs to the way we live today, while honouring the craft, culture and stories that came before us.
+I grew up admiring the kind of Indian jewellery that was often brought out for special occasions, beautiful pieces with stories and traditions woven into them. I loved what they represented, but always wished they could be part of more than just the big moments.
 
-## The craft
+Born in Gen Z, with an old soul and a love for all things timeless, I wanted to find a place for that heritage in the way we live today.
 
-Every Erayah piece begins as silver alloy, finished in 22kt gold plating: the warmth of gold, with a lightness you can wear all evening.
+That is what led me to create ERAYAH, bringing the intricate craft of Jadau into a contemporary world. I hope every piece finds a place in your everyday, becomes part of the moments you remember, and is treasured long enough to carry a story forward."
 
-The settings are kundan and jadau, the techniques of royal Indian jewellery, worked by hand by traditional artisans. Each stone is placed and held the way it has been for generations.
+With love,
 
-Because every piece is made by hand, no two are quite alike. A slight difference in a stone isn't a flaw. It is the mark of the hands that made it.
+**Bhavi Shah**
+
+Founder & Creative Director
 `,
   },
   "privacy-policy": {
@@ -507,9 +515,9 @@ Your order is confirmed when payment succeeds and you see the confirmation page 
 
 We accept UPI, credit and debit cards, wallets and netbanking through Razorpay.
 
-## Shipping and returns
+## Shipping and exchanges
 
-Delivery and returns are covered by our Shipping & Returns policy, which forms part of these terms.
+Delivery and exchanges are covered by our Shipping & Returns policy, which forms part of these terms.
 
 ## Intellectual property
 

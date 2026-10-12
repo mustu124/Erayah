@@ -10,7 +10,7 @@ async function openHome(page: Page) {
 test.describe("site shell", () => {
   test("announcement bar, header and search", async ({ page }, testInfo) => {
     await openHome(page);
-    await expect(page.getByText("Jadau, Reimagined · Free shipping above ₹6,000 · Delivered in 7–10 days")).toBeVisible();
+    await expect(page.getByText("Handcrafted in India · Free shipping above ₹6,000")).toBeVisible();
 
     if (!isMobile(testInfo.project.name)) {
       const nav = page.getByRole("navigation", { name: "Main" });
@@ -20,6 +20,15 @@ test.describe("site shell", () => {
       await expect(page.getByRole("link", { name: "Wishlist" })).toBeVisible();
     }
     await expect(page.getByRole("button", { name: "Cart" })).toBeVisible();
+
+    // Mobile: menu on the left, logo in the centre, cart on the right.
+    if (isMobile(testInfo.project.name)) {
+      const box = async (name: string, role: "button" | "link") => (await page.getByRole(role, { name }).first().boundingBox())!;
+      const [menu, logo, cart] = [await box("Menu", "button"), await box("Erayah, home", "link"), await box("Cart", "button")];
+      expect(menu.x).toBeLessThan(logo.x);
+      expect(logo.x + logo.width).toBeLessThan(cart.x);
+      expect(Math.abs(logo.x + logo.width / 2 - 375 / 2)).toBeLessThan(2);
+    }
 
     const search = page.getByRole("combobox", { name: "Search jewellery" }).locator("visible=true");
     await expect(search).toHaveCount(1);

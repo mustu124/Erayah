@@ -56,7 +56,8 @@ Things only you can do. Placeholders are in use until each is done. Tick items o
 - [ ] **FAQ drafts**: two new questions in "Orders & Payment" (order confirmation; changing or cancelling) are drafts like the rest. Edit them in Admin → Content.
 - [ ] **UPI in Razorpay** — the edits list says "No UPI in Razorpay". The site doesn't hide any payment method; Razorpay decides which ones to show. In test mode, or before the account's KYC is complete, UPI is often missing. Check Razorpay Dashboard → Account & Settings → Payment methods. (If you meant UPI should *not* be offered, say so and it will be switched off.)
 - [ ] **Homepage photos** and **revised product descriptions** — to come from the owner (edits 6 and 17).
-- [ ] **Founder name** — the founder story is in; add the name in Admin → Content → Pages → About if you want it shown.
+- [ ] **Homepage, after the photos are final** (round 2): hero slides Everyday Favourites, Wedding Guest Edit (under ₹12,000), Shop Gifts, Most Loved, Ready to Ship; and the order Hero, Shop by Category, New Arrivals, Founder's note with "Read more", Most Loved. Still needed from the owner: what "Ready to Ship" and "Everyday Favourites" should contain.
+- [ ] **About page icons**: the three blocks (Handcrafted in India, The craft, Gold Plated) use simple line icons. Send artwork if you want your own infographics.
 - [ ] **About / brand story review**, **testimonials**, **announcement bar text**, support email and phone.
 - [ ] **Domain** and DNS (for launch).
 

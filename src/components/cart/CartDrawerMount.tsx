@@ -18,7 +18,7 @@ import { useUI } from "@/stores/ui";
 
 /**
  * The cart, as a right-side drawer: each piece with its photo, name and price,
- * a quantity stepper and Remove, then the subtotal and Checkout. Prices shown
+ * a quantity stepper and a cross to remove it, then the subtotal and Checkout. Prices shown
  * here are for reading only; checkout recomputes everything on the server.
  */
 export function CartDrawerMount() {
@@ -83,21 +83,18 @@ export function CartDrawerMount() {
                       type="button"
                       onClick={() => remove(key)}
                       aria-label={`Remove ${card?.name ?? "this piece"} from cart`}
-                      className="-mt-2.5 -mr-3 flex size-11 shrink-0 items-center justify-center text-ink/60 transition-colors duration-300 hover:text-ink"
+                      className="-mt-2.5 -mr-3 flex size-11 shrink-0 items-center justify-center text-ink transition-opacity duration-300 hover:opacity-60"
                     >
-                      <Icon icon={X} size={16} />
+                      <Icon icon={X} size={20} />
                     </button>
                   </div>
-                  <div className="mt-auto flex items-center justify-between gap-3 pt-3">
+                  <div className="mt-auto pt-3">
                     <QuantityStepper
                       value={line.quantity}
                       onChange={(n) => setQuantity(key, n)}
                       max={MAX_QUANTITY}
                       label={`Quantity of ${card?.name ?? "this piece"}`}
                     />
-                    <button type="button" onClick={() => remove(key)} className="flex min-h-11 items-center text-caption text-ink/70 underline decoration-ink/30 underline-offset-4 hover:text-ink">
-                      Remove
-                    </button>
                   </div>
                 </div>
               </li>

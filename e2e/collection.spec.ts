@@ -39,6 +39,11 @@ test.describe("collection pages", () => {
     await page.goto("/shop/earrings");
     const visible = page.locator("[data-lifestyle-tile]:visible");
     await expect(visible).toHaveCount(isMobile(testInfo.project.name) ? 2 : 1);
+    // A tile is the size of a product card on desktop, never a wide band.
+    if (!isMobile(testInfo.project.name)) {
+      const [tile, card] = [await visible.first().boundingBox(), await cards(page).first().boundingBox()];
+      expect(Math.abs(tile!.width - card!.width)).toBeLessThan(2);
+    }
 
     await page.goto("/shop/earrings?sort=price-asc");
     await expect(page.locator("[data-lifestyle-tile]")).toHaveCount(0);
@@ -50,24 +55,27 @@ test.describe("collection pages", () => {
     const mobile = isMobile(testInfo.project.name);
     await open(page, "/shop/earrings");
     const panel = await filters(page, mobile);
-    await panel.getByRole("button", { name: "Green", exact: true }).click();
-    await expect(page).toHaveURL(/\/shop\/earrings\?colour=green$/);
+    // Colour and Style are not offered as filters (owner's request).
+    await expect(panel.getByText("Colour", { exact: true })).toHaveCount(0);
+    await expect(panel.getByText("Style", { exact: true })).toHaveCount(0);
+    await panel.getByRole("switch", { name: "Show gifts only" }).click();
+    await expect(page).toHaveURL(/\/shop\/earrings\?gift=1$/);
     if (mobile) {
       await expect(panel.getByRole("button", { name: /^Show \d+ pieces?$/ })).toBeEnabled();
       await panel.getByRole("button", { name: /^Show \d+ pieces?$/ }).click();
     }
     await expect(countText(page)).not.toHaveText("25 pieces");
-    const greenCount = Number((await countText(page).textContent())?.split(" ")[0]);
-    await expect(cards(page)).toHaveCount(greenCount);
+    const giftCount = Number((await countText(page).textContent())?.split(" ")[0]);
+    await expect(cards(page)).toHaveCount(giftCount);
 
-    await expect(page.getByRole("button", { name: "Remove filter: Green" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Remove filter: Gifts for Her" })).toBeVisible();
     await page.getByRole("button", { name: "Clear all" }).click();
     await expect(page).toHaveURL(/\/shop\/earrings$/);
     await expect(countText(page)).toHaveText("25 pieces");
 
     // The back button returns to the filtered view.
     await page.goBack();
-    await expect(page).toHaveURL(/colour=green/);
+    await expect(page).toHaveURL(/gift=1/);
   });
 
   test("sorting by price", async ({ page }, testInfo) => {

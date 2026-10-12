@@ -1,3 +1,4 @@
+import { Gem, HandHeart, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -7,6 +8,7 @@ import { InstagramGlyph } from "@/components/ui/BrandIcons";
 import { Prose } from "@/components/content/Prose";
 import { TestimonialSlider } from "@/components/content/TestimonialSlider";
 import { ButtonLink } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { ElephantMark } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 import { getAboutFallbackImages, getContactDetails, getPage, getTestimonials, type PageImage } from "@/lib/data/content";
@@ -18,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("about");
   return {
     title: page?.seoTitle ?? "About Erayah",
-    description: page?.seoDescription ?? "Erayah means fortune's favourite. Handcrafted heirloom jewellery, made to be handed down.",
+    description: page?.seoDescription ?? "Heirlooms, reimagined. Inspired by the past, made for the present, and treasured for what comes next.",
     alternates: { canonical: routes.about },
   };
 }
@@ -37,6 +39,13 @@ function parseSections(body: string): { intro: string; sections: Section[] } {
     }),
   };
 }
+
+/** The three promises that replaced the long "The craft" text (owner's wording). */
+const PROMISES = [
+  { icon: HandHeart, title: "Handcrafted in India", text: "We support the skilled hands that keep Indian craftsmanship alive, with care in every piece." },
+  { icon: Gem, title: "The craft", text: "Traditional kundan and jadau artistry, reimagined for the way we dress today." },
+  { icon: Sparkles, title: "Gold Plated", text: "We bring you the richness of 22kt gold plating so you can wear on repeat." },
+];
 
 type Img = { url: string; alt: string; blurDataUrl?: string | null };
 
@@ -77,7 +86,6 @@ export default async function AboutPage() {
   const founderPhoto = own("founder")[0] ?? null;
   const story = sections.filter((s) => s.kind === "story");
   const founder = sections.find((s) => s.kind === "founder");
-  const craft = sections.find((s) => s.kind === "craft");
 
   return (
     <article>
@@ -86,7 +94,7 @@ export default async function AboutPage() {
         <GiantWordmark className="top-6 lg:top-4" />
         <h1 className="relative mx-auto max-w-3xl font-heading text-[40px] leading-[1.1] text-ink lg:text-[72px]">Heirlooms, reimagined.</h1>
         <p className="relative mx-auto mt-6 max-w-md font-heading text-[17px] leading-relaxed text-ink/75 italic lg:text-[19px]">
-          Jewellery that can move from your wardrobe to the next generation.
+          Inspired by the past, made for the present, and treasured for what comes next.
         </p>
         {intro ? <Prose className="relative mx-auto mt-6 max-w-xl">{intro}</Prose> : null}
       </header>
@@ -118,16 +126,20 @@ export default async function AboutPage() {
         </section>
       ) : null}
 
-      {/* Craft */}
-      {craft ? (
-        <section aria-labelledby="craft" className="mx-auto max-w-2xl px-4 py-20 text-center lg:py-28">
-          <ElephantMark className="mx-auto h-9 w-auto text-gold" />
-          <h2 id="craft" className="mt-6 font-heading text-h1 text-ink">
-            {craft.title}
-          </h2>
-          <Prose className="mt-6 text-body-lg">{craft.body}</Prose>
-        </section>
-      ) : null}
+      {/* What goes into every piece */}
+      <section aria-label="What goes into every piece" className="mx-auto max-w-5xl px-4 py-20 md:px-6 lg:py-28">
+        <ul className="grid gap-12 text-center md:grid-cols-3 md:gap-10">
+          {PROMISES.map((p) => (
+            <li key={p.title} className="mx-auto max-w-xs">
+              <span className="mx-auto flex size-16 items-center justify-center rounded-full border border-gold text-gold">
+                <Icon icon={p.icon} size={26} />
+              </span>
+              <h3 className="mt-6 font-heading text-h3 text-ink">{p.title}</h3>
+              <p className="mt-3 text-body text-ink/75">{p.text}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {/* Testimonials */}
       <Suspense>

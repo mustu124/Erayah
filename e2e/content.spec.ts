@@ -10,15 +10,16 @@ async function open(page: Page, url: string) {
 }
 
 test.describe("content pages", () => {
-  test("About: opening line, story blocks, craft, and the way out", async ({ page }) => {
+  test("About: opening line, story blocks, founder note, three promises, and the way out", async ({ page }) => {
     await open(page, "/about");
     await expect(page).toHaveTitle(/About Erayah/);
     await expect(page.getByRole("heading", { level: 1, name: "Heirlooms, reimagined." })).toBeVisible();
-    for (const title of ["Fortune's favourite", "Why the elephant", "Made to be handed down", "Our founder"]) {
+    for (const title of ["Where It Began", "Jadau, Reconsidered", "Beyond the Occasion", "Our founder", "Handcrafted in India", "The craft", "Gold Plated"]) {
       await expect(page.getByRole("heading", { name: title })).toBeVisible();
     }
-    await expect(page.getByText("Erayah was born from that feeling.", { exact: false }).first()).toBeVisible();
-    await expect(page.getByRole("heading", { name: "The craft" })).toBeVisible();
+    await expect(page.getByText("Inspired by the past, made for the present, and treasured for what comes next.")).toBeVisible();
+    await expect(page.getByText("Bhavi Shah")).toBeVisible();
+    await expect(page.getByText("Founder & Creative Director")).toBeVisible();
     await expect(page.getByRole("link", { name: "Follow", exact: true })).toHaveAttribute("href", /instagram\.com/);
     await expect(page.getByRole("link", { name: "Shop the collection" })).toHaveAttribute("href", "/shop");
   });
@@ -39,7 +40,7 @@ test.describe("content pages", () => {
   test("FAQs: grouped accordions in order, with FAQPage structured data", async ({ page }) => {
     await open(page, "/faqs");
     const groups = await page.locator("main section h2").allTextContents();
-    expect(groups.slice(0, 6)).toEqual(["Orders & Payment", "Shipping", "Returns", "Care", "Gifting", "Sizing"]);
+    expect(groups.slice(0, 6)).toEqual(["Orders & Payment", "Shipping", "Exchanges", "Care", "Gifting", "Sizing"]);
     const question = page.getByText("How long does delivery take?");
     await question.click();
     await expect(page.getByText("Orders are delivered within 7–10 working days.")).toBeVisible();
@@ -54,7 +55,7 @@ test.describe("content pages", () => {
 
   test("Policy pages render their markdown", async ({ page }) => {
     for (const [url, title, text] of [
-      ["/shipping-returns", "Shipping & Returns", "credit note is issued as a gift card"],
+      ["/shipping-returns", "Shipping & Returns", "We do not accept returns or offer refunds."],
       ["/privacy-policy", "Privacy Policy", "Digital Personal Data Protection Act"],
       ["/terms", "Terms & Conditions", "Razorpay"],
     ]) {

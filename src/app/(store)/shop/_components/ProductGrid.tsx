@@ -28,12 +28,12 @@ export function ProductGrid({ items }: { items: GridItem[] }) {
 function TileItem({ tile }: { tile: TileView }) {
   const body = (
     <>
-      <div className="relative aspect-[4/5] overflow-hidden bg-ivory lg:aspect-video">
+      <div className="relative aspect-[4/5] overflow-hidden bg-ivory">
         <Image
           src={tile.image.url}
           alt={tile.image.alt}
           fill
-          sizes="(min-width: 1024px) 45vw, 100vw"
+          sizes="(min-width: 1024px) 23vw, 100vw"
           className="object-cover transition-opacity duration-300 group-hover:opacity-95"
         />
       </div>
@@ -46,8 +46,8 @@ function TileItem({ tile }: { tile: TileView }) {
       data-lifestyle-tile={tile.visibility}
       aria-hidden={tile.href ? undefined : true}
       className={cn(
-        "col-span-2",
-        tile.span === 1 && "lg:col-span-1",
+        // Full width on a phone; one card wide on desktop.
+        "col-span-2 lg:col-span-1",
         tile.visibility === "mobile" && "lg:hidden",
         tile.visibility === "desktop" && "hidden lg:block",
       )}

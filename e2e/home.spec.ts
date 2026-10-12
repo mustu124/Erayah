@@ -38,8 +38,7 @@ test.describe("homepage", () => {
     await expect(bestSellers.getByRole("link", { name: "Shop All Most Loved" })).toHaveAttribute("href", "/shop/most-loved");
 
     // A card shows only image, name and price (plus the heart).
-    // Starting range first, statement pieces last.
-    const card = bestSellers.locator("article").last();
+    const card = bestSellers.locator("article").filter({ hasText: "Meher Earrings" });
     await expect(card.getByRole("heading", { name: "Meher Earrings" })).toBeAttached();
     await expect(card.getByText("₹8,500")).toBeAttached();
     await expect(card.getByRole("heading")).toHaveCSS("font-family", /Montserrat/);

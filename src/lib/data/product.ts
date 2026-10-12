@@ -173,6 +173,5 @@ export async function getCompleteTheLook(product: { id: number; slug: string; pr
     .sort((a, b) => Math.abs((a.price ?? 0) - (product.price ?? 0)) - Math.abs((b.price ?? 0) - (product.price ?? 0)))
     .slice(0, FILL_TO - picks.length)
     .map((s) => s.id);
-  // Starting range first, statement pieces last.
-  return [...picks, ...(await getCardsByIds(fillIds))].sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+  return [...picks, ...(await getCardsByIds(fillIds))];
 }

@@ -191,7 +191,7 @@ export function InvoiceDocument({ order, settings }: { order: CustomerOrder; set
         </View>
 
         <Text style={s.footer} fixed>
-          Returns only for pieces damaged in transit or incorrect pieces received, unworn and in original packaging; credit is issued as a gift card valid for 12 months. Thank you for choosing Erayah.
+          No returns or refunds. Exchanges only for pieces damaged in transit or incorrect pieces received, unworn and in original packaging. Thank you for choosing Erayah.
         </Text>
       </Page>
     </Document>
