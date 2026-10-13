@@ -7,14 +7,15 @@ test.describe("homepage", () => {
     await page.goto("/");
   });
 
-  test("has exactly the five sections, in order", async ({ page }) => {
+  test("has exactly the six sections, in order", async ({ page }) => {
     const sections = page.locator("main > section");
-    await expect(sections).toHaveCount(5);
+    await expect(sections).toHaveCount(6);
     await expect(sections.nth(0)).toHaveAttribute("aria-label", "Featured pieces");
     await expect(sections.nth(1)).toHaveAttribute("aria-labelledby", "shop-by-category");
     await expect(sections.nth(2)).toHaveAttribute("aria-labelledby", "new-arrivals");
-    await expect(sections.nth(3)).toHaveAttribute("aria-labelledby", "most-loved");
-    await expect(sections.nth(4)).toHaveAttribute("aria-labelledby", "brand-story");
+    await expect(sections.nth(3)).toHaveAttribute("aria-labelledby", "founder-note");
+    await expect(sections.nth(4)).toHaveAttribute("aria-labelledby", "most-loved");
+    await expect(sections.nth(5)).toHaveAttribute("aria-labelledby", "brand-story");
   });
 
   test("shop by category: five categories plus Shop All", async ({ page }) => {
@@ -120,8 +121,10 @@ test.describe("homepage", () => {
 
   test("brand story", async ({ page }) => {
     const story = page.locator("section[aria-labelledby=brand-story]");
-    await expect(story.getByText("Heirlooms, reimagined")).toHaveCSS("font-style", "italic");
-    await expect(story.getByRole("link", { name: "Our Story" })).toHaveAttribute("href", "/about");
+    await expect(story.getByText("Our roots don't belong to another era.", { exact: false })).toBeVisible();
+    const note = page.locator("section[aria-labelledby=founder-note]");
+    await expect(note.getByText("Bhavi Shah")).toBeVisible();
+    await expect(note.getByRole("link", { name: "Read more" })).toHaveAttribute("href", "/about");
     await expect(story.getByRole("link", { name: "Follow us on Instagram" })).toBeVisible();
   });
 });

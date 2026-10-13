@@ -1,13 +1,12 @@
 import { Fragment } from "react";
 
-import { ButtonLink } from "@/components/ui/Button";
 import { ElephantMark } from "@/components/ui/Logo";
 import { getBrandStory, getSiteShell } from "@/lib/data/site";
 
 const DEFAULT_HIGHLIGHT = /(heirlooms,?\s+reimagined)/i;
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-/** 2–3 lines, one highlighted phrase, "Our Story", and a quiet Instagram link. */
+/** The closing lines of the homepage, with a quiet Instagram link. (Our Story is reached from the founder's note above.) */
 export async function BrandStory() {
   const [story, shell] = await Promise.all([getBrandStory(), getSiteShell()]);
   if (!story) return null;
@@ -33,10 +32,7 @@ export async function BrandStory() {
             ),
           )}
         </p>
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <ButtonLink href={story.ctaUrl} variant="outline">
-            {story.ctaLabel}
-          </ButtonLink>
+        <div className="mt-8 flex flex-col items-center">
           <a
             href={shell.instagramUrl}
             target="_blank"

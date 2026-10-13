@@ -241,3 +241,13 @@ Heroes in the first four slots, statement and minimal pieces alternating, prices
 - **Announcement:** "Handcrafted in India · Free shipping above ₹6,000".
 - **Product page, no repetition (2026-10-12):** Description shows only the story paragraph (`products.description`; the catalogue line in `short_description` is used only if there is no story). Material & Craft lists Material, Stones, Closure and Chain once each. This is a page change, so it applies to every product; no product text was edited.
 - **Deferred by the owner until the homepage photos are final:** the hero carousel's five slides (Everyday Favourites, Wedding Guest Edit, Shop Gifts, Most Loved, Ready to Ship) and the new homepage order with the founder's note between New Arrivals and Most Loved.
+
+## 2026-10-14 — Owner's revisions, round 3
+- **Header logo:** the elephant and ERAYAH share a base line (bottom-aligned) instead of being centred on each other.
+- **Footer band:** no longer a repeating background image (its tile was lopsided, so gaps were uneven). It is now 4 / 8 / 12 elephants (phone / tablet / desktop) with a dot between each, spread edge to edge with equal gaps. `public/brand/elephant-pattern.svg` is unused.
+- **Homepage order:** Hero, Shop by Category, New Arrivals, Founder's note, Most Loved, closing lines. The founder's note is read from the "Our founder" section of the About page (first two paragraphs, name and title) with "Read more" to /about, so it is edited in one place. The closing block shows the brand story text and the Instagram link only; its "Our Story" button is gone, so the button label/link fields in Admin → Homepage no longer show anywhere.
+- **Closing lines:** "Our roots don't belong to another era. They belong in the way we live, the things we cherish, and the stories we pass on."
+- **Checkout summary:** the cross sits on the photo's corner where the quantity badge was; the quantity reads "Qty 1" instead of "1 × ₹1,800".
+- **Product descriptions:** 45 rewritten to the owner's wording (earrings, necklace sets, rings, pendants); the same text is in `scripts/seed.ts`. Small liberties: "Mrina shoulder drops" (two words), "Soma features…" (comma removed), Dori Green and White follow the Pink wording with the colours swapped. Avira, Aira, Gulbahar, Mallika, Dahlia, Orva, Reva, Misri, Inara, Tavira, Nevara, Chantara earrings, Channak, Bindu, Chantara ring, Harakh ring, Piku, Dwandva and Rangmil were not in the list and are unchanged.
+- **Āhna Pendant** chain is now 13-inch (`chain_length` and the catalogue line), following the new description; it was 10-inch.
+- **Kalāsh** moved from first pendant to position 11; Chantara Pendant leads the page.

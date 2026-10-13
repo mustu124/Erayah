@@ -46,39 +46,29 @@ export function OrderSummary({
       {quote ? (
         <ul className="divide-y divide-mist">
           {quote.lines.map((line) => (
-            <li key={`${line.product_id}:${line.variant_label ?? ""}`} className="flex gap-4 py-4 first:pt-0">
-              <div className="relative size-18 shrink-0 overflow-hidden bg-ivory">
-                {line.imageUrl ? (
-                  <Image
-                    src={line.imageUrl}
-                    alt=""
-                    fill
-                    sizes="72px"
-                    className="object-cover"
-                  />
-                ) : null}
-                <span className="absolute top-1 right-1 flex size-5 items-center justify-center rounded-full bg-ink text-[10px] text-ivory tabular-nums">
-                  {line.quantity}
-                </span>
-              </div>
-              <div className="min-w-0 flex-1 text-body-sm">
-                <p className="text-ink">{line.name}</p>
-                {line.variant_label ? <p className="text-ink/65">{line.variant_label}</p> : null}
-                <p className="text-ink/65">
-                  {line.quantity} × <Price amount={line.unit_price} />
-                </p>
-              </div>
-              <div className="flex flex-col items-end justify-between">
-                <Price amount={line.line_total} className="text-body-sm text-ink" />
+            <li key={`${line.product_id}:${line.variant_label ?? ""}`} className="flex gap-4 py-4 first:pt-2">
+              <div className="relative size-18 shrink-0">
+                <div className="relative size-full overflow-hidden bg-ivory">
+                  {line.imageUrl ? <Image src={line.imageUrl} alt="" fill sizes="72px" className="object-cover" /> : null}
+                </div>
+                {/* The visible cross is small; the button around it is a full 44px target. */}
                 <button
                   type="button"
                   onClick={() => onRemoveLine(line.product_id)}
                   aria-label={`Remove ${line.name} from cart`}
-                  className="-mr-3 -mb-2 flex size-11 items-center justify-center text-ink transition-opacity duration-300 hover:opacity-60"
+                  className="group absolute -top-4 -right-4 flex size-11 items-center justify-center"
                 >
-                  <Icon icon={X} size={18} />
+                  <span className="flex size-5 items-center justify-center rounded-full bg-ink text-ivory transition-opacity duration-300 group-hover:opacity-75">
+                    <Icon icon={X} size={12} />
+                  </span>
                 </button>
               </div>
+              <div className="min-w-0 flex-1 text-body-sm">
+                <p className="text-ink">{line.name}</p>
+                {line.variant_label ? <p className="text-ink/65">{line.variant_label}</p> : null}
+                <p className="text-ink/65">Qty {line.quantity}</p>
+              </div>
+              <Price amount={line.line_total} className="text-body-sm text-ink" />
             </li>
           ))}
         </ul>

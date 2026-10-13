@@ -1,13 +1,20 @@
 import Link from "next/link";
+import { Fragment } from "react";
 
 import { InstagramGlyph, WhatsAppGlyph } from "@/components/ui/BrandIcons";
-import { Wordmark } from "@/components/ui/Logo";
+import { ElephantMark, Wordmark } from "@/components/ui/Logo";
+import { cn } from "@/lib/cn";
 import { currentYear } from "@/lib/format/date";
 import { CATEGORY_LINKS, FOOTER_ERAYAH_LINKS, FOOTER_HELP_LINKS, type NavLink } from "@/lib/navigation";
 import { routes } from "@/lib/routes";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 type FooterProps = { instagramUrl: string; whatsappNumber: string };
+
+// The band of elephants and dots: 4 across on a phone, 8 on a tablet, 12 on desktop,
+// spread edge to edge so the spacing is even at every width.
+const BAND_ELEPHANTS = 12;
+const shownFrom = (i: number) => (i < 4 ? "" : i < 8 ? "hidden md:block" : "hidden lg:block");
 
 const LINK = "flex min-h-11 items-center text-body-sm text-ivory/85 transition-opacity duration-300 hover:text-ivory lg:min-h-9";
 
@@ -17,7 +24,14 @@ export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
   return (
     <footer className="bg-ink text-ivory">
       {/* Brand pattern from the guidelines: elephants and dots, very faint. */}
-      <div aria-hidden="true" className="h-10 bg-[url(/brand/elephant-pattern.svg)] bg-[length:96px_40px] bg-center bg-repeat-space opacity-[0.12]" />
+      <div aria-hidden="true" className="flex h-10 items-center justify-between px-6 text-ivory opacity-[0.12] md:px-10">
+        {Array.from({ length: BAND_ELEPHANTS }, (_, i) => (
+          <Fragment key={i}>
+            <ElephantMark className={cn("h-5 w-auto shrink-0", shownFrom(i))} />
+            {i < BAND_ELEPHANTS - 1 ? <span className={cn("size-[3px] shrink-0 rounded-full bg-current", shownFrom(i + 1))} /> : null}
+          </Fragment>
+        ))}
+      </div>
 
       <div className="mx-auto grid max-w-[1440px] gap-12 px-6 pt-10 pb-14 md:px-10 lg:grid-cols-[1.5fr_repeat(4,1fr)] lg:gap-10 lg:pt-14 lg:pb-20">
         <div>

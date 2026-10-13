@@ -5,6 +5,7 @@ import { getBestSellers, getHeroSlides, getNewArrivals } from "@/lib/data/catalo
 import { routes } from "@/lib/routes";
 
 import { BrandStory } from "./_components/BrandStory";
+import { FounderNote } from "./_components/FounderNote";
 import { Hero } from "./_components/Hero";
 import { CarouselSkeleton, CategorySkeleton, HeroSkeleton } from "./_components/HomeSkeletons";
 import { ProductCarouselSection } from "./_components/ProductCarouselSection";
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 // Homepage sections, strictly in this order: Hero, Shop by Category,
-// New Arrivals (four pieces), Most Loved, Brand Story (the footer comes from the layout).
+// New Arrivals (four pieces), Founder's note, Most Loved, closing lines (the footer comes from the layout).
 export default function HomePage() {
   return (
     <>
@@ -31,6 +32,7 @@ export default function HomePage() {
       <Suspense fallback={<CarouselSkeleton tone="ivory" />}>
         <NewArrivals />
       </Suspense>
+      <FounderNote />
       <Suspense fallback={<CarouselSkeleton />}>
         <MostLoved />
       </Suspense>

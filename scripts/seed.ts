@@ -152,11 +152,11 @@ const DESCRIPTIONS: Record<string, string> = {
   "inara-earrings":
     "Inara is a stud with quiet presence. White polki set close and finished with faux pearls, for the days you want one certain detail.",
   "harakh-earrings-white":
-    "Harakh means joy. White polki and a single faux pearl, set close to the ear. Made to be worn often, and to meet the Harakh ring.",
+    "Harakh means joy. White polki and faux pearl, set close to the ear. Made to be worn often, and to meet the Harakh ring.",
   "harakh-earrings-pink":
-    "Harakh means joy. Pink polki and a single faux pearl, set close to the ear, a soft blush of colour. Made to be worn often, and to meet the Harakh ring.",
+    "Harakh means joy. Pink polki and faux pearl, set close to the ear, a soft blush of colour. Made to be worn often, and to meet the Harakh ring.",
   "meher-earrings":
-    "Meher means grace. Chaandbaalis drawn in white and green polki and edged with faux pearls, in the crescent that has framed faces for generations. For the occasions you will want to remember.",
+    "Meher for the graceful one. Chaandbaalis drawn in white and green polki and edged with faux pearls, in the crescent that has framed faces for generations. For the occasions you will want to remember.",
   "gulbahar-earrings":
     "Gulbahar is a garden in bloom. White, green and pink polki gathered into a full, nature-inspired stud. These are heavy studs, made to be noticed.",
   "avira-earrings":
@@ -164,9 +164,9 @@ const DESCRIPTIONS: Record<string, string> = {
   "nevara-earrings":
     "Nevara brings turquoise polki together with white stones and faux pearls. A cool, clear note of colour that moves as you do.",
   "rani-earrings":
-    "Rani is the queen. Classic jhumkas in white polki with faux pearls and jade, made with the poise of an heirloom and worn the way you choose.",
+    "Rani, a little touch of royalty. Classic jhumkas in white polki with faux pearls and jade, made with the poise of an heirloom and worn the way you choose.",
   "jharna-earrings":
-    "Jharna is a spring of water. Turquoise polki and faux pearls in a small stud, fresh and easy for every day.",
+    "Jharna is a spring of water. Turquoise polki and faux pearls in a small stud, fresh and easy to style.",
   "tavira-earrings":
     "Tavira borrows from Victorian motifs and sets them in white polki and jade. An old-world line, quietly made new.",
   "chantara-earrings":
@@ -176,43 +176,43 @@ const DESCRIPTIONS: Record<string, string> = {
   "aira-earrings":
     "Aira is an ear cuff in white polki that follows the line of the ear. A modern shape, held in a traditional craft.",
   "nir-earrings":
-    "Nir means water. Blue topaz in a clean, simple stud, as clear as its name.",
+    "Nir, inspired by nature's flow. Blue topaz in a clean, simple stud, as clear as its name.",
   "misri-earrings":
     "Misri is as sweet as its name. Chaandbaalis in white and green polki with faux pearls and jade, a softer companion to Meher.",
   "arohi-earrings":
-    "Arohi means rising. Blue, green and white polki fall into garlands of faux pearl, a drop earring full of movement and colour.",
+    "Arohi, a celebration of colour in motion. Blue, green and white polki fall into garlands of faux pearl, a drop earring full of movement and colour.",
   "juhi-earrings-green-blue":
-    "Juhi is jasmine, small and constant. A bali in green and blue polki that sits close and stays with you through the day.",
+    "Juhi, inspired by the quiet charm of jasmine. A bali in green and blue polki that sits close and stays with you through the day.",
   "juhi-earrings-red":
-    "Juhi is jasmine, small and constant. A bali in white and red polki, a warm colour for festive days and ordinary ones.",
+    "Juhi, inspired by the quiet charm of jasmine. A bali in white and red polki, a warm colour for festive days and ordinary ones.",
   "boond-earrings":
-    "Boond is a single drop. White and pink polki fall in a gentle dangler, light in feeling and easy to wear.",
+    "Boond, like little droplets. White and pink polki fall in a gentle dangler, light in feeling and easy to wear.",
   "mallika-earrings":
     "Mallika is made for the grand occasion. Shoulder drops in blue, green and red polki with faux pearls and jade, supported by traditional kaan saharas so they sit as they should.",
   "vaani-earrings-blue":
-    "Vaani means voice. White and blue polki in a stud finished with antique polish, so it reads as old and new at once.",
+    "Vaani, a voice of timeless beauty. White and blue polki in a stud finished with antique polish, bringing old-world charm into the now.",
   "vaani-earrings-pink":
-    "Vaani means voice. White and pink polki in a stud finished with antique polish, so it reads as old and new at once.",
+    "Vaani, a voice of timeless beauty. White and pink polki in a stud finished with antique polish, bringing old-world charm into the now.",
   "mrina-earrings":
-    "Mrina is a shoulder drop in white and red polki, finished with faux pearls. Long, graceful and certain of itself.",
+    "Mrina shoulder drops in white and red polki, finished with faux pearls. Long, graceful and certain of itself.",
 
   // Necklace sets
   "mithu-necklace-set":
-    "Mithū is the parrot of Indian folk songs and courtyards. Green, pink and firozi polki shape a necklace and earrings drawn from parrots and nature. A set full of colour, made to be handed down.",
+    "Mithū is the parrot of Indian folk songs and courtyards. Green, pink and firozi polki bring this parrot-inspired necklace and earring set to life, capturing the playful colours of nature in timeless jadau.",
   "rohini-choker":
-    "Rohini is a choker of faux pearls and mother-of-pearl, paired with mother-of-pearl studs. Soft and luminous, it closes with a traditional dori.",
+    "Rohini, a choker with faux pearls and mother-of-pearl, paired with mother-of-pearl studs. Soft and luminous, it closes with a traditional dori.",
   "mayurika-choker-set":
-    "Mayurika is the peacock, India's national bird. A choker and earrings in white polki, tied with a traditional dori. A set for the occasions that matter most.",
+    "Mayurika, inspired by the grace of a peacock. A choker and earrings in white polki, tied with a traditional dori. A set for the occasions that matter most.",
   "gul-choker-set":
-    "Gul means flower. A choker and studs in white polki that open like petals along the neckline, finished with a traditional dori.",
+    "Gul, a floral choker and studs in white polki that open like petals along the neckline, finished with a traditional dori.",
   "noor-set":
-    "Noor means light. A necklace and earrings in white polki, made to hold light and give it back. A set for the grandest days.",
+    "Noor pairs white polki with timeless jadau craftsmanship for a look that feels regal, refined and made for special occasions.",
   "channak-set":
     "Channak is the sound of ghunghroo in a classical dance. A necklace and earrings detailed with ghunghroo, so the set answers softly as you move.",
   "ziya-choker-set":
-    "Ziya means light. A botanical choker and studs in green, pink and white polki with faux mother-of-pearl, closed with a traditional dori.",
+    "Ziya, a botanical choker and studs in green, pink and white polki with faux mother-of-pearl, closed with a traditional dori.",
   "tara-choker-set":
-    "Tara means star. A geometric choker and studs in green and white polki with jade green stones, ordered and precise, tied with a traditional dori.",
+    "Tara, inspired by Victorian motifs, pairs green and white polki with jade-green stones in a choker and matching studs, finished with a traditional dori.",
 
   // Rings
   "harakh-ring":
@@ -224,55 +224,55 @@ const DESCRIPTIONS: Record<string, string> = {
   "beej-ring":
     "Beej is a seed. A single stone on a simple adjustable band, a beginning in its quietest form.",
   "aabha-ring":
-    "Aabha means glow. A nature-inspired ring in polki, adjustable for a comfortable fit and easy to wear every day.",
+    "Aabha, a touch of glow in a nature-inspired polki ring, made adjustable for comfort and easy wear.",
   "marakat-ring":
-    "Mārakat is an old word for emerald. Green and white polki on an adjustable band, a little colour for the hand.",
+    "Mārakat brings green and white polki together in an adjustable ring to add a pop of colour to any look.",
   "dori-ring-white":
-    "Dori is the thread that ties things together. Slim stackable bands in white polki. Wear them alone or gather them with the green and pink.",
+    "Dori symbolises the bonds and traditions that hold us together. Slim stackable bands in white polki. Wear solo or stack with green and pink bands for a statement look.",
   "dori-ring-green":
-    "Dori is the thread that ties things together. Slim stackable bands in green polki. Wear them alone or gather them with the white and pink.",
+    "Dori symbolises the bonds and traditions that hold us together. Slim stackable bands in green polki. Wear solo or stack with white and pink bands for a statement look.",
   "dori-ring-pink":
-    "Dori is the thread that ties things together. Slim stackable bands in pink polki. Wear them alone or gather them with the white and green.",
+    "Dori symbolises the bonds and traditions that hold us together. Slim stackable bands in pink polki. Wear solo or stack with white and green bands for a statement look.",
   "ekam-ring":
-    "Ekam means one. A one-of-a-kind ring in polki with a faux pearl, adjustable for a comfortable fit.",
+    "Ekam, a statement ring in polki and faux pearl, made for both understated and bold looks.",
 
   // Pendants
   "gaja-i-pendant":
-    "Gajā is the elephant, the mark at the heart of Erayah, its trunk raised in the oldest gesture of optimism. Set in polki, on a 10-inch chain.",
+    "Gajā, the symbol at the heart of Erayah, representing good fortune, crafted in polki. Comes with a 10-inch chain.",
   "gaja-ii-pendant":
-    "Gajā is the elephant, carried with weight and grace. Faux mother-of-pearl gives this one a soft, quiet glow, on a 10-inch chain.",
+    "Gajā, the symbol at the heart of Erayah, representing good fortune, crafted in faux mother of pearl. Comes with a 10-inch chain.",
   "gaja-iii-pendant":
-    "Gajā is the elephant, trunk raised for good fortune. A single blue topaz brings it a clear, cool colour, on a 10-inch chain.",
+    "Gajā, the symbol at the heart of Erayah, representing good fortune, crafted in a cool blue topaz. Comes with a 10-inch chain.",
   "kumud-pendant-mother-of-pearl":
-    "Kumud is the lotus that opens by moonlight. Faux mother-of-pearl in a lotus shape, on a 10-inch chain.",
+    "Kumud, a lotus that blooms by moonlight, crafted in faux mother-of-pearl. Comes with a 10-inch chain.",
   "kumud-pendant-firozi":
-    "Kumud is the lotus that opens by moonlight. Italian firozi gives it the colour of still water, on a 10-inch chain.",
+    "Kumud is the lotus that opens by moonlight. Turquoise gives it the colour of still water. Comes with a 10-inch chain.",
   "chantara-pendant":
-    "Chantara holds the moon and a star together. Polki on a 10-inch chain, a small celestial piece to wear with the Chantara earrings and ring.",
+    "Chantara brings the moon and stars together in polki and a 10-inch chain. Pair it with the matching Chantara earrings and ring for a dreamy look.",
   "pakhi-pendant-mother-of-pearl":
-    "Pākhi means wings. Faux mother-of-pearl shaped as a wing, a reminder to move through the day lightly.",
+    "Pākhi, a wing shaped faux mother-of-pearl pendant with a reminder to move through the day lightly. Comes with a 10-inch chain.",
   "pakhi-pendant-firozi":
-    "Pākhi means wings. A wing in Italian firozi, the colour of open sky, on a 10-inch chain.",
+    "Pākhi, a wing shaped pendant in turquoise with a reminder to move through the day lightly. Comes with a 10-inch chain.",
   "kalash-pendant":
-    "The kalash is the vessel of plenty at every Indian ceremony. Faux mother-of-pearl in a small pot-shaped pendant, on a 10-inch chain.",
+    "Kalash, a symbol of abundance in Indian traditions, takes shape in a faux mother-of-pearl pendant. Comes with a 10-inch chain.",
   "indu-pendant-polki":
-    "Indu is the moon. A moon-shaped pendant in polki, calm and constant, on a 10-inch chain.",
+    "Indu, a moon-shaped polki pendant. Comes with a 10-inch chain.",
   "indu-pendant-mother-of-pearl":
-    "Indu is the moon. Faux mother-of-pearl gives this moon its soft light, on a 10-inch chain.",
+    "Indu, a moon-shaped pendant, crafted in faux mother of pearl. Comes with a 10-inch chain.",
   "kaman-pendant-mother-of-pearl":
-    "Kamān is the arc of a bow, drawn here as a small moon. Faux mother-of-pearl on a 10-inch chain.",
+    "Kamān, the arc of a bow reimagined as a crescent moon in faux mother-of-pearl. Comes with a 10-inch chain.",
   "kaman-pendant-polki":
-    "Kamān is the arc of a bow, drawn here as a small moon. Polki on a 10-inch chain, for everyday light.",
+    "Kamān, the arc of a bow reimagined as a crescent moon in white polki. Comes with a 10-inch chain.",
   "padma-pendant":
-    "Padma is the lotus, rooted in water and opening to light. Pink and white polki in a lotus-shaped pendant, on a 10-inch chain.",
+    "Padma brings the lotus to life in pink and white polki. Comes with a 10-inch chain.",
   "soma-pendant":
-    "Soma is the moon in its fullness. A large moon-shaped pendant in faux pearls and mother-of-pearl, the most luminous of our moons.",
+    "Soma features a statement full moon-shaped pendant in faux pearls and mother-of-pearl with a 10-inch chain.",
   "ardh-pendant":
-    "Ardh means half. A crescent in polki, the moon on its way to full, on a 10-inch chain.",
+    "Ardh, a crescent in polki. Comes with a 10-inch chain.",
   "vakra-pendant-polki":
-    "Vakra is the curve of an elephant's tusk. A tusk-shaped pendant in polki, a quieter echo of the Erayah elephant.",
+    "Vakra, shaped by the curve of an elephant's tusk in white polki. Comes with a 10-inch chain.",
   "vakra-pendant-multicolour":
-    "Vakra is the curve of an elephant's tusk. Pink, green and white polki bring it colour, on a 10-inch chain.",
+    "Vakra, shaped by the curve of an elephant's tusk, brings together a pink, green and white polki pendant. Comes with a 10-inch chain.",
   "rangmil-pendant":
     "Rangmil is where colours meet. A one-of-a-kind pendant in multi-coloured polki that can also be worn as a brooch.",
   "piku-pendant":
@@ -280,7 +280,7 @@ const DESCRIPTIONS: Record<string, string> = {
   "dwandva-pendant":
     "Dwandva means a pair, two things held in balance. Pink and white polki meet labradorite in a pendant on a 13-inch chain.",
   "ahna-pendant":
-    "Āhna is a fusion pendant, white polki and faux mother-of-pearl set side by side. A traditional craft in a contemporary line.",
+    "Āhna brings white polki and faux mother-of-pearl together in a fusion pendant, blending traditional craft with a twist. Comes with a 13-inch chain.",
 };
 
 // ─── Site content ───────────────────────────────────────────────────────────
@@ -288,7 +288,7 @@ const DESCRIPTIONS: Record<string, string> = {
 const SITE_SETTINGS = {
   announcement_text: "Handcrafted in India · Free shipping above ₹6,000",
   brand_story_text:
-    "Some things are made to last a lifetime. Erayah makes pieces meant to outlast several. Heirlooms, reimagined, because some stories deserve a more beautiful way to continue.",
+    "Our roots don't belong to another era. They belong in the way we live, the things we cherish, and the stories we pass on.",
   brand_story_cta_label: "Our Story",
   brand_story_cta_url: "/about",
   business_hours: "Monday to Saturday, 10 am to 7 pm",

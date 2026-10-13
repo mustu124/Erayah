@@ -25,7 +25,7 @@ export function Header({ feature, instagramUrl, whatsappNumber }: HeaderProps) {
       <header className="sticky top-0 z-40 border-b border-mist bg-paper-warm">
         <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-6 lg:flex lg:h-[72px] lg:gap-8 lg:px-10">
           <MenuButton className="-ml-2 justify-self-start lg:hidden" />
-          <Link href={routes.home} aria-label="Erayah, home" className="flex shrink-0 items-center gap-2.5">
+          <Link href={routes.home} aria-label="Erayah, home" className="flex shrink-0 items-end gap-2.5">
             <ElephantMark className="h-7 w-auto text-ink lg:h-8" />
             <Wordmark title="" className="h-[17px] w-auto text-ink lg:h-5" />
           </Link>
