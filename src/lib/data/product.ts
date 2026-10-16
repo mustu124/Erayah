@@ -45,7 +45,7 @@ const ROLE_ORDER: Enums<"image_role">[] = ["worn_closeup", "lifestyle", "product
 
 /** A published product with its gallery (by sort_order, one entry per file) and variants. */
 export async function getProduct(slug: string): Promise<ProductDetail | null> {
-  "use cache";
+  "use cache: remote";
   cacheTag(TAGS.products, productTag(slug));
   cacheLife("days");
 
@@ -98,7 +98,7 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
 
 /** Every published product slug (for generateStaticParams). */
 export async function getAllProductSlugs(): Promise<string[]> {
-  "use cache";
+  "use cache: remote";
   cacheTag(TAGS.products);
   cacheLife("days");
 
@@ -122,7 +122,7 @@ export async function getCardsByIds(ids: number[]): Promise<ProductCardData[]> {
 
 /** Product cards for these slugs, in the given order (for Recently Viewed). */
 export async function getCardsBySlugs(slugs: string[]): Promise<ProductCardData[]> {
-  "use cache";
+  "use cache: remote";
   cacheTag(TAGS.products);
   cacheLife("hours");
 
@@ -145,7 +145,7 @@ const FILL_TO = 4;
  * topped up with pieces from the same category at the closest price.
  */
 export async function getCompleteTheLook(product: { id: number; slug: string; price: number | null; categoryId: number | null }): Promise<ProductCardData[]> {
-  "use cache";
+  "use cache: remote";
   cacheTag(TAGS.products, productTag(product.slug));
   cacheLife("days");
 

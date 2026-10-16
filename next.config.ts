@@ -21,7 +21,14 @@ const nextConfig: NextConfig = {
   // "Best Sellers" became "Most Loved"; old links (Instagram, bookmarks) keep working.
   redirects: async () => [{ source: "/shop/best-sellers", destination: "/shop/most-loved", permanent: true }],
   images: {
-    formats: ["image/avif", "image/webp"],
+    // WebP only, and a short list of widths: every format × width is a separate
+    // transformation (and a separate fetch of the original from Supabase Storage).
+    formats: ["image/webp"],
+    deviceSizes: [640, 828, 1080, 1440, 1920],
+    imageSizes: [96, 256, 384],
+    // Storage paths are content-hashed (a new photo gets a new URL), so an
+    // optimised image never goes stale: keep it 31 days instead of re-fetching.
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       {
         protocol: "https",

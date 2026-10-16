@@ -75,6 +75,7 @@ Homepage sections, strictly in this order and nothing else: Hero, Shop by Catego
 - Row Level Security on every table.
 - Use next/image everywhere, with explicit sizes. The elephant mark shows between pages (components/layout/PageTransition.tsx), not on loading images. Do not add a loading.tsx to (store): it turns 404s into 200s.
 - Revalidate cached pages with revalidateTag when admin edits data.
+- Supabase usage: reads that run at request time (filters, search, product details, cards) use `"use cache: remote"`; static-shell reads use `"use cache"`. Never put a Storage URL in a plain <img>/<video>/fetch on a hot path; images go through next/image (31-day cache, WebP, fixed widths in next.config.ts). The anon role is read-only.
 - Keep components small, typed and in /components/{ui,layout,product,cart,admin}.
 - Target: Lighthouse mobile performance ≥ 90, LCP < 2.5s, page load < 3s on 4G.
 

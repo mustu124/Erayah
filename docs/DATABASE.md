@@ -26,7 +26,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 | `testimonials` | Customer quotes shown on the site. |
 | `pages` | Editable content pages: about, shipping-returns, privacy-policy, terms (markdown), plus `images` (jsonb: About page founder/story photos in site-media). |
 | `admin_users` | Supabase Auth users who may use `/admin`, as `owner` or `staff`. Only owners can add or change admins. |
-| `search_misses` | Searches that found nothing (term, count, first and last seen), logged by the server for the owner to read in /admin. |
+| `search_misses` | Searches that found nothing (term, count, first and last seen), logged by the server for the owner to read in /admin. Capped at 5,000 terms; input without letters is ignored. |
 | `contact_messages` | Contact form submissions, read in `/admin/messages`. The site sends no email. `ip_hash` (a salted hash, never the IP) rate-limits senders. |
 
 ### Orders

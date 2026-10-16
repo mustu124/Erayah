@@ -32,6 +32,6 @@ export default async function OpenGraphImage({ params }: { params: Promise<{ slu
     .toBuffer();
 
   return new Response(new Uint8Array(jpeg), {
-    headers: { "Content-Type": contentType, "Cache-Control": "public, max-age=86400, s-maxage=604800" },
+    headers: { "Content-Type": contentType, "Cache-Control": "public, max-age=86400, s-maxage=2592000, stale-while-revalidate=2592000" },
   });
 }
