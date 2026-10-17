@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { Document, Font, Page, Path, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
+import { Document, Font, Image, Page, Path, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 
 import { ELEPHANT, WORDMARK } from "@/components/ui/logo-paths";
 import type { CustomerOrder, InvoiceSettings } from "@/lib/data/order";
@@ -48,8 +48,9 @@ const s = StyleSheet.create({
   strong: { fontWeight: 600 },
   table: { marginTop: 22 },
   th: { flexDirection: "row", backgroundColor: IVORY, paddingVertical: 6, paddingHorizontal: 8, fontSize: 7, fontWeight: 600, letterSpacing: 1.2, textTransform: "uppercase" },
-  tr: { flexDirection: "row", paddingVertical: 8, paddingHorizontal: 8, borderBottomWidth: 0.5, borderBottomColor: MIST },
-  cItem: { flex: 1 },
+  tr: { flexDirection: "row", alignItems: "center", paddingVertical: 8, paddingHorizontal: 8, borderBottomWidth: 0.5, borderBottomColor: MIST },
+  cItem: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
+  photo: { width: 36, height: 36, backgroundColor: IVORY },
   cQty: { width: 40, textAlign: "center" },
   cPrice: { width: 80, textAlign: "right" },
   totals: { marginTop: 12, marginLeft: "auto", width: 240 },
@@ -88,7 +89,8 @@ const Row = ({ label, value, muted }: { label: string; value: string; muted?: bo
   </View>
 );
 
-export function InvoiceDocument({ order, settings }: { order: CustomerOrder; settings: InvoiceSettings }) {
+/** `photos`: a JPEG per order item id (see itemThumbnails in ./index). */
+export function InvoiceDocument({ order, settings, photos = {} }: { order: CustomerOrder; settings: InvoiceSettings; photos?: Record<number, Buffer> }) {
   const hasGst = Boolean(settings.gstin);
   const gross = order.total + order.gift_card_amount;
   const online = order.total;
@@ -142,17 +144,23 @@ export function InvoiceDocument({ order, settings }: { order: CustomerOrder; set
 
         <View style={s.table}>
           <View style={s.th}>
-            <Text style={s.cItem}>Item</Text>
+            <Text style={{ flex: 1 }}>Item</Text>
             <Text style={s.cQty}>Qty</Text>
             <Text style={s.cPrice}>Unit price</Text>
             <Text style={s.cPrice}>Amount</Text>
           </View>
           {order.items.map((item) => (
             <View key={item.id} style={s.tr} wrap={false}>
-              <Text style={s.cItem}>
-                {item.name_snapshot}
-                {item.variant_label ? ` · ${item.variant_label}` : ""}
-              </Text>
+              <View style={s.cItem}>
+                {photos[item.id] ? (
+                  // eslint-disable-next-line jsx-a11y/alt-text -- a PDF image, not an HTML one
+                  <Image src={{ data: photos[item.id], format: "jpg" }} style={s.photo} />
+                ) : null}
+                <Text style={{ flex: 1 }}>
+                  {item.name_snapshot}
+                  {item.variant_label ? ` · ${item.variant_label}` : ""}
+                </Text>
+              </View>
               <Text style={s.cQty}>{item.quantity}</Text>
               <Text style={s.cPrice}>{formatPrice(item.unit_price)}</Text>
               <Text style={s.cPrice}>{formatPrice(item.line_total)}</Text>

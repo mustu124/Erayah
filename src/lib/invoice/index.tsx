@@ -1,6 +1,7 @@
 import "server-only";
 
 import { renderToBuffer } from "@react-pdf/renderer";
+import sharp from "sharp";
 import { revalidateTag } from "next/cache";
 
 import { TAGS } from "@/lib/cache-tags";
@@ -11,8 +12,39 @@ import { InvoiceDocument } from "./InvoiceDocument";
 
 const BUCKET = "invoices";
 
-export const renderInvoice = async (order: CustomerOrder) =>
-  renderToBuffer(<InvoiceDocument order={order} settings={await getInvoiceSettings()} />);
+/**
+ * A small JPEG of each piece's photo (as it was when ordered), keyed by order
+ * item id. Read from Storage once, when the invoice is first made; the PDF is
+ * then stored. PDFs can't show WebP, hence the conversion. A missing photo
+ * just leaves its row without one.
+ */
+async function itemThumbnails(order: CustomerOrder): Promise<Record<number, Buffer>> {
+  const storage = createAdminClient().storage.from("product-images");
+  const entries = await Promise.all(
+    order.items.map(async (item) => {
+      if (!item.image_path_snapshot) return null;
+      try {
+        const { data } = await storage.download(item.image_path_snapshot);
+        if (!data) return null;
+        const jpeg = await sharp(Buffer.from(await data.arrayBuffer()))
+          .resize(144, 144, { fit: "cover" })
+          .flatten({ background: "#f9eee1" })
+          .jpeg({ quality: 80 })
+          .toBuffer();
+        return [item.id, jpeg] as const;
+      } catch (error) {
+        console.error(`invoice photo ${order.order_number}:`, (error as Error).message);
+        return null;
+      }
+    }),
+  );
+  return Object.fromEntries(entries.filter((e) => e !== null));
+}
+
+export const renderInvoice = async (order: CustomerOrder) => {
+  const [settings, photos] = await Promise.all([getInvoiceSettings(), itemThumbnails(order)]);
+  return renderToBuffer(<InvoiceDocument order={order} settings={settings} photos={photos} />);
+};
 
 /**
  * The stored invoice PDF for a paid order, made on first call. Returns the PDF
