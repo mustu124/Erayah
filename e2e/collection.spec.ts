@@ -25,14 +25,17 @@ test.describe("collection pages", () => {
   test("category page: title, 24 per page, numbered pagination", async ({ page }) => {
     await open(page, "/shop/earrings");
     await expect(page.getByRole("heading", { level: 1, name: "Earrings" })).toBeVisible();
-    await expect(countText(page)).toHaveText("25 pieces");
+    // The owner adds pieces in /admin, so the total isn't fixed: more than one page of 24.
+    await expect(countText(page)).toHaveText(/^\d+ pieces$/);
+    const total = Number((await countText(page).textContent())?.split(" ")[0]);
+    expect(total).toBeGreaterThan(24);
     await expect(cards(page)).toHaveCount(24);
 
     const pagination = page.getByRole("navigation", { name: "Pagination" });
     await expect(pagination.getByRole("link", { name: "Page 1" })).toHaveAttribute("aria-current", "page");
     await pagination.getByRole("link", { name: "Page 2" }).click();
     await expect(page).toHaveURL(/\/shop\/earrings\?page=2$/);
-    await expect(cards(page)).toHaveCount(1);
+    await expect(cards(page)).toHaveCount(Math.min(24, total - 24));
   });
 
   test("lifestyle tiles only in curated order with no filters", async ({ page }, testInfo) => {
@@ -54,6 +57,7 @@ test.describe("collection pages", () => {
   test("filters update the URL, show chips and clear", async ({ page }, testInfo) => {
     const mobile = isMobile(testInfo.project.name);
     await open(page, "/shop/earrings");
+    const allText = (await countText(page).textContent())!;
     const panel = await filters(page, mobile);
     // Colour and Style are not offered as filters (owner's request).
     await expect(panel.getByText("Colour", { exact: true })).toHaveCount(0);
@@ -64,14 +68,14 @@ test.describe("collection pages", () => {
       await expect(panel.getByRole("button", { name: /^Show \d+ pieces?$/ })).toBeEnabled();
       await panel.getByRole("button", { name: /^Show \d+ pieces?$/ }).click();
     }
-    await expect(countText(page)).not.toHaveText("25 pieces");
+    await expect(countText(page)).not.toHaveText(allText);
     const giftCount = Number((await countText(page).textContent())?.split(" ")[0]);
     await expect(cards(page)).toHaveCount(giftCount);
 
     await expect(page.getByRole("button", { name: "Remove filter: Gifts for Her" })).toBeVisible();
     await page.getByRole("button", { name: "Clear all" }).click();
     await expect(page).toHaveURL(/\/shop\/earrings$/);
-    await expect(countText(page)).toHaveText("25 pieces");
+    await expect(countText(page)).toHaveText(allText);
 
     // The back button returns to the filtered view.
     await page.goBack();

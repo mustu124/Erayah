@@ -110,6 +110,18 @@ test.describe("product page", () => {
     );
   });
 
+  test("checkout details survive a reload", async ({ page }) => {
+    await open(page, "/product/dahlia-earrings");
+    await page.getByRole("button", { name: "Add to cart" }).first().click();
+    await open(page, "/checkout");
+    await page.getByLabel("Email").fill("reload@erayah.test");
+    await page.getByLabel("Full name").fill("Meera Shah");
+    await page.reload();
+    await page.locator("html[data-hydrated]").waitFor();
+    await expect(page.getByLabel("Email")).toHaveValue("reload@erayah.test");
+    await expect(page.getByLabel("Full name")).toHaveValue("Meera Shah");
+  });
+
   test("unknown product is a 404", async ({ page }) => {
     const response = await page.goto("/product/not-a-real-piece");
     expect(response?.status()).toBe(404);

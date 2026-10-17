@@ -29,6 +29,11 @@ test.describe("content pages", () => {
     await expect(page.getByRole("heading", { level: 1, name: "We're here to help." })).toBeVisible();
     await expect(page.getByRole("link", { name: "Message us on WhatsApp" })).toHaveAttribute("href", /^https:\/\/wa\.me\/\d+\?text=/);
     await expect(page.getByText("India time")).toBeVisible();
+    // What was typed survives a reload.
+    await page.getByLabel("Message").fill("Do you make custom pieces?");
+    await page.reload();
+    await page.locator("html[data-hydrated]").waitFor();
+    await expect(page.getByLabel("Message")).toHaveValue("Do you make custom pieces?");
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByText("Please tell us your name.")).toBeVisible();
     await expect(page.getByText("Please give an email or phone number so we can reply.")).toBeVisible();

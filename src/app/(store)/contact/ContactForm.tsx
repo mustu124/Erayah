@@ -1,11 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/cn";
+import { clearDraft, loadDraft, saveDraft } from "@/lib/form-draft";
 import { type ContactState, sendContactMessage } from "@/lib/contact/actions";
+
+const DRAFT_KEY = "contact";
+const FIELDS = { name: "", contact: "", message: "" };
 
 const label = "mb-1.5 block text-body-sm text-ink";
 
@@ -13,6 +17,26 @@ const label = "mb-1.5 block text-body-sm text-ink";
 export function ContactForm() {
   const [state, action, pending] = useActionState<ContactState, FormData>(sendContactMessage, { status: "idle" });
   const f = state.fields ?? {};
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Put back what was typed before a reload; forget it once the message is sent.
+  useEffect(() => {
+    if (state.status === "sent") return clearDraft(DRAFT_KEY);
+    const form = formRef.current;
+    if (!form) return;
+    const draft = loadDraft(DRAFT_KEY, FIELDS);
+    for (const [name, value] of Object.entries(draft)) {
+      const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+      if (field && !field.value && value) field.value = value;
+    }
+  }, [state.status]);
+
+  const remember = () => {
+    const form = formRef.current;
+    if (!form) return;
+    const data = new FormData(form);
+    saveDraft(DRAFT_KEY, Object.fromEntries(Object.keys(FIELDS).map((k) => [k, String(data.get(k) ?? "")])));
+  };
 
   if (state.status === "sent") {
     return (
@@ -24,7 +48,7 @@ export function ContactForm() {
   }
 
   return (
-    <form action={action} noValidate className="space-y-5">
+    <form ref={formRef} action={action} onInput={remember} noValidate className="space-y-5">
       <div>
         <label htmlFor="contact-name" className={label}>
           Name

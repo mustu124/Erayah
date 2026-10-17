@@ -15,6 +15,7 @@ import { INDIAN_STATES } from "@/lib/checkout/states";
 import type { CheckoutError, CreateResponse, QuoteResponse } from "@/lib/checkout/types";
 import { cn } from "@/lib/cn";
 import { routes } from "@/lib/routes";
+import { clearDraft, loadDraft, saveDraft } from "@/lib/form-draft";
 import { useHydrated } from "@/lib/use-hydrated";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { useCart } from "@/stores/cart";
@@ -37,6 +38,8 @@ type Form = {
   city: string;
   state: string;
 };
+
+const DRAFT_KEY = "checkout";
 
 const EMPTY: Form = { email: "", phone: "", name: "", pincode: "", line1: "", line2: "", landmark: "", city: "", state: "" };
 
@@ -81,7 +84,8 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
   const removeLine = useCart((s) => s.remove);
   const clearCart = useCart((s) => s.clear);
 
-  const [form, setForm] = useState<Form>(EMPTY);
+  // Restored from this device after a reload (the fields only render once hydrated, so no mismatch).
+  const [form, setForm] = useState<Form>(() => (typeof window === "undefined" ? EMPTY : loadDraft(DRAFT_KEY, EMPTY)));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [giftCardCode, setGiftCardCode] = useState<string | null>(null);
   const [giftCardError, setGiftCardError] = useState<string>();
@@ -178,9 +182,14 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
     if (first) document.getElementById(FIELD_IDS[first])?.focus();
   };
 
+  useEffect(() => {
+    if (stage === "form") saveDraft(DRAFT_KEY, form);
+  }, [form, stage]);
+
   const goToOrder = (orderNumber: string, token: string) => {
     setStage("done");
     clearCart();
+    clearDraft(DRAFT_KEY);
     router.replace(routes.order(orderNumber, token));
   };
 
