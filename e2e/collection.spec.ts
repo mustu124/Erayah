@@ -41,12 +41,8 @@ test.describe("collection pages", () => {
   test("lifestyle tiles only in curated order with no filters", async ({ page }, testInfo) => {
     await page.goto("/shop/earrings");
     const visible = page.locator("[data-lifestyle-tile]:visible");
-    await expect(visible).toHaveCount(isMobile(testInfo.project.name) ? 2 : 1);
-    // A tile is the size of a product card on desktop, never a wide band.
-    if (!isMobile(testInfo.project.name)) {
-      const [tile, card] = [await visible.first().boundingBox(), await cards(page).first().boundingBox()];
-      expect(Math.abs(tile!.width - card!.width)).toBeLessThan(2);
-    }
+    // Phones get photo tiles between rows; desktop is a plain grid (no photo shown twice).
+    await expect(visible).toHaveCount(isMobile(testInfo.project.name) ? 2 : 0);
 
     await page.goto("/shop/earrings?sort=price-asc");
     await expect(page.locator("[data-lifestyle-tile]")).toHaveCount(0);

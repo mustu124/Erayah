@@ -133,7 +133,7 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
             <Accordion title="Shipping & Returns" size="md">
               <div className="space-y-3 text-body-sm text-ink/80">
                 <p>
-                  Free shipping on orders above ₹6,000. Delivered within 7–10 working days. Express shipping can be arranged on
+                  Delivered within 7–10 working days. Free shipping on orders above ₹6,000. Express shipping can be arranged on
                   request.
                 </p>
                 <p>

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 // Homepage sections, strictly in this order: Hero, Shop by Category,
-// New Arrivals (four pieces), Founder's note, Most Loved, closing lines (the footer comes from the layout).
+// New Arrivals (twelve pieces), Founder's note, Most Loved, closing lines (the footer comes from the layout).
 export default function HomePage() {
   return (
     <>
@@ -50,7 +50,7 @@ async function NewArrivals() {
     <ProductCarouselSection
       id="new-arrivals"
       title="New Arrivals"
-      products={(await getNewArrivals()).slice(0, 4)}
+      products={(await getNewArrivals()).slice(0, 12)}
       layout="grid"
       href={routes.newArrivals}
       linkLabel="Shop All New Arrivals"

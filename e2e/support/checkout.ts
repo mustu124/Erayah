@@ -27,6 +27,17 @@ export const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.en
 const hmac = (secret: string, payload: string) => createHmac("sha256", secret).update(payload).digest("hex");
 export const paymentSignature = (orderId: string, paymentId: string) =>
   hmac(process.env.RAZORPAY_KEY_SECRET!, `${orderId}|${paymentId}`);
+/** Records a payment in the fake Razorpay, as if the shopper paid without the site hearing back. */
+export async function recordPayment(payment: { id: string; order_id: string; amount: number; status: "created" | "authorized" | "captured" | "failed" }) {
+  await fetch(`${MOCK_RAZORPAY}/__payments`, { method: "POST", body: JSON.stringify(payment) });
+}
+
+/** Shipping the default rule charges for an order of this value (the owner sets it in /admin). */
+export async function shippingFor(orderValue: number): Promise<number> {
+  const { data } = await db.from("shipping_rules").select("rate, free_above").eq("match_type", "default").eq("is_active", true).single();
+  return data!.free_above !== null && orderValue >= data!.free_above ? 0 : data!.rate;
+}
+
 export const newPaymentId = () => `pay_${randomBytes(7).toString("hex")}`;
 
 /** Sends a signed webhook to the app, as Razorpay would. */

@@ -5,6 +5,8 @@ import { createServer } from "node:http";
 
 const PORT = Number(process.env.MOCK_RAZORPAY_PORT ?? 3199);
 const orders = [];
+// Payments recorded by tests (POST /__payments), as Razorpay would hold them.
+const payments = [];
 
 createServer((req, res) => {
   const send = (status, body) => {
@@ -13,6 +15,21 @@ createServer((req, res) => {
   };
   if (req.method === "GET" && req.url === "/health") return send(200, { ok: true });
   if (req.method === "GET" && req.url === "/__orders") return send(200, orders);
+  if (req.method === "POST" && req.url === "/__payments") {
+    let raw = "";
+    req.on("data", (chunk) => (raw += chunk));
+    req.on("end", () => {
+      payments.push({ entity: "payment", ...JSON.parse(raw) });
+      send(200, { ok: true });
+    });
+    return;
+  }
+  const list = req.method === "GET" && req.url.match(/^\/v1\/orders\/([^/]+)\/payments$/);
+  if (list) {
+    if (!req.headers.authorization?.startsWith("Basic ")) return send(401, { error: { description: "auth" } });
+    const items = payments.filter((p) => p.order_id === decodeURIComponent(list[1]));
+    return send(200, { entity: "collection", count: items.length, items });
+  }
   if (req.method === "POST" && req.url === "/v1/orders") {
     if (!req.headers.authorization?.startsWith("Basic ")) return send(401, { error: { description: "auth" } });
     let raw = "";

@@ -11,6 +11,7 @@ import { Icon } from "@/components/ui/Icon";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { NEXT_STATUSES } from "@/lib/admin/orders";
 import { formatDateTimeLong } from "@/lib/admin/time";
+import { reconcileOrder } from "@/lib/checkout/reconcile";
 import { getOrderByNumber } from "@/lib/data/order";
 import { formatPrice } from "@/lib/format/price";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -41,7 +42,10 @@ function whatsappTemplate(status: string, firstName: string, orderNumber: string
 export default async function OrderDetailPage({ params }: PageProps<"/admin/orders/[number]">) {
   await requireAdminPage();
   const { number } = await params;
-  const order = await getOrderByNumber(decodeURIComponent(number));
+  let order = await getOrderByNumber(decodeURIComponent(number));
+  if (order && order.payment_status !== "paid" && order.razorpay_order_id && !order.is_test && (await reconcileOrder(order, "admin order")) === "placed") {
+    order = await getOrderByNumber(order.order_number);
+  }
   if (!order) notFound();
 
   const { data: events } = await createAdminClient()

@@ -9,19 +9,19 @@ export type TileView = {
   caption: string | null;
   href: string | null;
   span: 1 | 2;
-  /** Automatic tiles differ by breakpoint: every 8 products on mobile, every 12 on desktop. */
+  /** Automatic tiles are mobile only (every 8 products); desktop shows a plain grid. */
   visibility: "all" | "mobile" | "desktop";
 };
 
 export type GridItem = { kind: "product"; product: ProductCardData } | { kind: "tile"; tile: TileView };
 
-const AUTO_EVERY = { mobile: 8, desktop: 12 } as const;
+// Desktop has no automatic tiles: a product's photo appearing twice on one screen read as repetition.
+const AUTO_EVERY = { mobile: 8 } as const;
 
 /**
  * Interleaves lifestyle tiles with a page of products (curated order, no
  * filters only). Configured tiles go after their absolute curated position;
- * without any, product photos are used after every 8 products on mobile and
- * every 12 on desktop. Never after the last product, never two in a row.
+ * without any, product photos are used after every 8 products on mobile only. Never after the last product, never two in a row.
  * Tiles don't count towards the 24 products per page.
  */
 export function buildGridItems({
@@ -62,7 +62,7 @@ export function buildGridItems({
         .sort((a, b) => b.distance - a.distance)[0]?.c;
     };
 
-    for (const [visibility, every] of Object.entries(AUTO_EVERY) as ["mobile" | "desktop", number][]) {
+    for (const [visibility, every] of Object.entries(AUTO_EVERY) as ["mobile", number][]) {
       for (let index = every; index < products.length; index += every) {
         const candidate = pick(index);
         if (!candidate) break;

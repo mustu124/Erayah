@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { fontBody, fontHeading, fontScript } from "./fonts";
+import { fontBody, fontHeading } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-IN"
-      className={`${fontHeading.variable} ${fontBody.variable} ${fontScript.variable} antialiased`}
+      className={`${fontHeading.variable} ${fontBody.variable} antialiased`}
     >
       <body className="min-h-dvh">{children}</body>
     </html>

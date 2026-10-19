@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { after } from "next/server";
 
 import { OrdersTable } from "@/components/admin/OrdersTable";
 import { PageHeader, Panel, StatCard } from "@/components/admin/ui";
 import { addDays, getLowStock, getLowStockThreshold, getSummary, istToday } from "@/lib/admin/analytics";
 import { requireAdminPage } from "@/lib/admin/auth";
+import { reconcileRecentOrders } from "@/lib/checkout/reconcile";
 import { ORDER_LIST_SELECT, type OrderListRow, type OrderStatus } from "@/lib/admin/orders";
 import { istDayStart, istWeekStart } from "@/lib/admin/time";
 import { formatPrice } from "@/lib/format/price";
@@ -13,6 +15,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 export const metadata: Metadata = { title: "Dashboard" };
 
 async function loadDashboard() {
+  // Paid orders whose confirmation never arrived are picked up here (results show on the next refresh).
+  after(() => reconcileRecentOrders());
   const LOW_STOCK = await getLowStockThreshold();
   const db = createAdminClient();
   const today = istDayStart();

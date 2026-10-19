@@ -17,7 +17,8 @@ test.describe("content pages", () => {
     for (const title of ["Where It Began", "Jadau, Reconsidered", "Beyond the Occasion", "Our founder", "Handcrafted in India", "The craft", "Gold Plated"]) {
       await expect(page.getByRole("heading", { name: title })).toBeVisible();
     }
-    await expect(page.getByText("Inspired by the past, made for the present, and treasured for what comes next.")).toBeVisible();
+    await expect(page.getByText("Inspired by the past, made for the present, and treasured for what comes next.")).toHaveCount(0);
+    await expect(page.getByText("That thought became ERAYAH.", { exact: false })).toBeVisible();
     await expect(page.getByText("Bhavi Shah")).toBeVisible();
     await expect(page.getByText("Founder & Creative Director")).toBeVisible();
     await expect(page.getByRole("link", { name: "Follow", exact: true })).toHaveAttribute("href", /instagram\.com/);

@@ -288,7 +288,7 @@ const DESCRIPTIONS: Record<string, string> = {
 const SITE_SETTINGS = {
   announcement_text: "Handcrafted in India · Free shipping above ₹6,000",
   brand_story_text:
-    "Our roots don't belong to another era. They belong in the way we live, the things we cherish, and the stories we pass on.",
+    "The beauty of our roots, carried forward.",
   brand_story_cta_label: "Our Story",
   brand_story_cta_url: "/about",
   business_hours: "Monday to Saturday, 10 am to 7 pm",
@@ -367,7 +367,7 @@ const FAQS: { group: string; question: string; answer: string }[] = [
   {
     group: "Orders & Payment",
     question: "Can I change or cancel my order?",
-    answer: "Message us on WhatsApp with your order number as soon as you can. We can change or cancel an order until it has been shipped.",
+    answer: "No, we do not accept any cancellations or changes in order, once the order has been confirmed.",
   },
   {
     group: "Orders & Payment",
@@ -386,9 +386,9 @@ const PAGES: Record<string, { body: string; seo_title: string; seo_description: 
 
 Shipping charges are calculated at checkout based on your delivery pincode.
 
-Free shipping on orders above ₹6,000.
-
 Delivered within 7–10 working days.
+
+Free shipping on orders above ₹6,000.
 
 Express shipping can be arranged on request.
 
@@ -425,13 +425,13 @@ We believe jewellery becomes meaningful through the life it lives with us. It ma
 
 ## Our founder
 
-"Some things are too beautiful to be saved for another day. I believe jewellery is one of them.
+Some things are too beautiful to be saved for another day. I believe jewellery is one of them.
 
-I grew up admiring the kind of Indian jewellery that was often brought out for special occasions, beautiful pieces with stories and traditions woven into them. I loved what they represented, but always wished they could be part of more than just the big moments.
+For the longest time, I found myself reaching for the same few pieces, while so much of the jewellery I loved stayed tucked away. Some pieces felt too contemporary for the richness I was drawn to; others felt like they belonged to occasions that came around only once in a while. I wanted jewellery that held the beauty of our traditions but felt natural to wear in my own way.
 
-Born in Gen Z, with an old soul and a love for all things timeless, I wanted to find a place for that heritage in the way we live today.
+That thought became ERAYAH. I wanted to bring the beauty of jadau to those who love their roots but want to express them in their own way.
 
-That is what led me to create ERAYAH, bringing the intricate craft of Jadau into a contemporary world. I hope every piece finds a place in your everyday, becomes part of the moments you remember, and is treasured long enough to carry a story forward."
+I hope that when you find a piece you love, it becomes part of your story, tied to moments you'll remember and treasure for years to come.
 
 With love,
 

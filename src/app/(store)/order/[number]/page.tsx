@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { AwaitPayment } from "@/components/checkout/AwaitPayment";
+import { ClearPendingCart } from "@/components/checkout/ClearPendingCart";
+import { reconcileOrder } from "@/lib/checkout/reconcile";
 import { buttonClasses, ButtonLink } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Price } from "@/components/ui/Price";
@@ -46,8 +48,12 @@ const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "long"
 async function Order({ params, searchParams }: PageProps<"/order/[number]">) {
   const [{ number }, query] = await Promise.all([params, searchParams]);
   const token = typeof query.t === "string" ? query.t : null;
-  const order = await getOrderForCustomer(decodeURIComponent(number), token);
+  let order = await getOrderForCustomer(decodeURIComponent(number), token);
   if (!order) notFound();
+  // Confirmation can be lost (closed tab, UPI app switch, webhook delay): ask Razorpay directly.
+  if (order.payment_status !== "paid" && order.razorpay_order_id && (await reconcileOrder(order, "order page")) === "placed") {
+    order = (await getOrderForCustomer(order.order_number, token)) ?? order;
+  }
 
   const firstName = order.customer_name.split(/\s+/)[0];
   const askUs = (
@@ -101,6 +107,7 @@ async function Order({ params, searchParams }: PageProps<"/order/[number]">) {
 
   return (
     <article>
+      <ClearPendingCart orderNumber={order.order_number} />
       <header className="text-center">
         <p className="font-body text-label font-medium text-gold uppercase">Order confirmed</p>
         <h1 className="mt-3 font-heading text-display text-ink">Thank you, {firstName}</h1>

@@ -1,32 +1,18 @@
-import { ButtonLink } from "@/components/ui/Button";
-import { getPage } from "@/lib/data/content";
+import Link from "next/link";
+
 import { routes } from "@/lib/routes";
 
-/** How many paragraphs of the note the homepage shows before "Read more". */
-const PARAGRAPHS = 2;
-
 /**
- * The founder's note, taken from the "Our founder" section of the About page
- * (so the owner edits it in one place): its opening paragraphs, her name, and
- * "Read more" leading to Our Story.
+ * The founder's note on the homepage: a shorter version of the one on Our
+ * Story, in the owner's words (round 5 revisions), with a link to the full story.
  */
-export async function FounderNote() {
-  const page = await getPage("about");
-  const section = page?.body.split(/^##[ \t]+/m).find((chunk) => /^[^\n]*founder/i.test(chunk));
-  if (!section) return null;
+const NOTE = [
+  "Some things are too beautiful to be saved for another day. I believe jewellery is one of them.",
+  "For the longest time, I found myself reaching for the same few pieces, while so much of the jewellery I loved stayed tucked away. Some pieces felt too contemporary, while others belonged to occasions that came around only once in a while. I wanted jewellery that held the beauty of our traditions but felt natural to wear in my own way.",
+  "That thought became ERAYAH.",
+];
 
-  const blocks = section
-    .split("\n")
-    .slice(1)
-    .join("\n")
-    .split(/\n{2,}/)
-    .map((b) => b.trim())
-    .filter(Boolean);
-  const signOff = blocks.findIndex((b) => /^with love/i.test(b));
-  const note = (signOff === -1 ? blocks : blocks.slice(0, signOff)).slice(0, PARAGRAPHS).map((p) => p.replace(/^["“]|["”]$/g, ""));
-  const [name, role] = signOff === -1 ? [] : blocks.slice(signOff + 1).map((b) => b.replace(/\*\*/g, ""));
-  if (!note.length) return null;
-
+export function FounderNote() {
   return (
     <section aria-labelledby="founder-note" className="px-6 py-20 lg:py-28">
       <div className="mx-auto max-w-[620px] text-center">
@@ -34,19 +20,20 @@ export async function FounderNote() {
           Founder&apos;s note
         </h2>
         <blockquote className="mt-7 space-y-5 font-heading text-[18px] leading-[1.7] text-ink lg:text-[21px]">
-          {note.map((p, i) => (
-            <p key={i}>{p}</p>
+          {NOTE.map((p) => (
+            <p key={p}>{p}</p>
           ))}
         </blockquote>
-        {name ? (
-          <p className="mt-7 text-body-sm text-ink">
-            <span className="font-medium">{name}</span>
-            {role ? <span className="block text-ink/65">{role}</span> : null}
-          </p>
-        ) : null}
-        <ButtonLink href={routes.about} variant="outline" className="mt-9">
-          Read more
-        </ButtonLink>
+        <p className="mt-7 text-body-sm text-ink">
+          <span className="font-medium">Bhavi Shah</span>
+          <span className="block text-ink/65">Founder &amp; Creative Director</span>
+        </p>
+        <Link
+          href={routes.about}
+          className="mt-8 inline-flex min-h-11 items-center text-body-sm text-ink underline decoration-ink/40 underline-offset-4 transition-colors duration-300 hover:decoration-ink"
+        >
+          Read our story <span aria-hidden="true">&nbsp;→</span>
+        </Link>
       </div>
     </section>
   );

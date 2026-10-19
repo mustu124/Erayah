@@ -16,7 +16,7 @@ A mobile-first, premium e-commerce website for Erayah, an Indian handcrafted jew
 Copy the STRUCTURE of the reference site in /docs/source/Reference_layout-compressed.pdf (Anu Merton). Use Erayah's colours, fonts and content, never the reference's brand name, images or copy. Key patterns to copy:
 - Thin announcement bar on top in the dark accent colour with small light text.
 - Header: elephant mark + wordmark on the left, nav links (SHOP, ABOUT, CONTACT, FAQS) in small uppercase tracking-wide text, a wide inline search field with a square dark search button, then wishlist and cart icons with a count badge. No account icon, no currency selector.
-- Desktop SHOP opens a full-width mega-menu panel with uppercase column headings and light-weight links (Earrings, Necklace Set, More to Shop, Discover).
+- Desktop SHOP opens a full-width mega-menu panel with uppercase column headings and light-weight links (Earrings, More to Shop, Discover).
 - Mobile: hamburger left, elephant mark + wordmark centred, cart right, full-width search bar under the header. Hamburger opens a full-height drawer with the elephant mark top-left, cart and close top-right, and accordion groups with + / − toggles.
 - Hero: one centred portrait image with the word ERAYAH set huge and very faint behind it across the full width, thin outlined oval arrow buttons left and right, a slide counter ("02/05") bottom-left, a pill label naming the category bottom-centre, dot indicators bottom-right.
 - Section headers: section title on the left and a small date-style label (e.g. the current month and year) on the right, joined by a thin hairline.
@@ -55,10 +55,10 @@ Voice: quiet, assured, warm, heritage-meets-contemporary. Short sentences. No ex
 
 ## Information architecture
 Categories: Earrings, Necklace Set, Rings, Bracelets, Pendants (Bracelets shows a graceful "Coming soon" until it has products).
-Nav: Shop (New Arrivals, Most Loved, Gifts for Her (Under ₹3K), all 5 categories with subcategories under Earrings and Necklace Set, Shop All; there is no "Shop by Style"), About Erayah, Contact, FAQs.
+Nav: Shop (New Arrivals, Most Loved, Gifts for Her (Under ₹3K), all 5 categories with subcategories under Earrings only (Studs, Danglers, Chaandbaalis, Jhumkis), Shop All; there is no "Shop by Style"), About Erayah, Contact, FAQs.
 There is NO Track Order anywhere and NO customer account anywhere.
 Footer links: Shop, About Erayah, Contact, FAQs, Shipping & Returns, Privacy Policy, Terms & Conditions, Instagram, WhatsApp.
-Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals (four pieces only), Founder's note (opening of the About page's founder section + "Read more"), Most Loved, closing lines (brand story text + Instagram link, no button), Footer. "Best Sellers" is called "Most Loved" everywhere the shopper sees it.
+Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals (twelve pieces), Founder's note (the owner's short homepage version + "Read our story →"), Most Loved, closing lines (brand story text + Instagram link, no button), Footer. "Best Sellers" is called "Most Loved" everywhere the shopper sees it.
 
 ## Commerce rules
 - Guest checkout only. Payment: Razorpay only (UPI, cards, wallets, netbanking). There is NO Cash on Delivery.
@@ -71,6 +71,8 @@ Homepage sections, strictly in this order and nothing else: Hero, Shop by Catego
 
 ## Engineering rules
 - Server Components and server actions/route handlers for data; client components only where interactive.
+- Payments: an order is confirmed by /api/checkout/verify, the webhook, or src/lib/checkout/reconcile.ts (asks Razorpay directly; order page, checkout status, admin). All go through confirm_payment. Never clear the cart or show a failure while a payment is uncertain.
+- Server functions run in icn1 (vercel.json), next to the Supabase database.
 - Never expose SUPABASE_SERVICE_ROLE_KEY or RAZORPAY_KEY_SECRET to the browser.
 - Row Level Security on every table.
 - Use next/image everywhere, with explicit sizes. The elephant mark shows between pages (components/layout/PageTransition.tsx), not on loading images. Do not add a loading.tsx to (store): it turns 404s into 200s.

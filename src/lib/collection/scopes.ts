@@ -43,7 +43,7 @@ export const LISTS: Record<ListSlug, { title: string; description: string; seoDe
   },
   "gifts-for-her": {
     title: "Gifts for Her (Under ₹3K)",
-    description: "Pieces chosen for giving, all under ₹3,000.",
+    description: "Pieces chosen for your loved ones.",
     seoDescription: "Handcrafted jewellery gifts from Erayah: pendants and pieces under ₹3,000, with a gift note at checkout.",
   },
 };

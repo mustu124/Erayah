@@ -134,6 +134,7 @@ const STYLE_LABELS: Record<string, string> = {
   pendant: "Pendants",
   ring: "Rings",
   bali: "Balis",
+  jhumkas: "Jhumkis",
   "mother-of-pearl": "Mother-of-pearl",
 };
 

@@ -63,7 +63,7 @@ export function CartDrawerMount() {
               <li key={key} className="flex gap-4 py-5">
                 <Link href={routes.product(line.slug)} onClick={close} className="relative block aspect-[4/5] w-20 shrink-0 overflow-hidden bg-ivory" tabIndex={-1} aria-hidden="true">
                   {card?.image ? (
-                    <Image src={card.image.url} alt="" fill sizes="80px" className="object-cover" />
+                    <Image src={card.image.url} alt="" fill sizes="80px" loading="eager" className="object-cover" />
                   ) : (
                     <span className="flex h-full items-center justify-center">
                       <ElephantMark className="h-6 w-auto text-ink/10" />

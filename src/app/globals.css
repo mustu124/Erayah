@@ -22,10 +22,10 @@
   /* WhatsApp's green, a shade deeper so the white glyph keeps 3:1 contrast. Only for the WhatsApp button. */
   --color-whatsapp: #1da851;
 
-  /* Fonts: next/font (src/app/fonts.ts) sets --font-stix/-montserrat/-sloop. */
+  /* Fonts: next/font (src/app/fonts.ts) sets --font-stix and --font-montserrat. */
   --font-heading: var(--font-stix), "STIX Two Text", Georgia, serif;
   --font-body: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
-  --font-script: var(--font-sloop), "STIX Two Text", Georgia, serif;
+  --font-script: var(--font-stix), "STIX Two Text", Georgia, serif;
   --font-sans: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
 
   /* Type scale — mobile first; md: variants step up for larger screens. */

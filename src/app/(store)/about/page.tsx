@@ -93,9 +93,6 @@ export default async function AboutPage() {
       <header className="relative overflow-hidden px-4 pt-16 pb-10 text-center lg:pt-24">
         <GiantWordmark className="top-6 lg:top-4" />
         <h1 className="relative mx-auto max-w-3xl font-heading text-[40px] leading-[1.1] text-ink lg:text-[72px]">Heirlooms, reimagined.</h1>
-        <p className="relative mx-auto mt-6 max-w-md font-heading text-[17px] leading-relaxed text-ink/75 italic lg:text-[19px]">
-          Inspired by the past, made for the present, and treasured for what comes next.
-        </p>
         {intro ? <Prose className="relative mx-auto mt-6 max-w-xl">{intro}</Prose> : null}
       </header>
       <Photo img={hero} sizes="100vw" priority position={ownHero ? undefined : "50% 62%"} className="mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[16/9] lg:aspect-[21/9]" />

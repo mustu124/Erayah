@@ -37,14 +37,29 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
   const touchX = useRef<number | null>(null);
   const count = slides.length;
 
-  const go = useCallback((next: number) => setIndex(((next % count) + count) % count), [count]);
+  // Only the first photo loads with the page; the next one a moment later, the rest as they come up.
+  const [visited, setVisited] = useState<ReadonlySet<number>>(() => new Set([0]));
+  const [warm, setWarm] = useState(false);
+  const show = useCallback(
+    (next: number) => {
+      const i = ((next % count) + count) % count;
+      setVisited((v) => (v.has(i) ? v : new Set(v).add(i)));
+      setIndex(i);
+    },
+    [count],
+  );
+  const go = show;
+  useEffect(() => {
+    const timer = setTimeout(() => setWarm(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const autoplay = count > 1 && !paused && !reducedMotion;
   useEffect(() => {
     if (!autoplay) return;
-    const timer = setInterval(() => setIndex((i) => (i + 1) % count), AUTOPLAY_MS);
+    const timer = setInterval(() => show(index + 1), AUTOPLAY_MS);
     return () => clearInterval(timer);
-  }, [autoplay, count]);
+  }, [autoplay, show, index]);
 
   if (count === 0) return null;
   const current = slides[index];
@@ -85,7 +100,14 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
       >
         <div aria-live={autoplay ? "off" : "polite"} className="absolute inset-0">
           {slides.map((slide, i) => (
-            <SlideImage key={slide.key} slide={slide} active={i === index} first={i === 0} position={`${i + 1} of ${count}`} />
+            <SlideImage
+              key={slide.key}
+              slide={slide}
+              active={i === index}
+              first={i === 0}
+              load={visited.has(i) || (warm && i === (index + 1) % count)}
+              position={`${i + 1} of ${count}`}
+            />
           ))}
         </div>
 
@@ -132,7 +154,7 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
   );
 }
 
-function SlideImage({ slide, active, first, position }: { slide: HeroSlide; active: boolean; first: boolean; position: string }) {
+function SlideImage({ slide, active, first, load, position }: { slide: HeroSlide; active: boolean; first: boolean; load: boolean; position: string }) {
   const common = { alt: slide.alt, fill: true, quality: 75 } as const;
   const {
     props: { srcSet: desktopSrcSet },
@@ -150,6 +172,8 @@ function SlideImage({ slide, active, first, position }: { slide: HeroSlide; acti
       inert={!active}
       className={cn("absolute inset-0 transition-opacity duration-[400ms]", active ? "opacity-100" : "opacity-0")}
     >
+      {/* Until it's due, a slide shows only its blurred preview (no download). */}
+      {load ? (
       <picture>
         <source media="(min-width: 1024px)" srcSet={desktopSrcSet} sizes="40vw" />
         <source srcSet={mobileSrcSet} sizes="100vw" />
@@ -166,6 +190,9 @@ function SlideImage({ slide, active, first, position }: { slide: HeroSlide; acti
           }}
         />
       </picture>
+      ) : (
+        <div className="h-full w-full bg-cover" style={{ backgroundImage: `url("${slide.blurDataUrl ?? IVORY_BLUR}")` }} />
+      )}
     </div>
   );
 }

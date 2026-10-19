@@ -19,33 +19,23 @@ export const DISCOVER_LINKS: NavLink[] = [
   { label: "Gifts for Her (Under ₹3K)", href: routes.giftsForHer },
 ];
 
-/** Subcategories shown under Earrings and Necklace Set in the Shop menu. */
+/** Subcategories shown under Earrings in the Shop menu (each may gather several styles). */
 export const SUBCATEGORY_GROUPS: { title: string; links: NavLink[] }[] = [
   {
     title: "Earrings",
     links: [
       { label: "All Earrings", href: routes.collection("earrings") },
-      { label: "Studs", href: routes.subcategory("earrings", "studs") },
-      { label: "Danglers", href: routes.subcategory("earrings", "danglers") },
-      { label: "Jhumkas", href: routes.subcategory("earrings", "jhumkas") },
+      { label: "Studs", href: routes.subcategory("earrings", "studs,ear cuff") },
+      { label: "Danglers", href: routes.subcategory("earrings", "danglers,bali,shoulder drops") },
       { label: "Chaandbaalis", href: routes.subcategory("earrings", "chaandbaalis") },
-      { label: "Balis", href: routes.subcategory("earrings", "bali") },
-      { label: "Ear Cuffs", href: routes.subcategory("earrings", "ear cuff") },
-      { label: "Shoulder Drops", href: routes.subcategory("earrings", "shoulder drops") },
-    ],
-  },
-  {
-    title: "Necklace Set",
-    links: [
-      { label: "All Necklace Sets", href: routes.collection("necklace-sets") },
-      { label: "Chokers", href: routes.subcategory("necklace-sets", "choker") },
-      { label: "Long Necklace Sets", href: routes.subcategory("necklace-sets", "necklace set") },
+      { label: "Jhumkis", href: routes.subcategory("earrings", "jhumkas") },
     ],
   },
 ];
 
 /** The categories without subcategories, then Shop All. */
 export const MORE_CATEGORY_LINKS: NavLink[] = [
+  { label: "Necklace Set", href: routes.collection("necklace-sets") },
   { label: "Rings", href: routes.collection("rings") },
   { label: "Bracelets", href: routes.collection("bracelets") },
   { label: "Pendants", href: routes.collection("pendants") },

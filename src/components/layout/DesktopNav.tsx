@@ -69,7 +69,7 @@ export function DesktopNav({ feature }: { feature: MenuFeature }) {
             open ? "visible opacity-100" : "invisible opacity-0",
           )}
         >
-          <div className="mx-auto grid max-w-[1440px] grid-cols-[1fr_1fr_1fr_1fr_1.1fr] gap-8 px-10 pt-8 pb-10">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-[1fr_1fr_1fr_1.3fr] gap-10 px-10 pt-8 pb-10">
             {SUBCATEGORY_GROUPS.map((group) => (
               <MenuColumn key={group.title} title={group.title} links={group.links} onNavigate={() => setOpen(false)} />
             ))}

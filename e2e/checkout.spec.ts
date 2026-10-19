@@ -9,6 +9,8 @@ import {
   MOCK_RAZORPAY,
   newPaymentId,
   productInStock,
+  recordPayment,
+  shippingFor,
   seedCart,
   sendWebhook,
 } from "./support/checkout";
@@ -54,8 +56,8 @@ test.describe("checkout form", () => {
     await expect(page.getByLabel("City")).toHaveValue("Mumbai");
     await expect(page.getByLabel("State")).toHaveValue("Maharashtra");
 
-    // Total = price + ₹100 shipping, from the database.
-    const total = new Intl.NumberFormat("en-IN").format((product.price + 10000) / 100);
+    // Total = price + shipping, both from the database.
+    const total = new Intl.NumberFormat("en-IN").format((product.price + (await shippingFor(product.price))) / 100);
     if (await page.getByText("Show order summary").isVisible()) await page.getByText("Show order summary").click();
     await expect(page.locator("[data-testid$=-total]:visible")).toHaveText(`₹${total}`);
     await expect(page.getByRole("button", { name: /Place order/ })).toContainText(`₹${total}`);
@@ -86,7 +88,7 @@ test.describe("checkout payments", () => {
 
       await expect(razorpay(page)).toBeVisible();
       const opened = await page.evaluate(() => (window as unknown as { __rzpLast: { amount: number; theme: { color: string } } }).__rzpLast);
-      expect(opened.amount).toBe(product.price + 10000);
+      expect(opened.amount).toBe(product.price + (await shippingFor(product.price)));
       expect(opened.theme.color).toBe("#311829");
       await razorpay(page).getByRole("button", { name: `Pay with ${method}` }).click();
 
@@ -160,7 +162,7 @@ test.describe("checkout payments", () => {
     await page.locator("#desktop-gift-card").fill(code.toLowerCase());
     await page.getByRole("button", { name: "Apply" }).last().click();
     await expect(page.getByText(`Gift card ${code} applied`).last()).toBeVisible();
-    const due = product.price + 10000 - 100_000;
+    const due = product.price + (await shippingFor(product.price)) - 100_000;
     await expect(page.getByTestId("desktop-total")).toHaveText(`₹${new Intl.NumberFormat("en-IN").format(due / 100)}`);
 
     await placeOrder(page);
@@ -203,6 +205,58 @@ test.describe("checkout payments", () => {
       await cleanUpTestOrders();
       await db.from("products").update({ stock_qty: product.stock_qty }).eq("id", product.id);
     }
+  });
+
+  test("paid in Razorpay but the page never heard back: closing the window finds the payment", async ({ page, baseURL }) => {
+    const product = await productInStock();
+    await openCheckout(page, [{ productId: product.id, slug: product.slug, quantity: 1 }]);
+    await fillCheckout(page);
+    await placeOrder(page);
+    await expect(razorpay(page)).toBeVisible();
+
+    // The money is taken (e.g. in a UPI app), but neither the success callback nor the webhook arrives.
+    const { order_id: rzpOrderId, amount } = await page.evaluate(() => (window as unknown as { __rzpLast: { order_id: string; amount: number } }).__rzpLast);
+    const paymentId = newPaymentId();
+    await recordPayment({ id: paymentId, order_id: rzpOrderId, amount, status: "captured" });
+    await razorpay(page).getByRole("button", { name: "Close" }).click();
+
+    await expect(page.getByRole("heading", { name: "Thank you, Asha" })).toBeVisible();
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("erayah-cart")!).state.lines)).toEqual([]);
+
+    // A late webhook for the same payment changes nothing.
+    expect((await sendWebhook(baseURL!, "payment.captured", { id: paymentId, order_id: rzpOrderId, amount })).status).toBe(200);
+    const { data: order } = await db.from("orders").select("id, status, payment_status, razorpay_payment_id").eq("razorpay_order_id", rzpOrderId).single();
+    expect(order).toMatchObject({ status: "placed", payment_status: "paid", razorpay_payment_id: paymentId });
+    const { count } = await db.from("order_events").select("id", { count: "exact", head: true }).eq("order_id", order!.id).eq("to_value", "placed");
+    expect(count).toBe(1);
+  });
+
+  test("back on checkout after paying elsewhere (reload, no callback): the order is found", async ({ page }) => {
+    const product = await productInStock();
+    await openCheckout(page, [{ productId: product.id, slug: product.slug, quantity: 1 }]);
+    await fillCheckout(page);
+    await placeOrder(page);
+    await expect(razorpay(page)).toBeVisible();
+    const { order_id: rzpOrderId, amount } = await page.evaluate(() => (window as unknown as { __rzpLast: { order_id: string; amount: number } }).__rzpLast);
+    await recordPayment({ id: newPaymentId(), order_id: rzpOrderId, amount, status: "captured" });
+
+    await page.reload();
+    await expect(page).toHaveURL(/\/order\/ERY-\d{4}-\d{5,}\?t=[0-9a-f]{64}$/);
+    await expect(page.getByRole("heading", { name: "Thank you, Asha" })).toBeVisible();
+  });
+
+  test("a payment still in progress is never shown as failed", async ({ page }) => {
+    const product = await productInStock();
+    await openCheckout(page, [{ productId: product.id, slug: product.slug, quantity: 1 }]);
+    await fillCheckout(page);
+    await placeOrder(page);
+    await expect(razorpay(page)).toBeVisible();
+    const { order_id: rzpOrderId, amount } = await page.evaluate(() => (window as unknown as { __rzpLast: { order_id: string; amount: number } }).__rzpLast);
+    await recordPayment({ id: newPaymentId(), order_id: rzpOrderId, amount, status: "authorized" });
+    await razorpay(page).getByRole("button", { name: "Close" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "please don't pay again" })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole("alert").filter({ hasText: PAYMENT_FAILED })).toHaveCount(0);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("erayah-cart")!).state.lines.length)).toBe(1);
   });
 
   test("the webhook arriving before /verify places the order once", async ({ page, baseURL }) => {

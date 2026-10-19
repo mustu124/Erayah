@@ -26,6 +26,29 @@ import { loadRazorpay, type RazorpaySuccess } from "./razorpay";
 import { RAZORPAY_LOGO } from "./razorpay-logo";
 
 const PAYMENT_FAILED = "Payment didn't go through. Your cart is safe, please try again.";
+const PAYMENT_UNCONFIRMED =
+  "We couldn't confirm your payment yet. If money has left your account, please don't pay again: your order will be confirmed automatically, or message us on WhatsApp.";
+
+// The order being paid for, kept for this tab so a reload (or a return from a
+// UPI app) can still find out whether the payment went through.
+const PENDING_KEY = "erayah-pending-payment";
+type Pending = { orderNumber: string; accessToken: string };
+const readPending = (): Pending | null => {
+  try {
+    return JSON.parse(sessionStorage.getItem(PENDING_KEY) ?? "null");
+  } catch {
+    return null;
+  }
+};
+const writePending = (p: Pending | null) => {
+  try {
+    if (p) sessionStorage.setItem(PENDING_KEY, JSON.stringify(p));
+    else sessionStorage.removeItem(PENDING_KEY);
+  } catch {
+    // Storage blocked: the order page and the webhook still confirm the payment.
+  }
+};
+type PaymentCheck = "placed" | "processing" | "unpaid";
 
 type Form = {
   email: string;
@@ -190,8 +213,38 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
     setStage("done");
     clearCart();
     clearDraft(DRAFT_KEY);
+    writePending(null);
     router.replace(routes.order(orderNumber, token));
   };
+
+  /** Asks the server (which asks Razorpay) a few times, as a UPI payment can take seconds to settle. */
+  const checkPayment = async (p: Pending, tries: number): Promise<PaymentCheck> => {
+    let status: PaymentCheck = "processing";
+    for (let i = 0; i < tries; i++) {
+      if (i) await new Promise((r) => setTimeout(r, 3000));
+      const res = await postJson<{ status: PaymentCheck }>("/api/checkout/status", p);
+      status = res.ok ? res.data.status : "processing";
+      if (status !== "processing") break;
+    }
+    return status;
+  };
+
+  // Back on the page after paying elsewhere (UPI app, reload) without a success callback.
+  useEffect(() => {
+    const p = readPending();
+    if (!p) return;
+    let cancelled = false;
+    checkPayment(p, 1).then((status) => {
+      if (cancelled) return;
+      if (status === "placed") goToOrder(p.orderNumber, p.accessToken);
+      else if (status === "unpaid") writePending(null);
+      else setPayError(PAYMENT_UNCONFIRMED);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on arrival
+  }, []);
 
   const pay = async (order: Extract<CreateResponse, { kind: "razorpay" }>) => {
     let Razorpay;
@@ -203,6 +256,8 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
       return;
     }
     setStage("paying");
+    const pending = { orderNumber: order.orderNumber, accessToken: order.accessToken };
+    writePending(pending);
     const rzp = new Razorpay({
       key: order.keyId,
       order_id: order.razorpayOrderId,
@@ -216,14 +271,21 @@ export function CheckoutForm({ whatsappNumber }: { whatsappNumber: string }) {
       theme: { color: "#311829" },
       handler: async (response: RazorpaySuccess) => {
         setStage("verifying");
-        // Whatever /verify says, the order page shows the truth (the webhook confirms too).
-        await postJson("/api/checkout/verify", response);
-        goToOrder(order.orderNumber, order.accessToken);
+        const res = await postJson<{ status: string }>("/api/checkout/verify", response);
+        if (res.ok && res.data.status === "placed") return goToOrder(order.orderNumber, order.accessToken);
+        // Not confirmed yet: the order page asks Razorpay directly. The cart stays until it's confirmed.
+        setStage("done");
+        router.replace(routes.order(order.orderNumber, order.accessToken));
       },
       modal: {
-        ondismiss: () => {
+        ondismiss: async () => {
+          // Closing the window doesn't mean the payment failed (UPI can complete in another app).
+          setStage("verifying");
+          const status = await checkPayment(pending, 3);
+          if (status === "placed") return goToOrder(order.orderNumber, order.accessToken);
           setStage("form");
-          setPayError(PAYMENT_FAILED);
+          if (status === "unpaid") writePending(null);
+          setPayError(status === "unpaid" ? PAYMENT_FAILED : PAYMENT_UNCONFIRMED);
         },
       },
     });

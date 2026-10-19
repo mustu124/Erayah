@@ -46,12 +46,14 @@ test.describe("site shell", () => {
     await shop.hover();
     await expect(shop).toHaveAttribute("aria-expanded", "true");
     const nav = page.getByRole("navigation", { name: "Main" });
-    for (const heading of ["Earrings", "Necklace Set", "More to Shop", "Discover"]) {
+    for (const heading of ["Earrings", "More to Shop", "Discover"]) {
       await expect(nav.getByRole("heading", { name: heading })).toBeVisible();
     }
     await expect(nav.getByRole("heading", { name: "Shop by Style" })).toHaveCount(0);
-    await expect(nav.getByRole("link", { name: "Studs" })).toHaveAttribute("href", "/shop/earrings?style=studs");
-    await expect(nav.getByRole("link", { name: "Chokers" })).toHaveAttribute("href", "/shop/necklace-sets?style=choker");
+    await expect(nav.getByRole("link", { name: "Studs" })).toHaveAttribute("href", "/shop/earrings?style=studs%2Cear%20cuff");
+    await expect(nav.getByRole("link", { name: "Jhumkis" })).toHaveAttribute("href", "/shop/earrings?style=jhumkas");
+    await expect(nav.getByRole("link", { name: "Necklace Set", exact: true })).toHaveAttribute("href", "/shop/necklace-sets");
+    await expect(nav.getByRole("link", { name: "Chokers" })).toHaveCount(0);
     await expect(nav.getByRole("link", { name: "Most Loved" })).toHaveAttribute("href", "/shop/most-loved");
 
     await page.keyboard.press("Escape");
@@ -65,13 +67,12 @@ test.describe("site shell", () => {
     await page.getByRole("button", { name: "Menu" }).click();
     const menu = page.getByRole("dialog", { name: "Menu" });
     await expect(menu).toBeVisible();
-    for (const label of ["New Arrivals", "Most Loved", "Gifts for Her (Under ₹3K)", "Rings", "Pendants", "About Erayah", "Contact", "FAQs"]) {
+    for (const label of ["New Arrivals", "Most Loved", "Gifts for Her (Under ₹3K)", "Necklace Set", "Rings", "Pendants", "About Erayah", "Contact", "FAQs"]) {
       await expect(menu.getByRole("link", { name: label })).toBeVisible();
     }
     await menu.getByText("Earrings", { exact: true }).click();
-    await expect(menu.getByRole("link", { name: "Jhumkas" })).toBeVisible();
-    await menu.getByText("Necklace Set", { exact: true }).click();
-    await expect(menu.getByRole("link", { name: "Chokers" })).toBeVisible();
+    for (const sub of ["Studs", "Danglers", "Chaandbaalis", "Jhumkis"]) await expect(menu.getByRole("link", { name: sub })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Chokers" })).toHaveCount(0);
     await expect(menu.getByText("Style", { exact: true })).toHaveCount(0);
     await expect(menu.getByText(/track/i)).toHaveCount(0);
     await expect(menu.getByText(/account|log ?in|sign ?in/i)).toHaveCount(0);

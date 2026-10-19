@@ -27,12 +27,12 @@ test.describe("homepage", () => {
     await expect(grid.nth(5).getByRole("link")).toHaveAttribute("href", "/shop");
   });
 
-  test("new arrivals (four pieces) and the most loved carousel", async ({ page }) => {
+  test("new arrivals (twelve pieces) and the most loved carousel", async ({ page }) => {
     const newArrivals = page.locator("section[aria-labelledby=new-arrivals]");
     await expect(newArrivals.getByRole("heading", { name: "New Arrivals" })).toBeVisible();
     await expect(newArrivals.getByText(/^[A-Z][a-z]+ \d{4}$/)).toBeAttached(); // month label
     await expect(newArrivals.getByRole("link", { name: "Shop All New Arrivals" })).toHaveAttribute("href", "/shop/new-arrivals");
-    await expect(newArrivals.locator("article")).toHaveCount(4);
+    await expect(newArrivals.locator("article")).toHaveCount(12);
 
     const bestSellers = page.locator("section[aria-labelledby=most-loved]");
     await expect(bestSellers.getByRole("heading", { name: "Most Loved" })).toBeVisible();
@@ -121,10 +121,11 @@ test.describe("homepage", () => {
 
   test("brand story", async ({ page }) => {
     const story = page.locator("section[aria-labelledby=brand-story]");
-    await expect(story.getByText("Our roots don't belong to another era.", { exact: false })).toBeVisible();
+    await expect(story.getByText("The beauty of our roots, carried forward.")).toBeVisible();
     const note = page.locator("section[aria-labelledby=founder-note]");
     await expect(note.getByText("Bhavi Shah")).toBeVisible();
-    await expect(note.getByRole("link", { name: "Read more" })).toHaveAttribute("href", "/about");
+    await expect(note.getByText("That thought became ERAYAH.")).toBeVisible();
+    await expect(note.getByRole("link", { name: /^Read our story/ })).toHaveAttribute("href", "/about");
     await expect(story.getByRole("link", { name: "Follow us on Instagram" })).toBeVisible();
   });
 });

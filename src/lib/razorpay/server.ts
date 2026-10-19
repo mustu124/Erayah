@@ -4,7 +4,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 import { env } from "@/lib/env";
 
-// Razorpay over plain fetch: create orders and check signatures.
+// Razorpay over plain fetch: create orders, read their payments, check signatures.
 // Docs: https://razorpay.com/docs/payments/server-integration/nodejs/
 
 export type RazorpayOrder = { id: string; amount: number; currency: string; receipt: string; status: string };
@@ -26,6 +26,25 @@ export async function createRazorpayOrder(input: {
     throw new Error(`Razorpay order failed (${res.status}): ${await res.text()}`);
   }
   return res.json();
+}
+
+export type RazorpayPayment = {
+  id: string;
+  order_id: string;
+  amount: number;
+  status: "created" | "authorized" | "captured" | "refunded" | "failed";
+};
+
+/** The payments made against one Razorpay order (Razorpay is the source of truth). */
+export async function fetchOrderPayments(orderId: string): Promise<RazorpayPayment[]> {
+  const auth = Buffer.from(`${env.NEXT_PUBLIC_RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`).toString("base64");
+  const res = await fetch(`${env.RAZORPAY_API_BASE}/orders/${encodeURIComponent(orderId)}/payments`, {
+    headers: { Authorization: `Basic ${auth}` },
+    cache: "no-store",
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) throw new Error(`Razorpay payments lookup failed (${res.status})`);
+  return ((await res.json()) as { items: RazorpayPayment[] }).items ?? [];
 }
 
 function hmacEquals(secret: string, payload: string, signature: string): boolean {
