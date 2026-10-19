@@ -44,8 +44,9 @@ Other things you can do on an order:
 
 - **WhatsApp the customer** with a ready-written message that fits the order's status. You can edit it before sending.
 - **Invoice** downloads the customer's bill as a PDF, if they ask for it again.
-- **Cancel** (before it ships) puts the pieces back in stock. If the customer paid, refund them from the **Razorpay dashboard**, then mark the order **Refunded**. The Razorpay links on the order page take you straight there.
+- **Cancel** (before it ships) puts the pieces back in stock. Customers can't cancel or change a confirmed order (see the FAQ); this is for your own use. If the customer paid, refund them from the **Razorpay dashboard**, then mark the order **Refunded**. The Razorpay links on the order page take you straight there.
 - **Returned** also puts the pieces back in stock (use it when a piece comes back for an exchange; there are no returns or refunds).
+- If a customer says they paid but the order still says it is waiting for payment, open the order: the admin asks Razorpay and confirms it at once if the money was taken. Opening the dashboard does the same for the last three days of unconfirmed orders.
 - If an order's timeline shows **REFUND NEEDED** in red, the payment arrived after the pieces had sold out. Refund it in Razorpay.
 
 On **Orders** you can search by order number, name, phone or email, and filter by status, payment or dates. **Export CSV** downloads the orders you're looking at, for a spreadsheet.
@@ -73,7 +74,7 @@ Orders marked "Awaiting payment" are checkouts where the customer didn't finish 
 
    Photos are resized and made web-friendly automatically. iPhone photos in HEIC format need exporting as JPEG first.
 5. Check each photo's description (it's filled in for you; it helps people who use screen readers). Drag photos by the grip to change their order on the product page.
-6. Optionally pick pieces for **Complete the Look** and **Cross-sell**, and switch on **New Arrival**, **Best Seller**, **Gifts for Her** or **Hero piece**.
+6. Optionally pick pieces for **Complete the Look** and **Cross-sell**, and switch on **New Arrival**, **Most Loved**, **Gifts for Her (under ₹3K)** or **Hero piece**. **Styles** decide where earrings appear in the menu: Studs = studs or ear cuff, Danglers = danglers, bali or shoulder drops, Chaandbaalis = chaandbaalis, Jhumkis = jhumkas.
 7. Switch **Published** on and tap **Save product**. It's in the shop straight away.
 
 A red message means a published piece is missing one of the four photos. Shoppers see a plain placeholder until you add it.
@@ -87,13 +88,13 @@ Other things you can do with products:
 
 ## Reordering a collection
 
-1. Open **Merchandising** and choose a category, **New Arrivals** or **Most Loved**. The homepage shows the first four New Arrivals.
+1. Open **Merchandising** and choose a category, **New Arrivals** or **Most Loved**. The homepage shows the first 12 New Arrivals that have a photo.
 2. You see the pieces exactly as customers do, four to a row. Drag a piece by its grip (top-left corner) to a new place. On a phone, press and hold the grip first.
 3. Tap **Save order**. The shop updates immediately.
 
 Gold notes suggest improvements, such as "Two Gajā pieces are next to each other" or "The first 4 slots have no hero piece". They're only advice; you can always save.
 
-**Lifestyle tiles** are photos placed between products. Add one under the grid (image, caption, link, one or two columns wide), then drag it into place with the products and save.
+**Lifestyle tiles** are photos placed between products. Tiles you add show on phones and desktop; without any, phones get automatic photo tiles and desktop shows a plain grid. Add one under the grid (image, caption, link, one or two columns wide), then drag it into place with the products and save.
 
 ## Issuing a gift card
 
@@ -141,7 +142,8 @@ Testimonials you add under **Content → Testimonials** appear on the About page
 - **Homepage:**
   - hero slides (desktop and mobile photo, label, link; drag to reorder)
   - a photo for each category
-  - the brand story and its highlighted phrase
+  - the **founder's note** after New Arrivals (paragraphs separated by an empty line, then name and title; the full note is on the About page)
+  - the **closing lines** above the footer (and an optional phrase in italics)
   - the announcement bar at the top of every page
 
   **Preview** opens the shop.

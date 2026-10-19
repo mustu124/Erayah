@@ -5,20 +5,25 @@ import { PageHeader, Panel } from "@/components/admin/ui";
 import { buttonClasses } from "@/components/ui/Button";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { listCategories } from "@/lib/admin/products";
+import { getHomeFounderNote } from "@/lib/data/content";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-import { CategoryImage, HomepageText, type Slide, SlideForm, SlideOrder } from "./HomepageForms";
+import { DEFAULT_FOUNDER_NOTE } from "../../../(store)/_components/FounderNote";
+
+import { CategoryImage, FounderNoteForm, HomepageText, type Slide, SlideForm, SlideOrder } from "./HomepageForms";
 
 export const metadata: Metadata = { title: "Homepage" };
 
 export default async function HomepageAdminPage() {
   await requireAdminPage("owner");
   const db = createAdminClient();
-  const [{ data: slideRows }, categories, { data: settings }] = await Promise.all([
+  const [{ data: slideRows }, categories, { data: settings }, savedNote] = await Promise.all([
     db.from("hero_slides").select("id, image_desktop_path, image_mobile_path, alt, label, link_url, is_active, sort_order").order("sort_order"),
     listCategories(),
-    db.from("site_settings").select("announcement_text, brand_story_text, brand_story_highlight, brand_story_cta_label, brand_story_cta_url").eq("id", 1).single(),
+    db.from("site_settings").select("announcement_text, brand_story_text, brand_story_highlight").eq("id", 1).single(),
+    getHomeFounderNote(),
   ]);
+  const founder = savedNote ?? DEFAULT_FOUNDER_NOTE;
   const slides: Slide[] = (slideRows ?? []).map((s) => ({
     id: s.id,
     desktopPath: s.image_desktop_path,
@@ -33,7 +38,7 @@ export default async function HomepageAdminPage() {
     <>
       <PageHeader
         title="Homepage"
-        description="Hero, Shop by Category, New Arrivals, Most Loved and the brand story, in that order."
+        description="Hero, Shop by Category, New Arrivals (12), Founder's note, Most Loved and the closing lines, in that order."
         actions={
           <a href="/" target="_blank" rel="noopener noreferrer" className={buttonClasses("outline")}>
             Preview ↗
@@ -70,7 +75,8 @@ export default async function HomepageAdminPage() {
 
         <Panel title="New Arrivals and Most Loved">
           <p className="text-body-sm text-ink/75">
-            Switch “New Arrival” or “Best Seller” on in a product, then set the order on the merchandising screen.
+            Switch “New Arrival” or “Most Loved” on in a product, then set the order on the merchandising screen. The homepage shows the
+            first 12 New Arrivals (pieces with a photo) and a carousel of Most Loved.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link href="/admin/merchandising?scope=new-arrivals" className={buttonClasses("outline", "px-4")}>
@@ -82,13 +88,16 @@ export default async function HomepageAdminPage() {
           </div>
         </Panel>
 
-        <Panel title="Brand story and announcement">
+        <Panel title="Founder's note">
+          <p className="mb-4 text-body-sm text-ink/65">Shown after New Arrivals, with a “Read our story →” link to the About page.</p>
+          <FounderNoteForm initial={{ note: founder.paragraphs.join("\n\n"), name: founder.name, role: founder.role }} />
+        </Panel>
+
+        <Panel title="Closing lines and announcement">
           <HomepageText
             initial={{
               text: settings?.brand_story_text ?? "",
               highlight: settings?.brand_story_highlight ?? "",
-              ctaLabel: settings?.brand_story_cta_label ?? "",
-              ctaUrl: settings?.brand_story_cta_url ?? "",
               announcement: settings?.announcement_text ?? "",
             }}
           />

@@ -56,7 +56,10 @@ export default async function MerchandisingPage({ searchParams }: PageProps<"/ad
       </nav>
 
       {scope.kind === "list" ? (
-        <p className="mb-4 text-body-sm text-ink/70">Pieces appear here when “{current.label}” is switched on in the product editor.</p>
+        <p className="mb-4 text-body-sm text-ink/70">
+          Pieces appear here when “{current.label}” is switched on in the product editor.
+          {value === "new-arrivals" ? " The homepage shows the first 12 (pieces with a photo)." : null}
+        </p>
       ) : null}
       {scope.kind === "shop-all" ? (
         <p className="mb-4 text-body-sm text-ink/70">Shop All mixes each category&apos;s order (every category&apos;s first pick, then the second…). Reorder a category to change it. Lifestyle tiles for Shop All are placed by number below.</p>
@@ -66,6 +69,9 @@ export default async function MerchandisingPage({ searchParams }: PageProps<"/ad
 
       {tilesHere ? (
         <div className="mt-8 space-y-4">
+          <p className="text-body-sm text-ink/70">
+            Tiles you add here show on phones and desktop. Without any, phones get automatic photo tiles every 8 pieces; desktop shows a plain grid.
+          </p>
           <Panel title="Add a lifestyle tile">
             <TileForm categoryId={scope.kind === "category" ? scope.categoryId : null} defaultAfter={Math.min(8, products.length)} showPosition={!sortable} />
           </Panel>

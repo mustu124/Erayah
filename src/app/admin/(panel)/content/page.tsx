@@ -4,6 +4,7 @@ import Link from "next/link";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { cn } from "@/lib/cn";
+import { HOME_FOUNDER_NOTE_SLUG } from "@/lib/data/content";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 import { type Faq, FaqForm, FaqList, type Testimonial, TestimonialForm, TestimonialList } from "./ContentForms";
@@ -17,8 +18,8 @@ const TABS = [
 ] as const;
 
 const PAGE_HINTS: Record<string, string> = {
-  about: "Your story, with a founder photo and story images.",
-  "shipping-returns": "Delivery times and exchanges.",
+  about: "Our Story: three story sections and the founder's note (## headings), with a founder photo and story images. The homepage note is edited under Homepage.",
+  "shipping-returns": "Delivery, free shipping and exchanges.",
   "privacy-policy": "How customer details are used. Needs legal review.",
   terms: "Terms & Conditions. Needs legal review.",
 };
@@ -59,7 +60,7 @@ export default async function ContentPage({ searchParams }: PageProps<"/admin/co
       </div>
     );
   } else {
-    const { data } = await db.from("pages").select("slug, title, updated_at").order("id");
+    const { data } = await db.from("pages").select("slug, title, updated_at").neq("slug", HOME_FOUNDER_NOTE_SLUG).order("id");
     body = (
       <Panel>
         <ul className="divide-y divide-mist">

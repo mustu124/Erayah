@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Products" };
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";
 
 function Flags({ p }: { p: AdminProductRow }) {
-  const flags = [p.flags.new && "New", p.flags.best && "Best Seller", p.flags.gift && "Gift", p.flags.hero && "Hero"].filter(Boolean) as string[];
+  const flags = [p.flags.new && "New", p.flags.best && "Most Loved", p.flags.gift && "Gift", p.flags.hero && "Hero"].filter(Boolean) as string[];
   return (
     <div className="flex flex-wrap gap-1">
       {flags.map((f) => (

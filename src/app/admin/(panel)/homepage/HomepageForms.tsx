@@ -8,7 +8,7 @@ import { DragHandle, Sortable } from "@/components/admin/Sortable";
 import { useAdminAction } from "@/components/admin/use-action";
 import { Labeled, TextArea, TextInput, Toggle } from "@/components/admin/ui";
 import { Button } from "@/components/ui/Button";
-import { deleteHeroSlide, reorderHeroSlides, saveCategoryImage, saveHeroSlide, saveHomepageText } from "@/lib/admin/actions/homepage";
+import { deleteHeroSlide, reorderHeroSlides, saveCategoryImage, saveFounderNote, saveHeroSlide, saveHomepageText } from "@/lib/admin/actions/homepage";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 
 export type Slide = { id: number; desktopPath: string; mobilePath: string; alt: string; label: string; linkUrl: string; isActive: boolean };
@@ -95,12 +95,45 @@ export function SlideOrder({ slides }: { slides: Slide[] }) {
   );
 }
 
+type Founder = { note: string; name: string; role: string };
+
+/** The founder's note between New Arrivals and Most Loved. Paragraphs are separated by an empty line. */
+export function FounderNoteForm({ initial }: { initial: Founder }) {
+  const [v, setV] = useState(initial);
+  const save = useAdminAction(saveFounderNote);
+  const set = (k: keyof Founder) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setV({ ...v, [k]: e.target.value });
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        save.run(v);
+      }}
+      className="grid gap-4 sm:grid-cols-2"
+    >
+      <Labeled label="Note" htmlFor="founder-note" className="sm:col-span-2" error={save.fields.note} hint="Leave an empty line between paragraphs. Keep it short: the full note is on the About page.">
+        <TextArea id="founder-note" rows={9} value={v.note} onChange={set("note")} maxLength={2000} />
+      </Labeled>
+      <Labeled label="Name" htmlFor="founder-name">
+        <TextInput id="founder-name" value={v.name} onChange={set("name")} maxLength={80} />
+      </Labeled>
+      <Labeled label="Title" htmlFor="founder-role">
+        <TextInput id="founder-role" value={v.role} onChange={set("role")} maxLength={80} />
+      </Labeled>
+      <div className="sm:col-span-2">
+        <Button type="submit" disabled={save.pending}>
+          {save.pending ? "Saving…" : "Save note"}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 export function CategoryImage({ categoryId, name, path }: { categoryId: number; name: string; path: string }) {
   const save = useAdminAction(saveCategoryImage);
   return <MediaField folder="categories" value={path} onChange={(imagePath) => save.run({ categoryId, imagePath })} label={name} aspect="aspect-square" hint="Square works best" />;
 }
 
-type Text = { text: string; highlight: string; ctaLabel: string; ctaUrl: string; announcement: string };
+type Text = { text: string; highlight: string; announcement: string };
 
 export function HomepageText({ initial }: { initial: Text }) {
   const [v, setV] = useState(initial);
@@ -117,20 +150,12 @@ export function HomepageText({ initial }: { initial: Text }) {
       <Labeled label="Announcement bar" htmlFor="announcement" className="sm:col-span-2" hint="One short line at the very top of every page. Leave empty to hide it.">
         <TextInput id="announcement" value={v.announcement} onChange={set("announcement")} maxLength={140} />
       </Labeled>
-      <Labeled label="Brand story (2–3 lines)" htmlFor="story" className="sm:col-span-2" error={save.fields.text}>
-        <TextArea id="story" rows={3} value={v.text} onChange={set("text")} maxLength={600} />
+      <Labeled label="Closing lines" htmlFor="story" className="sm:col-span-2" error={save.fields.text} hint="The last words on the homepage, above the footer, with the Instagram link under them.">
+        <TextArea id="story" rows={2} value={v.text} onChange={set("text")} maxLength={600} />
       </Labeled>
-      <Labeled label="Highlighted phrase" htmlFor="highlight" error={save.fields.highlight} hint="Shown in script. Must appear in the story exactly, e.g. Heirlooms, Reimagined">
+      <Labeled label="Highlighted phrase (optional)" htmlFor="highlight" error={save.fields.highlight} hint="Shown in italics. Must appear in the closing lines exactly.">
         <TextInput id="highlight" value={v.highlight} onChange={set("highlight")} maxLength={80} />
       </Labeled>
-      <div className="grid grid-cols-2 gap-3">
-        <Labeled label="Button label" htmlFor="cta-label">
-          <TextInput id="cta-label" value={v.ctaLabel} onChange={set("ctaLabel")} maxLength={30} placeholder="Our Story" />
-        </Labeled>
-        <Labeled label="Button link" htmlFor="cta-url" error={save.fields.ctaUrl}>
-          <TextInput id="cta-url" value={v.ctaUrl} onChange={set("ctaUrl")} maxLength={300} placeholder="/about" />
-        </Labeled>
-      </div>
       <div className="sm:col-span-2">
         <Button type="submit" disabled={save.pending}>
           {save.pending ? "Saving…" : "Save text"}

@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { adminAction, check, optionalText } from "@/lib/admin/action";
 import { TAGS } from "@/lib/cache-tags";
+import { composeFounderNote, HOME_FOUNDER_NOTE_SLUG } from "@/lib/data/content";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const mediaPath = (folder: string) => z.string().regex(new RegExp(`^${folder}/[\\w.-]+$`), "Please upload an image.");
@@ -60,10 +61,8 @@ export const saveCategoryImage = adminAction(
 
 const storyInput = z
   .object({
-    text: z.string().trim().min(10, "Write two or three lines.").max(600),
+    text: z.string().trim().min(10, "Write a line or two.").max(600),
     highlight: optionalText(80),
-    ctaLabel: optionalText(30),
-    ctaUrl: link,
     announcement: optionalText(140),
   })
   .refine((v) => !v.highlight || v.text.toLowerCase().includes(v.highlight.toLowerCase()), {
@@ -75,9 +74,29 @@ export const saveHomepageText = adminAction({ role: "owner", schema: storyInput,
   check(
     await createAdminClient()
       .from("site_settings")
-      .update({ brand_story_text: v.text, brand_story_highlight: v.highlight, brand_story_cta_label: v.ctaLabel, brand_story_cta_url: v.ctaUrl, announcement_text: v.announcement })
+      .update({ brand_story_text: v.text, brand_story_highlight: v.highlight, announcement_text: v.announcement })
       .eq("id", 1),
     "settings",
   );
   return { message: "Homepage text saved." };
+});
+
+const founderInput = z.object({
+  note: z.string().trim().min(10, "Write the note.").max(2000),
+  name: optionalText(80),
+  role: optionalText(80),
+});
+
+/** The homepage founder's note, kept as a pages row (the shop reads it with getHomeFounderNote). */
+export const saveFounderNote = adminAction({ role: "owner", schema: founderInput, tags: () => [TAGS.pages, TAGS.home] }, async (v) => {
+  const paragraphs = v.note
+    .split(/\n\s*\n/)
+    .map((p) => p.replace(/\s*\n\s*/g, " ").trim())
+    .filter(Boolean);
+  const body = composeFounderNote({ paragraphs, name: v.name ?? "", role: v.role ?? "" });
+  check(
+    await createAdminClient().from("pages").upsert({ slug: HOME_FOUNDER_NOTE_SLUG, title: "Homepage founder's note", body }, { onConflict: "slug" }),
+    "founder's note",
+  );
+  return { message: "Founder's note saved." };
 });

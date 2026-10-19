@@ -127,8 +127,8 @@ export function ProductEditor({ product, categories, ordered, missingPhotos }: P
         <div className="mt-4 grid gap-x-6 border-t border-mist pt-3 sm:grid-cols-2">
           <Toggle checked={p.isPublished} onChange={(v) => set("isPublished", v)} label={p.isPublished ? "Published: shown in the shop" : "Draft: hidden from the shop"} />
           <Toggle checked={p.isNewArrival} onChange={(v) => set("isNewArrival", v)} label="New Arrival" />
-          <Toggle checked={p.isBestSeller} onChange={(v) => set("isBestSeller", v)} label="Best Seller" />
-          <Toggle checked={p.isGiftForHer} onChange={(v) => set("isGiftForHer", v)} label="Gifts for Her" />
+          <Toggle checked={p.isBestSeller} onChange={(v) => set("isBestSeller", v)} label="Most Loved" />
+          <Toggle checked={p.isGiftForHer} onChange={(v) => set("isGiftForHer", v)} label="Gifts for Her (under ₹3K)" />
           <Toggle checked={p.isHero} onChange={(v) => set("isHero", v)} label="Hero piece (a signature piece)" />
         </div>
         {p.isPublished && missingPhotos ? (
@@ -156,12 +156,15 @@ export function ProductEditor({ product, categories, ordered, missingPhotos }: P
             <TagInput id="stones" value={p.stones} onChange={(v) => set("stones", v)} placeholder="Polki, pearl" />
           </Labeled>
           <div className="sm:col-span-2">
-            <p className="mb-1.5 text-body-sm text-ink">Colours (for the colour filter)</p>
+            <p className="mb-1.5 text-body-sm text-ink">Colours (kept for later; the colour filter is hidden for now)</p>
             <ChipSelect label="Colours" options={COLOURS} value={p.colours} onChange={(v) => set("colours", v)} />
           </div>
           <div className="sm:col-span-2">
-            <p className="mb-1.5 text-body-sm text-ink">Styles (for style pages and filters)</p>
+            <p className="mb-1.5 text-body-sm text-ink">Styles (for the Earrings menu and search)</p>
             <ChipSelect label="Styles" options={STYLES} value={p.styles} onChange={(v) => set("styles", v)} />
+            <p className="mt-1.5 text-caption text-ink/60">
+              Earrings menu: Studs = studs or ear cuff · Danglers = danglers, bali or shoulder drops · Chaandbaalis = chaandbaalis · Jhumkis = jhumkas.
+            </p>
           </div>
           <Labeled label="Closure" htmlFor="closure">
             <TextInput id="closure" maxLength={120} value={p.closure} onChange={text("closure")} placeholder="Push-back" />

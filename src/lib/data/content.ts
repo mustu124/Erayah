@@ -31,6 +31,28 @@ export async function getPage(slug: string): Promise<ContentPage | null> {
   };
 }
 
+/** Where the homepage founder's note is kept (a pages row, edited in Admin → Homepage). */
+export const HOME_FOUNDER_NOTE_SLUG = "home-founder-note";
+
+export type FounderNoteText = { paragraphs: string[]; name: string; role: string };
+
+/** Paragraphs, then the name in **bold**, then the title (the same shape the admin form writes). */
+export function parseFounderNote(body: string): FounderNoteText | null {
+  const blocks = body.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean);
+  const nameAt = blocks.findIndex((b) => /^\*\*.+\*\*$/.test(b));
+  const paragraphs = nameAt === -1 ? blocks : blocks.slice(0, nameAt);
+  if (!paragraphs.length) return null;
+  return { paragraphs, name: nameAt === -1 ? "" : blocks[nameAt].replace(/\*\*/g, ""), role: nameAt === -1 ? "" : (blocks[nameAt + 1] ?? "") };
+}
+
+export const composeFounderNote = (n: FounderNoteText) =>
+  [...n.paragraphs, n.name ? `**${n.name}**` : "", n.role].filter(Boolean).join("\n\n");
+
+export async function getHomeFounderNote(): Promise<FounderNoteText | null> {
+  const page = await getPage(HOME_FOUNDER_NOTE_SLUG);
+  return page ? parseFounderNote(page.body) : null;
+}
+
 export type Faq = { id: number; question: string; answer: string; group: string };
 
 /** The six groups, in the order /faqs shows them; any other group follows. */

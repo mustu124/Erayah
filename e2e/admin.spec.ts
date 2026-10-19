@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import sharp from "sharp";
 
 import { createPaidTestOrder, createTestUser, deleteTestUser, releaseTestOrder, signIn, type TestUser } from "./support/admin";
-import { db } from "./support/checkout";
+import { db, shippingFor } from "./support/checkout";
 
 // The admin panel against the real database. Signed-out checks always run;
 // the rest is opt-in (E2E_ADMIN=1) because it creates throwaway admin
@@ -219,7 +219,9 @@ test.describe("admin", () => {
     await page.goto("/admin/shipping");
     await page.getByLabel("Pincode").first().fill("400001");
     await page.getByRole("button", { name: "Check" }).click();
-    await expect(page.getByRole("status")).toContainText("₹100 shipping");
+    // The test quote has no order value, so it shows the default rate (the owner sets it in /admin).
+    const fee = await shippingFor(0);
+    await expect(page.getByRole("status")).toContainText(fee ? `₹${new Intl.NumberFormat("en-IN").format(fee / 100)} shipping` : "Free shipping");
 
     await page.goto("/admin/content/pages/about");
     await page.getByRole("tab", { name: "Preview" }).click();
