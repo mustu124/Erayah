@@ -8,7 +8,9 @@ import type { Tables } from "@/lib/supabase/types";
 // Orders are private: a customer sees one only with its order number AND the
 // access token from their confirmation link. Never cached.
 
-export type CustomerOrder = Tables<"orders"> & { items: Tables<"order_items">[] };
+/** `product.slug` (when the product still exists) tells apart pieces that share a name, see lib/format/version. */
+export type OrderItem = Tables<"order_items"> & { product: { slug: string } | null };
+export type CustomerOrder = Tables<"orders"> & { items: OrderItem[] };
 export type InvoiceSettings = Pick<
   Tables<"site_settings">,
   "business_name" | "business_address" | "gstin" | "gst_rate" | "prices_include_gst" | "support_email" | "whatsapp_number"
@@ -19,7 +21,7 @@ const tokenMatches = (a: string, b: string) => a.length === b.length && timingSa
 async function loadOrder(column: "id" | "order_number", value: string): Promise<CustomerOrder | null> {
   const { data, error } = await createAdminClient()
     .from("orders")
-    .select("*, items:order_items(*)")
+    .select("*, items:order_items(*, product:products(slug))")
     .eq(column, value)
     .order("id", { referencedTable: "order_items" })
     .maybeSingle();

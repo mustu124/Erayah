@@ -11,6 +11,7 @@ import { Price } from "@/components/ui/Price";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { QuoteResponse } from "@/lib/checkout/types";
 import { cn } from "@/lib/cn";
+import { nameWithVersion } from "@/lib/format/version";
 
 type OrderSummaryProps = {
   /** Distinguishes the two copies (mobile and desktop) so ids stay unique. */
@@ -64,7 +65,7 @@ export function OrderSummary({
                 </button>
               </div>
               <div className="min-w-0 flex-1 text-body-sm">
-                <p className="text-ink">{line.name}</p>
+                <p className="text-ink">{nameWithVersion(line.name, line.slug)}</p>
                 {line.variant_label ? <p className="text-ink/65">{line.variant_label}</p> : null}
                 <p className="text-ink/65">Qty {line.quantity}</p>
               </div>

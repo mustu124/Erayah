@@ -5,6 +5,7 @@ import { Document, Font, Image, Page, Path, StyleSheet, Svg, Text, View } from "
 import { ELEPHANT, WORDMARK } from "@/components/ui/logo-paths";
 import type { CustomerOrder, InvoiceSettings } from "@/lib/data/order";
 import { formatPrice } from "@/lib/format/price";
+import { nameWithVersion } from "@/lib/format/version";
 
 // The customer's bill, on brand. Rendered once when payment is confirmed and
 // stored in the private "invoices" bucket. Fonts are bundled TTFs (the
@@ -157,7 +158,7 @@ export function InvoiceDocument({ order, settings, photos = {} }: { order: Custo
                   <Image src={{ data: photos[item.id], format: "jpg" }} style={s.photo} />
                 ) : null}
                 <Text style={{ flex: 1 }}>
-                  {item.name_snapshot}
+                  {nameWithVersion(item.name_snapshot, item.product?.slug)}
                   {item.variant_label ? ` · ${item.variant_label}` : ""}
                 </Text>
               </View>

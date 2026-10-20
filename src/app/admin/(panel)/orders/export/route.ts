@@ -3,11 +3,12 @@ import type { NextRequest } from "next/server";
 import { getAdmin } from "@/lib/admin/auth";
 import { csvResponse, csvRupees as rupees } from "@/lib/admin/csv";
 import { listOrders, parseOrderFilters } from "@/lib/admin/orders";
+import { nameWithVersion } from "@/lib/format/version";
 
 const SELECT =
-  "order_number, created_at, status, payment_status, payment_method, customer_name, email, phone, address_line1, address_line2, landmark, city, state, pincode, is_gift, gift_note, subtotal, shipping_fee, gift_card_code, gift_card_amount, gst_amount, total, razorpay_payment_id, courier_name, tracking_number, items:order_items(name_snapshot, variant_label, quantity)";
+  "order_number, created_at, status, payment_status, payment_method, customer_name, email, phone, address_line1, address_line2, landmark, city, state, pincode, is_gift, gift_note, subtotal, shipping_fee, gift_card_code, gift_card_amount, gst_amount, total, razorpay_payment_id, courier_name, tracking_number, items:order_items(name_snapshot, variant_label, quantity, product:products(slug))";
 
-type Row = Record<string, unknown> & { items: { name_snapshot: string; variant_label: string | null; quantity: number }[] };
+type Row = Record<string, unknown> & { items: { name_snapshot: string; variant_label: string | null; quantity: number; product: { slug: string } | null }[] };
 
 const istTime = new Intl.DateTimeFormat("en-IN", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Kolkata" });
 
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
     o.city,
     o.state,
     o.pincode,
-    o.items.map((i) => `${i.name_snapshot}${i.variant_label ? ` (${i.variant_label})` : ""} × ${i.quantity}`).join("; "),
+    o.items.map((i) => `${nameWithVersion(i.name_snapshot, i.product?.slug)}${i.variant_label ? ` (${i.variant_label})` : ""} × ${i.quantity}`).join("; "),
     o.is_gift ? "Yes" : "",
     o.gift_note,
     rupees(o.subtotal),

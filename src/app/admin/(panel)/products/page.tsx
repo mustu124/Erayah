@@ -6,6 +6,7 @@ import { EmptyState, inputCls, PageHeader, Panel, TableWrap, td, th } from "@/co
 import { buttonClasses } from "@/components/ui/Button";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { type AdminProductRow, listAdminProducts, listCategories } from "@/lib/admin/products";
+import { nameWithVersion } from "@/lib/format/version";
 
 import { InlineNumber } from "./InlineEdit";
 
@@ -99,7 +100,7 @@ export default async function ProductsPage({ searchParams }: PageProps<"/admin/p
                   <Thumb p={p} />
                   <div className="min-w-0 flex-1">
                     <Link href={`/admin/products/${p.id}`} className="block truncate font-medium">
-                      {p.name}
+                      {nameWithVersion(p.name, p.slug)}
                     </Link>
                     <p className="text-caption text-ink/60">
                       {p.category} · {p.published ? "Published" : "Draft"}
@@ -140,7 +141,7 @@ export default async function ProductsPage({ searchParams }: PageProps<"/admin/p
                           <Thumb p={p} />
                           <div className="min-w-0">
                             <Link href={`/admin/products/${p.id}`} className="font-medium hover:underline">
-                              {p.name}
+                              {nameWithVersion(p.name, p.slug)}
                             </Link>
                             {p.missingRoles.length && p.published ? (
                               <p className="text-caption text-plum">

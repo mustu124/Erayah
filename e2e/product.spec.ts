@@ -122,6 +122,13 @@ test.describe("product page", () => {
     );
   });
 
+  test("the cart says which colour, even when colours share a name", async ({ page }) => {
+    await open(page, "/product/dori-ring-pink");
+    await page.getByRole("button", { name: "Add to cart" }).first().click();
+    const cart = page.getByRole("dialog", { name: /My cart/ });
+    await expect(cart.getByRole("link", { name: /Dori Ring – Pink/ })).toBeVisible();
+  });
+
   test("checkout details survive a reload", async ({ page }) => {
     await open(page, "/product/dahlia-earrings");
     await page.getByRole("button", { name: "Add to cart" }).first().click();

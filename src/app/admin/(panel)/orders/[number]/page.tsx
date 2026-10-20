@@ -12,6 +12,7 @@ import { requireAdminPage } from "@/lib/admin/auth";
 import { NEXT_STATUSES } from "@/lib/admin/orders";
 import { formatDateTimeLong } from "@/lib/admin/time";
 import { reconcileOrder } from "@/lib/checkout/reconcile";
+import { nameWithVersion } from "@/lib/format/version";
 import { getOrderByNumber } from "@/lib/data/order";
 import { formatPrice } from "@/lib/format/price";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -121,7 +122,7 @@ export default async function OrderDetailPage({ params }: PageProps<"/admin/orde
                   <div className="min-w-0 flex-1 text-body-sm">
                     {item.product_id ? (
                       <Link href={`/admin/products/${item.product_id}`} className="font-medium hover:underline">
-                        {item.name_snapshot}
+                        {nameWithVersion(item.name_snapshot, item.product?.slug)}
                       </Link>
                     ) : (
                       <p className="font-medium">{item.name_snapshot}</p>

@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { AwaitPayment } from "@/components/checkout/AwaitPayment";
 import { ClearPendingCart } from "@/components/checkout/ClearPendingCart";
 import { reconcileOrder } from "@/lib/checkout/reconcile";
+import { nameWithVersion } from "@/lib/format/version";
 import { buttonClasses, ButtonLink } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Price } from "@/components/ui/Price";
@@ -141,7 +142,7 @@ async function Order({ params, searchParams }: PageProps<"/order/[number]">) {
                 ) : null}
               </div>
               <div className="min-w-0 flex-1 text-body-sm">
-                <p className="text-ink">{item.name_snapshot}</p>
+                <p className="text-ink">{nameWithVersion(item.name_snapshot, item.product?.slug)}</p>
                 {item.variant_label ? <p className="text-ink/65">{item.variant_label}</p> : null}
                 <p className="text-ink/65">
                   {item.quantity} × <Price amount={item.unit_price} />

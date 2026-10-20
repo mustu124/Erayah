@@ -6,6 +6,7 @@ import { ElephantMark, Wordmark } from "@/components/ui/Logo";
 import { requireAdminPage } from "@/lib/admin/auth";
 import { getOrderByNumber } from "@/lib/data/order";
 import { formatPrice } from "@/lib/format/price";
+import { nameWithVersion } from "@/lib/format/version";
 
 import { PrintOnLoad } from "./PrintOnLoad";
 
@@ -75,7 +76,7 @@ async function Slip({ params }: PageProps<"/admin/print/packing-slip/[number]">)
           {order.items.map((item) => (
             <tr key={item.id} className="border-b border-mist">
               <td className="py-2">
-                {item.name_snapshot}
+                {nameWithVersion(item.name_snapshot, item.product?.slug)}
                 {item.variant_label ? ` · ${item.variant_label}` : ""}
               </td>
               <td className="py-2 text-center">{item.quantity}</td>

@@ -10,6 +10,7 @@ import { Icon } from "@/components/ui/Icon";
 import { ElephantMark } from "@/components/ui/Logo";
 import { Price } from "@/components/ui/Price";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
+import { nameWithVersion } from "@/lib/format/version";
 import { routes } from "@/lib/routes";
 import { useHydrated } from "@/lib/use-hydrated";
 import { useProductCards } from "@/lib/use-product-cards";
@@ -58,7 +59,7 @@ export function CartDrawerMount() {
           {lines.map((line) => {
             const key = lineKey(line);
             const card = cards.get(line.slug);
-            const name = card?.name ?? (loading ? "…" : "This piece is no longer available");
+            const name = card ? nameWithVersion(card.name, card.slug) : loading ? "…" : "This piece is no longer available";
             return (
               <li key={key} className="flex gap-4 py-5">
                 <Link href={routes.product(line.slug)} onClick={close} className="relative block aspect-[4/5] w-20 shrink-0 overflow-hidden bg-ivory" tabIndex={-1} aria-hidden="true">
