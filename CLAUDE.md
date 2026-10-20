@@ -58,7 +58,7 @@ Categories: Earrings, Necklace Set, Rings, Bracelets, Pendants (Bracelets shows 
 Nav: Shop (New Arrivals, Most Loved, Gifts for Her (Under ₹3K), all 5 categories with subcategories under Earrings only (Studs, Danglers, Chaandbaalis, Jhumkis), Shop All; there is no "Shop by Style"), About Erayah, Contact, FAQs.
 There is NO Track Order anywhere and NO customer account anywhere.
 Footer links: Shop, About Erayah, Contact, FAQs, Shipping & Returns, Privacy Policy, Terms & Conditions, Instagram, WhatsApp.
-Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals (twelve pieces), Founder's note (the owner's short homepage version + "Read our story →"), Most Loved, closing lines (brand story text + Instagram link, no button), Footer. "Best Sellers" is called "Most Loved" everywhere the shopper sees it.
+Homepage sections, strictly in this order and nothing else: Hero, Shop by Category, New Arrivals (twelve pieces), Founder's note (the owner's short homepage version + an "Our Story" button), Most Loved, closing lines (brand story text + Instagram link, no button), Footer. "Best Sellers" is called "Most Loved" everywhere the shopper sees it.
 
 ## Commerce rules
 - Guest checkout only. Payment: Razorpay only (UPI, cards, wallets, netbanking). There is NO Cash on Delivery.

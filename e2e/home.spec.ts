@@ -129,7 +129,7 @@ test.describe("homepage", () => {
     const note = page.locator("section[aria-labelledby=founder-note]");
     await expect(note.getByText("Bhavi Shah")).toBeVisible();
     await expect(note.getByText("That thought became ERAYAH.")).toBeVisible();
-    await expect(note.getByRole("link", { name: /^Read our story/ })).toHaveAttribute("href", "/about");
+    await expect(note.getByRole("link", { name: "Our Story" })).toHaveAttribute("href", "/about");
     await expect(story.getByRole("link", { name: "Follow us on Instagram" })).toBeVisible();
   });
 });

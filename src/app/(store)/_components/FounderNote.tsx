@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { ButtonLink } from "@/components/ui/Button";
 import { type FounderNoteText, getHomeFounderNote } from "@/lib/data/content";
 import { routes } from "@/lib/routes";
 
@@ -37,12 +36,9 @@ export async function FounderNote() {
             {note.role ? <span className="block text-ink/65">{note.role}</span> : null}
           </p>
         ) : null}
-        <Link
-          href={routes.about}
-          className="mt-8 inline-flex min-h-11 items-center text-body-sm text-ink underline decoration-ink/40 underline-offset-4 transition-colors duration-300 hover:decoration-ink"
-        >
-          Read our story <span aria-hidden="true">&nbsp;→</span>
-        </Link>
+        <ButtonLink href={routes.about} variant="outline" className="mt-9">
+          Our Story
+        </ButtonLink>
       </div>
     </section>
   );

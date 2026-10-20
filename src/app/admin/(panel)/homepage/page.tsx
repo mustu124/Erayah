@@ -91,7 +91,7 @@ export default async function HomepageAdminPage() {
         </Panel>
 
         <Panel title="Founder's note">
-          <p className="mb-4 text-body-sm text-ink/65">Shown after New Arrivals, with a “Read our story →” link to the About page.</p>
+          <p className="mb-4 text-body-sm text-ink/65">Shown after New Arrivals, with an “Our Story” button to the About page.</p>
           <FounderNoteForm initial={{ note: founder.paragraphs.join("\n\n"), name: founder.name, role: founder.role }} />
         </Panel>
 
