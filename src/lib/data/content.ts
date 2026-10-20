@@ -10,7 +10,8 @@ import { type CardImage, CARD_SELECT, type ImageRow, toCardImage } from "./catal
 // Content pages (About, Contact, FAQs, policies). All editable in /admin;
 // each read is tagged so a save there refreshes the page at once.
 
-export type PageImage = { url: string; alt: string; role: "hero" | "founder" | "story" };
+/** `portrait`: taller than wide (saved with the upload when known), so the page can frame it as a portrait. */
+export type PageImage = { url: string; alt: string; role: "hero" | "founder" | "story"; portrait?: boolean };
 export type ContentPage = { slug: string; title: string; body: string; seoTitle: string | null; seoDescription: string | null; images: PageImage[] };
 
 export async function getPage(slug: string): Promise<ContentPage | null> {
@@ -20,14 +21,14 @@ export async function getPage(slug: string): Promise<ContentPage | null> {
   const { data, error } = await createPublicClient().from("pages").select("slug, title, body, seo_title, seo_description, images").eq("slug", slug).maybeSingle();
   if (error) console.error("getPage:", error.message);
   if (!data) return null;
-  const images = (Array.isArray(data.images) ? data.images : []) as { path: string; alt: string; role: PageImage["role"] }[];
+  const images = (Array.isArray(data.images) ? data.images : []) as { path: string; alt: string; role: PageImage["role"]; width?: number; height?: number }[];
   return {
     slug: data.slug,
     title: data.title,
     body: data.body,
     seoTitle: data.seo_title,
     seoDescription: data.seo_description,
-    images: images.map((i) => ({ url: publicStorageUrl("site-media", i.path), alt: i.alt, role: i.role })),
+    images: images.map((i) => ({ url: publicStorageUrl("site-media", i.path), alt: i.alt, role: i.role, portrait: !!i.width && !!i.height && i.height > i.width })),
   };
 }
 

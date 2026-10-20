@@ -95,7 +95,12 @@ export default async function AboutPage() {
         <h1 className="relative mx-auto max-w-3xl font-heading text-[40px] leading-[1.1] text-ink lg:text-[72px]">Heirlooms, reimagined.</h1>
         {intro ? <Prose className="relative mx-auto mt-6 max-w-xl">{intro}</Prose> : null}
       </header>
-      <Photo img={hero} sizes="100vw" priority position={ownHero ? undefined : "50% 62%"} className="mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[16/9] lg:aspect-[21/9]" />
+      {ownHero?.portrait ? (
+        // A portrait opening photo stays a portrait on every screen (no wide crop).
+        <Photo img={hero} sizes="(min-width: 640px) 560px, 100vw" priority className="mx-auto aspect-[4/5] w-full sm:max-w-[560px]" />
+      ) : (
+        <Photo img={hero} sizes="100vw" priority position={ownHero ? undefined : "50% 62%"} className="mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[16/9] lg:aspect-[21/9]" />
+      )}
 
       {/* Brand story: text and image alternating */}
       <div className="mx-auto max-w-6xl space-y-20 px-4 py-20 md:px-6 lg:space-y-28 lg:px-10 lg:py-28">

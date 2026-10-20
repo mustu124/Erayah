@@ -87,6 +87,9 @@ const pageInput = z.object({
         path: z.string().regex(/^about\/[\w.-]+$/),
         alt: z.string().trim().min(1, "Describe each photo.").max(200),
         role: z.enum(["hero", "founder", "story"]),
+        // Pixel size from the upload, so a portrait opening photo is framed as a portrait.
+        width: z.number().int().positive().max(20_000).optional(),
+        height: z.number().int().positive().max(20_000).optional(),
       }),
     )
     .max(12),

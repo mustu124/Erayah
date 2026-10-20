@@ -15,7 +15,7 @@ import { Icon } from "@/components/ui/Icon";
 import { savePage } from "@/lib/admin/actions/content";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 
-type Img = { path: string; alt: string; role: "hero" | "founder" | "story" };
+type Img = { path: string; alt: string; role: "hero" | "founder" | "story"; width?: number; height?: number };
 type Page = { slug: "about" | "shipping-returns" | "privacy-policy" | "terms"; title: string; body: string; seoTitle: string; seoDescription: string; images: Img[] };
 
 export function PageEditor({ page }: { page: Page }) {
@@ -33,8 +33,11 @@ export function PageEditor({ page }: { page: Page }) {
         ...prev,
         images:
           role === "story"
-            ? [...prev.images, { path, alt: "", role }]
-            : [{ path, alt: role === "founder" ? "Erayah's founder" : "Erayah jewellery", role }, ...prev.images.filter((i) => i.role !== role)],
+            ? [...prev.images, { path, alt: "", role, width: img.width, height: img.height }]
+            : [
+                { path, alt: role === "founder" ? "Erayah's founder" : "Erayah jewellery", role, width: img.width, height: img.height },
+                ...prev.images.filter((i) => i.role !== role),
+              ],
       }));
       toast.success("Photo uploaded. Remember to save the page.");
     } catch (e) {
