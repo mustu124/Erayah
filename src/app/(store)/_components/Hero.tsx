@@ -80,11 +80,12 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
         if (event.key === "ArrowRight") go(index + 1);
       }}
     >
-      <GiantWordmark className="top-[1vw] lg:top-1/2 lg:-translate-y-1/2" />
+      {/* Desktop only: on a phone the faint ERAYAH made an empty band above the photo. */}
+      <GiantWordmark className="hidden lg:top-1/2 lg:block lg:-translate-y-1/2" />
 
       {/* Image frame: full width 4:5 on mobile; centred portrait on desktop. */}
       <div
-        className="relative mt-[13vw] aspect-[4/5] w-full lg:absolute lg:inset-y-6 lg:left-1/2 lg:mt-0 lg:w-auto lg:-translate-x-1/2"
+        className="relative aspect-[4/5] w-full lg:absolute lg:inset-y-6 lg:left-1/2 lg:mt-0 lg:w-auto lg:-translate-x-1/2"
         onTouchStart={(event) => {
           touchX.current = event.touches[0].clientX;
           setPaused(true);
