@@ -114,7 +114,7 @@ export default async function AboutPage() {
       {founder ? (
         <section aria-labelledby="founder" className="bg-ivory">
           <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 py-20 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:px-6 lg:gap-16 lg:py-24">
-            <Photo img={founderPhoto} sizes="(min-width: 768px) 35vw, 100vw" className="mx-auto aspect-[4/5] w-full max-w-sm bg-paper-warm" />
+            <Photo img={founderPhoto} sizes="(min-width: 768px) 35vw, 100vw" position="50% 25%" className="mx-auto aspect-[4/5] w-full max-w-sm bg-paper-warm" />
             <div>
               <Label id="founder">{founder.title}</Label>
               <Prose className="mt-5 text-body-lg">{founder.body}</Prose>
