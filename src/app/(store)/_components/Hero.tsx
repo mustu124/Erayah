@@ -11,7 +11,6 @@ import { cn } from "@/lib/cn";
 import type { HeroSlide } from "@/lib/data/catalog";
 import { IVORY_BLUR } from "@/lib/images";
 
-import { GiantWordmark } from "./GiantWordmark";
 
 const AUTOPLAY_MS = 6000;
 const SWIPE_PX = 40;
@@ -26,7 +25,7 @@ function subscribeReducedMotion(callback: () => void) {
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
- * Centred portrait over a faint giant ERAYAH. Crossfades (400ms) between
+ * Centred portrait. Crossfades (400ms) between
  * slides; autoplays every 6s, pausing on hover, touch, focus and for
  * reduced motion. Swipe on mobile; oval arrows, counter and dots on desktop.
  */
@@ -80,8 +79,6 @@ export function Hero({ slides }: { slides: HeroSlide[] }) {
         if (event.key === "ArrowRight") go(index + 1);
       }}
     >
-      {/* Desktop only: on a phone the faint ERAYAH made an empty band above the photo. */}
-      <GiantWordmark className="hidden lg:top-1/2 lg:block lg:-translate-y-1/2" />
 
       {/* Image frame: full width 4:5 on mobile; centred portrait on desktop. */}
       <div
