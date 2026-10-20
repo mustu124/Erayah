@@ -83,9 +83,10 @@ test.describe("homepage", () => {
 
     // Hero, category tiles and cards come from the imported photographs.
     const hero = page.getByRole("region", { name: "Featured pieces" });
-    await expect(hero.locator("img").first()).toHaveAttribute("src", /site-media%2Fhero%2Fimport-/);
+    await expect(hero.locator("img").first()).toHaveAttribute("src", /site-media%2Fhero%2F/);
     const tiles = page.locator("section[aria-labelledby=shop-by-category] img");
-    await expect(tiles).toHaveCount(4); // Bracelets and Shop All have no photo
+    // Four categories have photos; Bracelets and Shop All get theirs when the owner uploads them.
+    expect(await tiles.count()).toBeGreaterThanOrEqual(4);
     for (const src of await tiles.evaluateAll((els) => els.map((e) => (e as HTMLImageElement).src))) {
       expect(src).toContain("site-media%2Fcategories%2F");
     }

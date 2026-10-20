@@ -11,7 +11,7 @@ export const REQUIRED_ROLES: ImageRole[] = ["worn_closeup", "lifestyle", "produc
 export const OPTIONAL_ROLES: ImageRole[] = ["flat_lay", "video"];
 
 export const ROLE_INFO: Record<ImageRole, { label: string; hint: string }> = {
-  worn_closeup: { label: "1 · Worn close-up", hint: "On a model, close. Shown on product cards." },
+  worn_closeup: { label: "1 · Worn close-up", hint: "On a model, close. The photo on product cards (without one, the card uses Lifestyle, then Product only)." },
   lifestyle: { label: "2 · Lifestyle", hint: "Styled scene. Shown when a card is hovered." },
   product_only: { label: "3 · Product only", hint: "The piece alone on a plain background." },
   detail: { label: "4 · Detail close-up", hint: "Stones, setting or clasp up close." },

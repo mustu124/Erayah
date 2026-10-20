@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { db } from "./support/checkout";
+
 const isMobile = (projectName: string) => projectName.endsWith("-375");
 
 async function open(page: Page, url: string) {
@@ -60,14 +62,23 @@ test.describe("product page", () => {
   });
 
   test("gallery opens a full-screen viewer", async ({ page }) => {
-    await open(page, "/product/harakh-earrings-white");
-    await expect(page.getByRole("tablist", { name: "Product images" }).getByRole("tab")).toHaveCount(2);
-    await page.getByRole("button", { name: /View image 1 of 2 full screen/ }).click();
+    // Any piece with more than one photo (the owner changes photos in /admin).
+    const { data } = await db.from("product_images").select("storage_path, products!inner(slug, is_published)").eq("products.is_published", true).neq("role", "video");
+    const photos = new Map<string, Set<string>>();
+    for (const r of data ?? []) {
+      const slug = (r.products as unknown as { slug: string }).slug;
+      photos.set(slug, (photos.get(slug) ?? new Set()).add(r.storage_path));
+    }
+    const slug = [...photos].find(([, set]) => set.size >= 2)![0];
+    await open(page, `/product/${slug}`);
+    const n = await page.getByRole("tablist", { name: "Product images" }).getByRole("tab").count();
+    expect(n).toBeGreaterThanOrEqual(2);
+    await page.getByRole("button", { name: new RegExp(`View image 1 of ${n} full screen`) }).click();
     const viewer = page.getByRole("dialog", { name: /image viewer/ });
     await expect(viewer).toBeVisible();
-    await expect(viewer.getByText("1 / 2")).toBeVisible();
+    await expect(viewer.getByText(`1 / ${n}`)).toBeVisible();
     await page.keyboard.press("ArrowRight");
-    await expect(viewer.getByText("2 / 2")).toBeVisible();
+    await expect(viewer.getByText(`2 / ${n}`)).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(viewer).toBeHidden();
   });

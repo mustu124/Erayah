@@ -38,6 +38,12 @@ test.describe("collection pages", () => {
     await expect(cards(page)).toHaveCount(Math.min(24, total - 24));
   });
 
+  test("every photographed piece shows a photo on its card, even without a worn close-up", async ({ page }) => {
+    await page.goto("/search?q=reva");
+    const card = page.locator("article").filter({ hasText: "Reva Earrings" }).first();
+    await expect(card.locator("img").first()).toHaveAttribute("src", /reva-earrings/);
+  });
+
   test("lifestyle tiles only in curated order with no filters", async ({ page }, testInfo) => {
     await page.goto("/shop/earrings");
     const visible = page.locator("[data-lifestyle-tile]:visible");

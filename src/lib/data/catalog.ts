@@ -41,7 +41,12 @@ export type ImageRow = {
 
 export const CARD_SELECT =
   "id, slug, name, price, stock_qty, product_images(storage_path, role, alt, width, height, blur_data_url, sort_order)";
-export const CARD_ROLES: Enums<"image_role">[] = ["worn_closeup", "lifestyle"];
+/**
+ * Photos a product card may use, best first: the worn close-up, then the
+ * lifestyle shot, then whatever else was uploaded. So a product whose photos
+ * have no "Worn close-up" still shows a photo instead of the placeholder.
+ */
+export const CARD_ROLES: Enums<"image_role">[] = ["worn_closeup", "lifestyle", "product_only", "flat_lay", "detail"];
 
 export function toCardImage(row: ImageRow | undefined): CardImage | null {
   if (!row) return null;
@@ -69,14 +74,18 @@ export function toCard(row: {
 }): ProductCardData {
   const byRole = (role: Enums<"image_role">) =>
     row.product_images.filter((i) => i.role === role).sort((a, b) => a.sort_order - b.sort_order)[0];
+  const ranked = CARD_ROLES.map(byRole).filter((i): i is ImageRow => !!i);
+  const main = ranked[0];
+  // Hover: the lifestyle shot (or the next photo) when it's a different picture.
+  const hover = [byRole("lifestyle"), ...ranked].find((i) => i && main && i.storage_path !== main.storage_path);
   return {
     id: row.id,
     slug: row.slug,
     name: row.name,
     price: row.price,
     soldOut: row.stock_qty <= 0,
-    image: toCardImage(byRole("worn_closeup")),
-    hoverImage: toCardImage(byRole("lifestyle")),
+    image: toCardImage(main),
+    hoverImage: toCardImage(hover),
   };
 }
 
