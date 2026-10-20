@@ -492,47 +492,59 @@ We may update this policy. The date at the top shows when it last changed.
   terms: {
     seo_title: "Terms & Conditions",
     seo_description: "The terms that apply when you shop with Erayah.",
-    body: `**DRAFT – REVIEW BEFORE LAUNCH**
+    body: `_Last updated: 20 October 2026_
 
-_Last updated: [DATE]_
+These Terms & Conditions govern your use of www.erayah.in and purchases made through the website. By accessing the website or placing an order, you agree to these terms.
 
-These terms apply when you use this website or buy from [LEGAL BUSINESS NAME], trading as Erayah. By placing an order you agree to them.
+## 1. Seller Information
 
-## Our jewellery
+ERAYAH is a jewellery brand operated by Bhavi Shah in her individual capacity. The seller of products offered through this website is Bhavi Shah, operating under the brand name ERAYAH. References to "ERAYAH", "we", "us" and "our" refer to the seller operating under this brand name.
 
-Every piece is handcrafted by traditional artisans. Slight variations in stones, finish and detailing are natural and make each piece unique. Photographs show the design; your piece may differ slightly.
+**Seller Name:** Bhavi Shah\\
+**Website:** www.erayah.in\\
+**Business Address:** Malad West, Mumbai 400064\\
+**Email:** erayah333@gmail.com\\
+**Contact Number:** +91 88283 36499
 
-## Prices
+## 2. Limitations of Liability
 
-Prices are in Indian rupees and include GST unless stated otherwise. Shipping is calculated at checkout based on your delivery pincode. The amount shown at checkout is the amount you pay.
+ERAYAH makes reasonable efforts to ensure that its website is accurate, secure and accessible. However, uninterrupted or error-free operation cannot be guaranteed. To the extent permitted by applicable law, ERAYAH shall not be liable for indirect or consequential losses arising from website use or circumstances beyond its reasonable control. Nothing in these terms excludes or limits any liability or consumer right that cannot lawfully be excluded or limited under Indian law.
 
-## Orders
+## 3. Copyright and Trademark
 
-Your order is confirmed when payment succeeds and you see the confirmation page with your invoice. We may cancel an order, with a full refund, if a piece is unavailable or a price was shown in error.
+The ERAYAH name, logo, product designs, photographs, images, graphics and written content on this website are owned by or lawfully used by ERAYAH and are protected under applicable intellectual property laws. No content may be copied, reproduced, modified, distributed or commercially used without prior written permission from the relevant rights holder, except as permitted by law.
 
-## Payment
+## 4. Products, Content and Specifications
 
-We accept UPI, credit and debit cards, wallets and netbanking through Razorpay.
+ERAYAH makes reasonable efforts to ensure that product descriptions, photographs, materials, specifications and prices are accurate. As our jewellery is handcrafted, minor variations in colour, finish, texture, stone placement and detailing may occur. Actual colours may also vary depending on your device and display settings. Measurements, where provided, are approximate unless otherwise specified.
 
-## Shipping and exchanges
+Product availability, prices and descriptions may change, subject to applicable law and existing order commitments. Nothing in this section limits your rights regarding defective, damaged, incorrect or misrepresented products.
 
-Delivery and exchanges are covered by our Shipping & Returns policy, which forms part of these terms.
+## 5. Orders and Payments
 
-## Intellectual property
+All orders are subject to product availability and acceptance. Customers are responsible for providing accurate contact and delivery information. ERAYAH reserves the right to decline or cancel orders in cases such as product unavailability, material pricing errors or suspected fraudulent activity. Any payment received for an order cancelled by ERAYAH will be refunded in accordance with applicable law.
 
-All designs, photographs, text and the Erayah name and elephant mark belong to us and may not be used without our written permission.
+All prices are displayed in Indian Rupees (INR), unless otherwise stated. Applicable taxes and shipping charges will be disclosed before checkout. Payments may be processed through third-party payment service providers and are subject to their applicable terms.
 
-## Liability
+## 6. Shipping Limitations
 
-To the extent the law allows, our liability for any order is limited to the amount paid for it.
+Orders are shipped to the address provided by the customer, subject to applicable delivery restrictions. Customers are responsible for providing accurate shipping details. Delivery timelines are estimates and may be affected by courier delays or circumstances beyond our reasonable control.
 
-## Governing law
+For delivery timelines, shipping charges and procedures relating to delayed, lost or damaged shipments, please refer to our [Shipping & Returns](/shipping-returns) policy.
 
-These terms are governed by the laws of India. The courts at [CITY] have jurisdiction.
+## 7. Duties and Taxes
 
-## Contact
+Applicable taxes and shipping charges for orders within India will be disclosed before checkout. For international orders, if offered, customs duties, import taxes and other charges imposed by the destination country may be payable by the customer in accordance with applicable law.
 
-[LEGAL BUSINESS NAME], [REGISTERED ADDRESS]. [EMAIL] · [PHONE]
+## 8. Customer Information and Privacy
+
+Customers are not required to create an account or maintain a login to place orders through our website. Information necessary to process orders, arrange delivery, facilitate payments and respond to enquiries or complaints may be collected and processed in accordance with our [Privacy Policy](/privacy-policy) and applicable law.
+
+Payment information may be processed by third-party payment service providers. Please refer to our [Privacy Policy](/privacy-policy) for further details on how customer information is handled.
+
+## 9. Changes to These Terms
+
+ERAYAH may update these Terms & Conditions from time to time. Revised terms will be published on this page with an updated date. Changes will apply prospectively, subject to applicable law and rights arising from existing orders. Customers are encouraged to review this page periodically.
 `,
   },
 };

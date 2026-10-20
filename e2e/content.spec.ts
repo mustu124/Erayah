@@ -63,7 +63,7 @@ test.describe("content pages", () => {
     for (const [url, title, text] of [
       ["/shipping-returns", "Shipping & Returns", "We do not accept returns or offer refunds."],
       ["/privacy-policy", "Privacy Policy", "Digital Personal Data Protection Act"],
-      ["/terms", "Terms & Conditions", "Razorpay"],
+      ["/terms", "Terms & Conditions", "Seller Information"],
     ]) {
       await open(page, url);
       await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
