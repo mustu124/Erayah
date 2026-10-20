@@ -435,8 +435,7 @@ I hope that when you find a piece you love, it becomes part of your story, tied 
 
 With love,
 
-**Bhavi Shah**
-
+**Bhavi Shah**\\
 Founder & Creative Director
 `,
   },
