@@ -48,7 +48,7 @@ Voice: quiet, assured, warm, heritage-meets-contemporary. Short sentences. No ex
 - Mobile-first. Design at 375px first, then 768px, then 1280px+.
 - Lots of whitespace. Thin 1px lines. Square or very slightly rounded corners (max 2px), except pill labels and the WhatsApp button.
 - Product images on warm neutral backgrounds; never stark white tiles.
-- Motion: smooth opacity fades only (200–400ms). No zoom, parallax, bounce or slide-in animation.
+- Motion: smooth opacity fades only (200–400ms). No zoom, parallax, bounce or slide-in animation. The one exception (owner's request): product-page photos zoom in place when the shopper hovers (desktop) or taps (phone), components/product/ZoomImage.tsx; there is no full-screen viewer.
 - Product cards show ONLY: image, name, price. Nothing else on the card except a small heart icon on hover/tap.
 - Prices in Indian format with the rupee symbol: ₹2,350.
 - Accessibility: WCAG AA contrast, focus states visible, all images have alt text, tap targets ≥ 44px.

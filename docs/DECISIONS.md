@@ -281,3 +281,8 @@ Heroes in the first four slots, statement and minimal pieces alternating, prices
 - Product editor: the flag reads **Most Loved** and **Gifts for Her (under ₹3K)**; Styles explains which styles feed each Earrings menu entry; Colours notes the filter is hidden. Products list shows "Most Loved".
 - Merchandising: New Arrivals notes that the homepage shows the first 12; lifestyle tiles note that automatic tiles are phone only.
 - Content → Pages hints describe About (story sections + founder's note) and Shipping & Returns accurately. ADMIN_GUIDE.md updated (founder's note, closing lines, styles, 12 New Arrivals, customer cancellations, missing payment confirmations).
+
+## 2026-10-20 — Product photo zoom in place
+- At the owner's request the full-screen viewer (dark aubergine background) is gone. Product-page photos zoom 2.2× in place: on desktop while the pointer is over the photo (it follows the pointer; a click toggles), on phones with a tap (the finger then pans; swiping between photos pauses while zoomed; another tap zooms out). Keyboard: Enter/Space toggles. The phone hint reads "Tap to zoom". This is a deliberate exception to the "no zoom" motion rule.
+- Product cards: the first photo in the owner's drag order is the card photo, the second is the hover photo (the role labels no longer carry numbers).
+- Our Story opening photo: a portrait (the mirror photo) is shown as a portrait (4:5, 560 px wide on desktop) instead of a 21:9 band; page photos store their pixel size so the admin can tell.

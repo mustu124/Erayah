@@ -70,7 +70,7 @@ export default async function ProductPage({ params }: PageProps<"/product/[slug]
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(crumbs)) }} />
 
       <div className="mx-auto max-w-[1440px] lg:grid lg:grid-cols-[55fr_45fr] lg:gap-14 lg:px-10 lg:pt-10">
-        <Gallery items={product.gallery} name={product.name} />
+        <Gallery items={product.gallery} />
 
         <div className="px-4 pt-6 md:px-6 lg:sticky lg:top-24 lg:self-start lg:px-0 lg:pt-0">
           <nav aria-label="Breadcrumb">

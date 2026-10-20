@@ -61,7 +61,7 @@ test.describe("product page", () => {
     await expect(page.getByRole("button", { name: "Remove Dahlia Earrings from wishlist" }).first()).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("gallery opens a full-screen viewer", async ({ page }) => {
+  test("gallery photos zoom in place (no full-screen viewer)", async ({ page }) => {
     // Any piece with more than one photo (the owner changes photos in /admin).
     const { data } = await db.from("product_images").select("storage_path, products!inner(slug, is_published)").eq("products.is_published", true).neq("role", "video");
     const photos = new Map<string, Set<string>>();
@@ -73,14 +73,15 @@ test.describe("product page", () => {
     await open(page, `/product/${slug}`);
     const n = await page.getByRole("tablist", { name: "Product images" }).getByRole("tab").count();
     expect(n).toBeGreaterThanOrEqual(2);
-    await page.getByRole("button", { name: new RegExp(`View image 1 of ${n} full screen`) }).click();
-    const viewer = page.getByRole("dialog", { name: /image viewer/ });
-    await expect(viewer).toBeVisible();
-    await expect(viewer.getByText(`1 / ${n}`)).toBeVisible();
-    await page.keyboard.press("ArrowRight");
-    await expect(viewer.getByText(`2 / ${n}`)).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(viewer).toBeHidden();
+    const photo = page.getByRole("button", { name: /^Zoom in on / }).first();
+    await photo.focus();
+    await page.keyboard.press("Enter");
+    const zoomed = page.getByRole("button", { name: /^Zoom out of / }).first();
+    await expect(zoomed).toHaveAttribute("aria-pressed", "true");
+    await expect(zoomed.locator("img")).toHaveCSS("transform", /matrix\(2\.2/);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("button", { name: /^Zoom in on / }).first()).toHaveAttribute("aria-pressed", "false");
   });
 
   test("pincode check shows charge and estimate", async ({ page }) => {

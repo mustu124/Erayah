@@ -10,19 +10,24 @@ import { Pill } from "@/components/ui/Pill";
 import { cn } from "@/lib/cn";
 import type { GalleryItem } from "@/lib/data/product";
 
-import { Lightbox } from "./Lightbox";
+import { ZoomImage } from "./ZoomImage";
 
 /**
- * Main image (4:5, swipeable) with a thumbnail strip below; tap or click to
- * open the full-screen viewer. Videos play muted, looped and inline.
+ * Main image (4:5, swipeable) with a thumbnail strip below. Photos zoom in
+ * place (hover on desktop, tap on phones). Videos play muted, looped and inline.
  */
-export function Gallery({ items, name }: { items: GalleryItem[]; name: string }) {
-  const [viewport, api] = useEmblaCarousel({ loop: false });
+export function Gallery({ items }: { items: GalleryItem[] }) {
+  const [zoomed, setZoomed] = useState(false);
+  // No swiping while a photo is zoomed in, so the finger pans the photo instead.
+  const [viewport, api] = useEmblaCarousel({ loop: false, watchDrag: !zoomed });
   const [selected, setSelected] = useState(0);
-  const [lightbox, setLightbox] = useState<number | null>(null);
   const poster = items.find((i) => i.role !== "video")?.url;
 
-  const sync = useCallback(() => api && setSelected(api.selectedScrollSnap()), [api]);
+  const sync = useCallback(() => {
+    if (!api) return;
+    setSelected(api.selectedScrollSnap());
+    setZoomed(false);
+  }, [api]);
   useEffect(() => {
     if (!api) return;
     api.on("select", sync).on("reInit", sync);
@@ -53,29 +58,23 @@ export function Gallery({ items, name }: { items: GalleryItem[]; name: string })
                     aria-label={item.alt}
                   />
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => setLightbox(i)}
-                    aria-label={`View image ${i + 1} of ${items.length} full screen`}
-                    className="absolute inset-0 cursor-zoom-in"
-                  >
-                    <Image
-                      src={item.url}
-                      alt={item.alt}
-                      fill
-                      sizes="(min-width: 1440px) 760px, (min-width: 1024px) 52vw, 100vw"
-                      preload={i === 0}
-                      loading={i === 0 ? "eager" : "lazy"}
-                      className="object-cover"
-                    />
-                  </button>
+                  <ZoomImage
+                    src={item.url}
+                    alt={item.alt}
+                    sizes="(min-width: 1440px) 760px, (min-width: 1024px) 52vw, 100vw"
+                    first={i === 0}
+                    active={i === selected}
+                    onZoomChange={setZoomed}
+                  />
                 )}
               </div>
             ))}
           </div>
         </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center lg:hidden">
-          <Pill className="bg-ink/55 px-3 py-1 text-caption text-ivory border-transparent">Tap to expand</Pill>
+          <Pill className={cn("bg-ink/55 px-3 py-1 text-caption text-ivory border-transparent transition-opacity duration-300", zoomed && "opacity-0")}>
+            Tap to zoom
+          </Pill>
         </div>
       </div>
 
@@ -111,7 +110,6 @@ export function Gallery({ items, name }: { items: GalleryItem[]; name: string })
         </div>
       ) : null}
 
-      <Lightbox items={items} index={lightbox} onIndexChange={setLightbox} onClose={() => setLightbox(null)} name={name} />
     </div>
   );
 }
