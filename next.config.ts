@@ -19,7 +19,11 @@ const nextConfig: NextConfig = {
     "/admin/orders/[number]/invoice": ["./src/fonts/**/*.ttf"],
   },
   // "Best Sellers" became "Most Loved"; old links (Instagram, bookmarks) keep working.
-  redirects: async () => [{ source: "/shop/best-sellers", destination: "/shop/most-loved", permanent: true }],
+  // Old addresses keep working: "Best Sellers" became "Most Loved", "Bracelets" became "Accessories".
+  redirects: async () => [
+    { source: "/shop/best-sellers", destination: "/shop/most-loved", permanent: true },
+    { source: "/shop/bracelets", destination: "/shop/accessories", permanent: true },
+  ],
   images: {
     // WebP only, and a short list of widths: every format × width is a separate
     // transformation (and a separate fetch of the original from Supabase Storage).

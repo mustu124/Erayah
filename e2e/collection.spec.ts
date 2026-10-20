@@ -22,9 +22,10 @@ async function filters(page: Page, mobile: boolean) {
 }
 
 test.describe("collection pages", () => {
-  test("category page: title, 24 per page, numbered pagination", async ({ page }) => {
-    await open(page, "/shop/earrings");
-    await expect(page.getByRole("heading", { level: 1, name: "Earrings" })).toBeVisible();
+  test("collection page: title, 24 per page, numbered pagination", async ({ page }) => {
+    // Shop All always has more than one page; a single category may not.
+    await open(page, "/shop");
+    await expect(page.getByRole("heading", { level: 1, name: "Shop All" })).toBeVisible();
     // The owner adds pieces in /admin, so the total isn't fixed: more than one page of 24.
     await expect(countText(page)).toHaveText(/^\d+ pieces$/);
     const total = Number((await countText(page).textContent())?.split(" ")[0]);
@@ -34,7 +35,7 @@ test.describe("collection pages", () => {
     const pagination = page.getByRole("navigation", { name: "Pagination" });
     await expect(pagination.getByRole("link", { name: "Page 1" })).toHaveAttribute("aria-current", "page");
     await pagination.getByRole("link", { name: "Page 2" }).click();
-    await expect(page).toHaveURL(/\/shop\/earrings\?page=2$/);
+    await expect(page).toHaveURL(/\/shop\?page=2$/);
     await expect(cards(page)).toHaveCount(Math.min(24, total - 24));
   });
 
@@ -101,11 +102,12 @@ test.describe("collection pages", () => {
     expect([...prices].sort((a, b) => a - b)).toEqual(prices);
   });
 
-  test("coming soon and no-results states", async ({ page }) => {
+  test("Accessories (once Bracelets) and the no-results state", async ({ page }) => {
+    // The old address still works and lands on Accessories, which is no longer "coming soon".
     await page.goto("/shop/bracelets");
-    await expect(page.getByText("Bracelets are being handcrafted.")).toBeVisible();
-    await expect(page.getByRole("link", { name: "Shop Earrings" })).toHaveAttribute("href", "/shop/earrings");
-    await expect(page.getByRole("link", { name: "Shop Rings" })).toHaveAttribute("href", "/shop/rings");
+    await expect(page).toHaveURL(/\/shop\/accessories$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Accessories" })).toBeVisible();
+    await expect(page.getByText(/being handcrafted/)).toHaveCount(0);
 
     await open(page, "/shop/rings?colour=turquoise");
     await expect(page.getByText("No pieces match these filters")).toBeVisible();

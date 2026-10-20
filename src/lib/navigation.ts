@@ -9,7 +9,7 @@ export const CATEGORY_LINKS: NavLink[] = [
   { label: "Earrings", href: routes.collection("earrings") },
   { label: "Necklace Set", href: routes.collection("necklace-sets") },
   { label: "Rings", href: routes.collection("rings") },
-  { label: "Bracelets", href: routes.collection("bracelets") },
+  { label: "Accessories", href: routes.collection("accessories") },
   { label: "Pendants", href: routes.collection("pendants") },
 ];
 
@@ -37,7 +37,7 @@ export const SUBCATEGORY_GROUPS: { title: string; links: NavLink[] }[] = [
 export const MORE_CATEGORY_LINKS: NavLink[] = [
   { label: "Necklace Set", href: routes.collection("necklace-sets") },
   { label: "Rings", href: routes.collection("rings") },
-  { label: "Bracelets", href: routes.collection("bracelets") },
+  { label: "Accessories", href: routes.collection("accessories") },
   { label: "Pendants", href: routes.collection("pendants") },
   { label: "Shop All", href: routes.shopAll },
 ];

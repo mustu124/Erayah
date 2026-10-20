@@ -21,9 +21,9 @@ test.describe("homepage", () => {
   test("shop by category: five categories plus Shop All", async ({ page }) => {
     const grid = page.locator("section[aria-labelledby=shop-by-category] li");
     await expect(grid).toHaveCount(6);
-    await expect(grid.nth(3)).toContainText("Bracelets");
-    await expect(grid.nth(3)).toContainText("Coming soon");
-    await expect(grid.nth(3).getByRole("link")).toHaveAttribute("href", "/shop/bracelets");
+    await expect(grid.nth(3)).toContainText("Accessories");
+    await expect(grid.nth(3)).not.toContainText("Coming soon");
+    await expect(grid.nth(3).getByRole("link")).toHaveAttribute("href", "/shop/accessories");
     await expect(grid.nth(5).getByRole("link")).toHaveAttribute("href", "/shop");
   });
 
@@ -88,7 +88,7 @@ test.describe("homepage", () => {
     const hero = page.getByRole("region", { name: "Featured pieces" });
     await expect(hero.locator("img").first()).toHaveAttribute("src", /site-media%2Fhero%2F/);
     const tiles = page.locator("section[aria-labelledby=shop-by-category] img");
-    // Four categories have photos; Bracelets and Shop All get theirs when the owner uploads them.
+    // Four categories have photos; Accessories and Shop All get theirs when the owner uploads them.
     expect(await tiles.count()).toBeGreaterThanOrEqual(4);
     for (const src of await tiles.evaluateAll((els) => els.map((e) => (e as HTMLImageElement).src))) {
       expect(src).toContain("site-media%2Fcategories%2F");

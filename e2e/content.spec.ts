@@ -62,7 +62,7 @@ test.describe("content pages", () => {
   test("Policy pages render their markdown", async ({ page }) => {
     for (const [url, title, text] of [
       ["/shipping-returns", "Shipping & Returns", "We do not accept returns or offer refunds."],
-      ["/privacy-policy", "Privacy Policy", "Digital Personal Data Protection Act"],
+      ["/privacy-policy", "Privacy Policy", "We do not sell your personal information."],
       ["/terms", "Terms & Conditions", "Seller Information"],
     ]) {
       await open(page, url);

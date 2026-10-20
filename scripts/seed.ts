@@ -47,7 +47,7 @@ const OLD_PLACEHOLDER_PATHS = ["placeholders/ivory-1200x1500.jpg"];
 const PLACEHOLDER_SIZE = { width: 1200, height: 1500 };
 const IVORY = { r: 0xf9, g: 0xee, b: 0xe1 };
 
-type CategorySlug = "earrings" | "necklace-sets" | "rings" | "bracelets" | "pendants";
+type CategorySlug = "earrings" | "necklace-sets" | "rings" | "accessories" | "pendants";
 
 type CatalogueRow = {
   category: CategorySlug;
@@ -66,7 +66,7 @@ type CatalogueRow = {
 // ─── Launch merchandising (owner can change all of this in /admin) ─────────
 
 /** Curated order within each category (requirements §7). */
-const MERCH_ORDER: Record<Exclude<CategorySlug, "bracelets">, string[]> = {
+const MERCH_ORDER: Record<Exclude<CategorySlug, "accessories">, string[]> = {
   earrings: [
     "meher-earrings", "harakh-earrings-white", "mallika-earrings", "chantara-earrings",
     "dahlia-earrings", "vaani-earrings-blue", "arohi-earrings", "aira-earrings",
@@ -442,51 +442,65 @@ Founder & Creative Director
   "privacy-policy": {
     seo_title: "Privacy Policy",
     seo_description: "How Erayah collects, uses and protects your personal information.",
-    body: `**DRAFT – REVIEW BEFORE LAUNCH**
+    body: `_Last updated: 20 October 2026_
 
-_Last updated: [DATE]_
+This Privacy Policy explains how ERAYAH, a jewellery brand operated by Bhavi Shah in her individual capacity, collects, uses, stores and shares personal information through www.erayah.in.
 
-This policy explains how [LEGAL BUSINESS NAME], trading as Erayah ("we", "us"), collects and uses your personal information when you visit this website or place an order. It is written to meet the Digital Personal Data Protection Act, 2023 and the Information Technology Act, 2000.
+## 1. Information We Collect
 
-## What we collect
+We may collect the following information when you place an order, contact us or browse our website:
 
-- **When you order:** your name, phone number, delivery address, email address (optional), gift note, and the details of your order.
-- **When you contact us:** your name, the contact details you give us, and your message.
-- **On your device:** your cart, wishlist and recently viewed pieces are kept in your browser's local storage. They are not sent to us until you check out.
+- **Personal information:** name, phone number, email address and shipping/billing address.
+- **Order information:** products purchased, order details and transaction status.
+- **Payment information:** payments are processed through third-party payment providers such as Razorpay. We do not store card or UPI details.
+- **Technical information:** IP address, browser/device details, cookies and website usage data, where applicable.
 
-We do not offer customer accounts, and we do not see or store your card, UPI or bank details. Payments are processed by Razorpay under its own privacy policy.
+## 2. How We Use Your Information
 
-## How we use it
+We use your information to:
 
-- To process, deliver and support your order, including contacting you by phone or WhatsApp about it.
-- To issue your invoice and keep the tax and accounting records the law requires.
-- To answer your messages.
+- Process payments, confirm orders and arrange deliveries.
+- Respond to enquiries and provide customer support.
+- Prevent fraudulent transactions and maintain website security.
+- Improve website performance and understand website usage, where applicable.
+- Comply with legal, accounting and tax obligations.
 
-We do not sell your personal information, and we do not send marketing messages.
+## 3. Sharing of Information
 
-## Who we share it with
+We may share relevant information with payment gateways, courier partners, website hosting providers and analytics or technical service providers, where required to operate the website and fulfil orders. We may also disclose information when required by law.
 
-Only the service providers we need to run the shop: Razorpay (payments), our courier partners (delivery), and our hosting and database providers. Each receives only what it needs for its task.
+We do not sell your personal information.
 
-## How long we keep it
+## 4. Cookies and Tracking
 
-Order and invoice records are kept for as long as Indian tax law requires. Contact messages are deleted when they are no longer needed.
+Our website may use cookies and similar technologies to support website functionality, analyse traffic or measure advertising performance, depending on the tools enabled. You can manage cookies through your browser settings.
 
-## Your rights
+## 5. Data Security and Retention
 
-You may ask to see, correct or erase your personal information, subject to records we must keep by law. To make a request or raise a concern, contact our Grievance Officer: [NAME], [EMAIL], [PHONE].
+We take reasonable measures to protect personal information against unauthorised access, loss or misuse. Information is retained only for as long as necessary for the purposes described in this policy or as required by applicable law.
 
-## Security
+## 6. Your Rights
 
-We use reasonable technical and organisational measures to protect your information, including encrypted connections and restricted access.
+Subject to applicable law, you may request access to or correction of your personal information, request deletion where permitted, or raise concerns about how your information is handled. We may need to retain certain information to meet legal obligations.
 
-## Changes
+To make a request, contact us using the details below.
 
-We may update this policy. The date at the top shows when it last changed.
+## 7. Third-Party Services
 
-## Contact
+Payments and other website services may be provided by third parties governed by their own privacy policies. ERAYAH is not responsible for the independent privacy practices of those providers.
 
-[LEGAL BUSINESS NAME], [REGISTERED ADDRESS]. [EMAIL] · [PHONE]
+## 8. Changes to This Policy
+
+We may update this Privacy Policy from time to time. The revised version will be published on this page with an updated date. Please also see our [Terms & Conditions](/terms).
+
+## 9. Contact Us
+
+For privacy-related questions or requests, contact:
+
+**Brand:** ERAYAH\\
+**Operated by:** Bhavi Shah\\
+**Email:** erayah333@gmail.com\\
+**Phone number:** +91 88283 36499
 `,
   },
   terms: {
@@ -766,7 +780,7 @@ async function main() {
 
   const position = (list: string[], slug: string) => (list.includes(slug) ? list.indexOf(slug) + 1 : null);
   const merchPosition = (r: CatalogueRow) =>
-    r.category === "bracelets" ? null : MERCH_ORDER[r.category].indexOf(r.slug) + 1;
+    r.category === "accessories" ? null : MERCH_ORDER[r.category].indexOf(r.slug) + 1;
 
   const content = (r: CatalogueRow) => ({
     slug: r.slug,

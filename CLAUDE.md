@@ -54,7 +54,7 @@ Voice: quiet, assured, warm, heritage-meets-contemporary. Short sentences. No ex
 - Accessibility: WCAG AA contrast, focus states visible, all images have alt text, tap targets ≥ 44px.
 
 ## Information architecture
-Categories: Earrings, Necklace Set, Rings, Bracelets, Pendants (Bracelets shows a graceful "Coming soon" until it has products).
+Categories: Earrings, Necklace Set, Rings, Accessories (was Bracelets; /shop/bracelets redirects), Pendants. A category marked "coming soon" in admin shows a graceful Coming soon page while it has no products.
 Nav: Shop (New Arrivals, Most Loved, Gifts for Her (Under ₹3K), all 5 categories with subcategories under Earrings only (Studs, Danglers, Chaandbaalis, Jhumkis), Shop All; there is no "Shop by Style"), About Erayah, Contact, FAQs.
 There is NO Track Order anywhere and NO customer account anywhere.
 Footer links: Shop, About Erayah, Contact, FAQs, Shipping & Returns, Privacy Policy, Terms & Conditions, Instagram, WhatsApp.
