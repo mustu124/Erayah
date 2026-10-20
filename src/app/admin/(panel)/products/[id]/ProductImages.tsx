@@ -17,10 +17,10 @@ const REQUIRED: ImageRole[] = ["worn_closeup", "lifestyle", "product_only", "det
 const OPTIONAL: ImageRole[] = ["flat_lay", "video"];
 
 const INFO: Record<ImageRole, { label: string; hint: string; alt: (name: string) => string }> = {
-  worn_closeup: { label: "1 · Worn close-up", hint: "On a model, close. The photo on product cards (without one, the card uses Lifestyle, then Product only).", alt: (n) => `${n}, worn` },
-  lifestyle: { label: "2 · Lifestyle", hint: "A styled scene. Shown when a card is hovered.", alt: (n) => `${n}, styled` },
-  product_only: { label: "3 · Product only", hint: "The piece alone on a plain background.", alt: (n) => `${n} on a plain background` },
-  detail: { label: "4 · Detail close-up", hint: "Stones, setting or clasp up close.", alt: (n) => `Detail of the ${n}` },
+  worn_closeup: { label: "Worn close-up", hint: "On a model, close.", alt: (n) => `${n}, worn` },
+  lifestyle: { label: "Lifestyle", hint: "A styled scene.", alt: (n) => `${n}, styled` },
+  product_only: { label: "Product only", hint: "The piece alone on a plain background.", alt: (n) => `${n} on a plain background` },
+  detail: { label: "Detail close-up", hint: "Stones, setting or clasp up close.", alt: (n) => `Detail of the ${n}` },
   flat_lay: { label: "Flat lay (optional)", hint: "Arranged and photographed from above.", alt: (n) => `${n}, flat lay` },
   video: { label: "Video (optional)", hint: "Short and silent. MP4 or WebM, under 50 MB.", alt: (n) => `Video of the ${n}` },
 };
@@ -74,14 +74,17 @@ export function ProductImages({ productId, slug, productName, published, images 
     <div>
       {published && missing.length ? (
         <p role="alert" className="mb-4 border border-plum/40 bg-[#f8ecef] px-4 py-3 text-body-sm text-plum">
-          This piece is live without {missing.length === 4 ? "any of the 4 required photos" : `${missing.map((r) => INFO[r].label.replace(/^\d · /, "")).join(", ")}`}. Shoppers see a plain
+          This piece is live without {missing.length === 4 ? "any of the 4 required photos" : `${missing.map((r) => INFO[r].label).join(", ")}`}. Shoppers see a plain
           placeholder where a photo is missing.
         </p>
       ) : null}
 
       {order.length ? (
         <>
-          <p className="mb-2 text-caption text-ink/60">Drag photos by the grip to change the order on the product page.</p>
+          <p className="mb-2 text-caption text-ink/60">
+            Drag photos by the grip to change the order. The first photo is the one on product cards and first on the product page; the second shows
+            when a card is hovered.
+          </p>
           <Sortable
             items={order}
             getId={(i) => i.id}

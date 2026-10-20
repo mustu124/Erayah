@@ -117,7 +117,11 @@ test.describe("collection pages", () => {
   test("curated lists and style pages", async ({ page }) => {
     await page.goto("/shop/new-arrivals");
     await expect(page.getByRole("heading", { level: 1, name: "New Arrivals" })).toBeVisible();
-    await expect(cards(page)).toHaveCount(13);
+    // As many cards as the page says (the owner flags New Arrivals in /admin).
+    await expect(countText(page)).toHaveText(/^\d+ pieces?$/);
+    const n = Number((await countText(page).textContent())!.split(" ")[0]);
+    expect(n).toBeGreaterThan(0);
+    await expect(cards(page)).toHaveCount(Math.min(n, 24));
 
     await page.goto("/shop/style/jhumkas-chaandbaalis");
     await expect(page.getByRole("heading", { level: 1, name: "Jhumkas & Chaandbaalis" })).toBeVisible();

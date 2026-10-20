@@ -13,7 +13,7 @@ const IVORY = { r: 0xf9, g: 0xee, b: 0xe1 };
 
 export default async function OpenGraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const product = await getProduct((await params).slug);
-  const image = product?.gallery.find((g) => g.role === "worn_closeup") ?? product?.gallery.find((g) => g.role !== "video");
+  const image = product?.gallery.find((g) => g.role !== "video");
 
   let photo: Buffer | null = null;
   if (image) {

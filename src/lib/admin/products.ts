@@ -11,16 +11,16 @@ export const REQUIRED_ROLES: ImageRole[] = ["worn_closeup", "lifestyle", "produc
 export const OPTIONAL_ROLES: ImageRole[] = ["flat_lay", "video"];
 
 export const ROLE_INFO: Record<ImageRole, { label: string; hint: string }> = {
-  worn_closeup: { label: "1 · Worn close-up", hint: "On a model, close. The photo on product cards (without one, the card uses Lifestyle, then Product only)." },
-  lifestyle: { label: "2 · Lifestyle", hint: "Styled scene. Shown when a card is hovered." },
-  product_only: { label: "3 · Product only", hint: "The piece alone on a plain background." },
-  detail: { label: "4 · Detail close-up", hint: "Stones, setting or clasp up close." },
+  worn_closeup: { label: "Worn close-up", hint: "On a model, close." },
+  lifestyle: { label: "Lifestyle", hint: "Styled scene." },
+  product_only: { label: "Product only", hint: "The piece alone on a plain background." },
+  detail: { label: "Detail close-up", hint: "Stones, setting or clasp up close." },
   flat_lay: { label: "Flat lay (optional)", hint: "Arranged from above." },
   video: { label: "Video (optional)", hint: "Short, silent MP4 or WebM, under 50 MB." },
 };
 
 const thumbOf = (images: { storage_path: string; role: ImageRole; sort_order: number }[]) => {
-  const pick = [...images].filter((i) => i.role !== "video").sort((a, b) => (a.role === "worn_closeup" ? -1 : 0) - (b.role === "worn_closeup" ? -1 : 0) || a.sort_order - b.sort_order)[0];
+  const pick = [...images].filter((i) => i.role !== "video").sort((a, b) => a.sort_order - b.sort_order)[0];
   return pick ? publicStorageUrl("product-images", pick.storage_path) : null;
 };
 

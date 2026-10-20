@@ -41,11 +41,7 @@ export type ImageRow = {
 
 export const CARD_SELECT =
   "id, slug, name, price, stock_qty, product_images(storage_path, role, alt, width, height, blur_data_url, sort_order)";
-/**
- * Photos a product card may use, best first: the worn close-up, then the
- * lifestyle shot, then whatever else was uploaded. So a product whose photos
- * have no "Worn close-up" still shows a photo instead of the placeholder.
- */
+/** Photos a product card may use (anything but video). */
 export const CARD_ROLES: Enums<"image_role">[] = ["worn_closeup", "lifestyle", "product_only", "flat_lay", "detail"];
 
 export function toCardImage(row: ImageRow | undefined): CardImage | null {
@@ -72,12 +68,11 @@ export function toCard(row: {
   stock_qty: number;
   product_images: ImageRow[];
 }): ProductCardData {
-  const byRole = (role: Enums<"image_role">) =>
-    row.product_images.filter((i) => i.role === role).sort((a, b) => a.sort_order - b.sort_order)[0];
-  const ranked = CARD_ROLES.map(byRole).filter((i): i is ImageRow => !!i);
-  const main = ranked[0];
-  // Hover: the lifestyle shot (or the next photo) when it's a different picture.
-  const hover = [byRole("lifestyle"), ...ranked].find((i) => i && main && i.storage_path !== main.storage_path);
+  // The owner's photo order (dragged in the product editor): the first photo is
+  // the card's, the next different one shows on hover.
+  const ordered = row.product_images.filter((i) => CARD_ROLES.includes(i.role)).sort((a, b) => a.sort_order - b.sort_order);
+  const main = ordered[0];
+  const hover = ordered.find((i) => main && i.storage_path !== main.storage_path);
   return {
     id: row.id,
     slug: row.slug,
@@ -232,7 +227,7 @@ export async function getCategoryTiles(): Promise<CategoryTile[]> {
     supabase
       .from("products")
       .select("category_id, merch_position, product_images(storage_path, role, alt, width, height, blur_data_url, sort_order)")
-      .eq("product_images.role", "worn_closeup")
+      .in("product_images.role", CARD_ROLES)
       .order("merch_position", { nullsFirst: false }),
   ]);
   if (error) console.error("getCategoryTiles:", error.message);
@@ -242,7 +237,7 @@ export async function getCategoryTiles(): Promise<CategoryTile[]> {
     const first = (products ?? []).find((p) => p.category_id === c.id && p.product_images.length);
     const image: CardImage | null = c.image_path
       ? { url: publicStorageUrl("site-media", c.image_path), alt: c.name, width: 1200, height: 1200, blurDataUrl: null }
-      : toCardImage(first?.product_images[0]);
+      : toCardImage(first ? [...first.product_images].sort((a, b) => a.sort_order - b.sort_order)[0] : undefined);
     return {
       slug: c.slug,
       name: c.name,
