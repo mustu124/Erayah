@@ -8,7 +8,7 @@ import { DragHandle, Sortable } from "@/components/admin/Sortable";
 import { useAdminAction } from "@/components/admin/use-action";
 import { Labeled, TextArea, TextInput, Toggle } from "@/components/admin/ui";
 import { Button } from "@/components/ui/Button";
-import { deleteHeroSlide, reorderHeroSlides, saveCategoryImage, saveFounderNote, saveHeroSlide, saveHomepageText } from "@/lib/admin/actions/homepage";
+import { deleteHeroSlide, reorderHeroSlides, saveCategoryImage, saveFounderNote, saveHeroSlide, saveHomepageText, saveShopAllImage } from "@/lib/admin/actions/homepage";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 
 export type Slide = { id: number; desktopPath: string; mobilePath: string; alt: string; label: string; linkUrl: string; isActive: boolean };
@@ -93,6 +93,12 @@ export function SlideOrder({ slides }: { slides: Slide[] }) {
       )}
     </Sortable>
   );
+}
+
+/** The last tile in Shop by Category, linking to the whole collection. */
+export function ShopAllImage({ path }: { path: string }) {
+  const save = useAdminAction(saveShopAllImage);
+  return <MediaField folder="categories" value={path} onChange={(imagePath) => save.run({ imagePath })} label="Shop All" aspect="aspect-square" hint="Square works best" />;
 }
 
 type Founder = { note: string; name: string; role: string };

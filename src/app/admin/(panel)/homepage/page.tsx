@@ -10,7 +10,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 import { DEFAULT_FOUNDER_NOTE } from "../../../(store)/_components/FounderNote";
 
-import { CategoryImage, FounderNoteForm, HomepageText, type Slide, SlideForm, SlideOrder } from "./HomepageForms";
+import { CategoryImage, FounderNoteForm, HomepageText, ShopAllImage, type Slide, SlideForm, SlideOrder } from "./HomepageForms";
 
 export const metadata: Metadata = { title: "Homepage" };
 
@@ -20,7 +20,7 @@ export default async function HomepageAdminPage() {
   const [{ data: slideRows }, categories, { data: settings }, savedNote] = await Promise.all([
     db.from("hero_slides").select("id, image_desktop_path, image_mobile_path, alt, label, link_url, is_active, sort_order").order("sort_order"),
     listCategories(),
-    db.from("site_settings").select("announcement_text, brand_story_text, brand_story_highlight").eq("id", 1).single(),
+    db.from("site_settings").select("announcement_text, brand_story_text, brand_story_highlight, shop_all_image_path").eq("id", 1).single(),
     getHomeFounderNote(),
   ]);
   const founder = savedNote ?? DEFAULT_FOUNDER_NOTE;
@@ -66,10 +66,12 @@ export default async function HomepageAdminPage() {
         </Panel>
 
         <Panel title="Shop by Category images">
+          <p className="mb-3 text-body-sm text-ink/65">One per category, plus the Shop All tile at the end. A category without its own image uses its first piece&apos;s photo.</p>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {categories.map((c) => (
               <CategoryImage key={c.id} categoryId={c.id} name={c.name} path={c.image_path ?? ""} />
             ))}
+            <ShopAllImage path={settings?.shop_all_image_path ?? ""} />
           </div>
         </Panel>
 

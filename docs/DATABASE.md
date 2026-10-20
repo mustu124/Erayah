@@ -18,7 +18,7 @@ Postgres on Supabase. Migrations live in `supabase/migrations/`. Money is always
 ### Settings and content
 | Table | Purpose |
 |---|---|
-| `site_settings` | One row (`id = 1`) of site-wide settings: announcement, brand story (and its highlighted phrase), contact details and business hours, GST and invoice prefix. |
+| `site_settings` | One row (`id = 1`) of site-wide settings: announcement, brand story (and its highlighted phrase), contact details and business hours, GST and invoice prefix. Also the Shop All tile image (`shop_all_image_path`). |
 | `shipping_rules` | Shipping rates by pincode prefix, state or default; the most specific active rule wins. |
 | `gift_cards` | Gift card codes with a remaining balance. |
 | `gift_card_redemptions` | Each use of a gift card on an order; `reversed_at` is set if the order is released. |

@@ -205,6 +205,18 @@ export type CategoryTile = {
   image: CardImage | null;
 };
 
+/** The Shop All tile's image (Admin → Homepage), or null for the elephant mark. */
+export async function getShopAllImage(): Promise<CardImage | null> {
+  "use cache";
+  cacheTag(TAGS.home, TAGS.siteSettings);
+  cacheLife("days");
+  const { data, error } = await createPublicClient().from("site_settings").select("shop_all_image_path").eq("id", 1).maybeSingle();
+  if (error) console.error("getShopAllImage:", error.message);
+  return data?.shop_all_image_path
+    ? { url: publicStorageUrl("site-media", data.shop_all_image_path), alt: "Shop All", width: 1200, height: 1200, blurDataUrl: null }
+    : null;
+}
+
 /**
  * One tile per category. Image: the category's own image if set, otherwise
  * the card image of its first piece in the curated order.

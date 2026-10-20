@@ -141,7 +141,7 @@ Testimonials you add under **Content → Testimonials** appear on the About page
 
 - **Homepage:**
   - hero slides (desktop and mobile photo, label, link; drag to reorder)
-  - a photo for each category
+  - a photo for each category, and one for the **Shop All** tile (the last one in Shop by Category)
   - the **founder's note** after New Arrivals (paragraphs separated by an empty line, then name and title; the full note is on the About page)
   - the **closing lines** above the footer (and an optional phrase in italics)
   - the announcement bar at the top of every page

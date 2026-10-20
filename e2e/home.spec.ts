@@ -49,12 +49,15 @@ test.describe("homepage", () => {
   test("hero arrows and counter (desktop)", async ({ page }, testInfo) => {
     test.skip(isMobile(testInfo.project.name), "desktop only");
     const hero = page.getByRole("region", { name: "Featured pieces" });
-    await expect(hero.getByText("01/05")).toBeVisible();
+    // However many slides the owner has set up (two or more).
+    const first = hero.getByText(/^01\/\d{2}$/);
+    await expect(first).toBeVisible();
+    const total = (await first.textContent())!.slice(3);
     await hero.getByRole("button", { name: "Next slide" }).click();
-    await expect(hero.getByText("02/05")).toBeVisible();
+    await expect(hero.getByText(`02/${total}`)).toBeVisible();
     await hero.getByRole("button", { name: "Previous slide" }).click();
     await hero.getByRole("button", { name: "Previous slide" }).click();
-    await expect(hero.getByText("05/05")).toBeVisible();
+    await expect(hero.getByText(`${total}/${total}`)).toBeVisible();
   });
 
   test("wishlist heart updates the header count", async ({ page }, testInfo) => {

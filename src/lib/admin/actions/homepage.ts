@@ -59,6 +59,14 @@ export const saveCategoryImage = adminAction(
   },
 );
 
+export const saveShopAllImage = adminAction(
+  { role: "owner", schema: z.object({ imagePath: mediaPath("categories") }), tags: () => [TAGS.siteSettings, TAGS.home] },
+  async ({ imagePath }) => {
+    check(await createAdminClient().from("site_settings").update({ shop_all_image_path: imagePath }).eq("id", 1), "settings");
+    return { message: "Shop All image saved." };
+  },
+);
+
 const storyInput = z
   .object({
     text: z.string().trim().min(10, "Write a line or two.").max(600),

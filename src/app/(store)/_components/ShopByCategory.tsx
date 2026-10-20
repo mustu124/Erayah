@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ElephantMark } from "@/components/ui/Logo";
-import { getCategoryTiles, type CategoryTile } from "@/lib/data/catalog";
+import { getCategoryTiles, getShopAllImage, type CategoryTile } from "@/lib/data/catalog";
 import { routes } from "@/lib/routes";
 
 import { GiantWordmark } from "./GiantWordmark";
@@ -11,10 +11,10 @@ const SIZES = "(min-width: 1024px) 280px, (min-width: 768px) 30vw, 31vw";
 
 /** Five categories plus Shop All: a complete 3-column grid over a faint ERAYAH. */
 export async function ShopByCategory() {
-  const categories = await getCategoryTiles();
+  const [categories, shopAllImage] = await Promise.all([getCategoryTiles(), getShopAllImage()]);
   const tiles: CategoryTile[] = [
     ...categories,
-    { slug: "all", name: "Shop All", href: routes.shopAll, comingSoon: false, image: null },
+    { slug: "all", name: "Shop All", href: routes.shopAll, comingSoon: false, image: shopAllImage },
   ];
 
   return (

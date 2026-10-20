@@ -840,6 +840,7 @@ export type Database = {
           invoice_prefix: string;
           low_stock_threshold: number;
           prices_include_gst: boolean;
+          shop_all_image_path: string | null;
           support_email: string | null;
           support_phone: string | null;
           updated_at: string;
@@ -861,6 +862,7 @@ export type Database = {
           invoice_prefix?: string;
           low_stock_threshold?: number;
           prices_include_gst?: boolean;
+          shop_all_image_path?: string | null;
           support_email?: string | null;
           support_phone?: string | null;
           updated_at?: string;
@@ -882,6 +884,7 @@ export type Database = {
           invoice_prefix?: string;
           low_stock_threshold?: number;
           prices_include_gst?: boolean;
+          shop_all_image_path?: string | null;
           support_email?: string | null;
           support_phone?: string | null;
           updated_at?: string;
