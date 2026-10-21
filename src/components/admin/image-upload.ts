@@ -33,7 +33,13 @@ function toBlob(canvas: HTMLCanvasElement, type: string, quality: number) {
   return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, type, quality));
 }
 
-export async function prepareImage(file: File, maxSize = 2400): Promise<PreparedImage> {
+/**
+ * Resized in the browser before upload: at most 1600 px wide and 2400 px tall
+ * (more than any screen shows; the PDP is ~760 px wide), WebP at quality 0.8,
+ * or JPEG 0.8 where the browser can't make WebP (Safari). Keeps originals small,
+ * because the image optimiser downloads the original from Supabase (egress).
+ */
+export async function prepareImage(file: File, maxWidth = 1600, maxHeight = 2400): Promise<PreparedImage> {
   if (!IMAGE_TYPES.includes(file.type)) {
     throw new UploadError("Please upload a JPEG, PNG or WebP photo. (iPhone HEIC photos: export as JPEG first.)");
   }
@@ -42,7 +48,7 @@ export async function prepareImage(file: File, maxSize = 2400): Promise<Prepared
   const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" }).catch(() => {
     throw new UploadError("This photo couldn't be read. Please try another file.");
   });
-  const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
+  const scale = Math.min(1, maxWidth / bitmap.width, maxHeight / bitmap.height);
   const width = Math.round(bitmap.width * scale);
   const height = Math.round(bitmap.height * scale);
 
@@ -53,10 +59,10 @@ export async function prepareImage(file: File, maxSize = 2400): Promise<Prepared
   ctx.imageSmoothingQuality = "high";
   ctx.drawImage(bitmap, 0, 0, width, height);
 
-  let blob = await toBlob(canvas, "image/webp", 0.86);
+  let blob = await toBlob(canvas, "image/webp", 0.8);
   let ext: PreparedImage["ext"] = "webp";
   if (!blob || blob.type !== "image/webp") {
-    blob = await toBlob(canvas, "image/jpeg", 0.88);
+    blob = await toBlob(canvas, "image/jpeg", 0.8);
     ext = "jpg";
   }
   if (!blob) throw new UploadError("This photo couldn't be converted. Please try another file.");

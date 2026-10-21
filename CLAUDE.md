@@ -83,6 +83,7 @@ Homepage sections, strictly in this order and nothing else: Hero, Shop by Catego
 
 ## How you work
 - Every migration must be idempotent and applied by you through the Supabase CLI. Never ask the owner to paste SQL into the dashboard.
+- Keep Supabase egress low while testing: never delete `.next/cache/images` (the local image optimiser's copies; deleting it makes every test run re-download every original photo). Product photos are kept at most 1600×2400, WebP q80 (`scripts/compress-photos.mts` re-encodes any that slip through).
 
 ## Repo map
 Next.js 16 (App Router, Turbopack), Tailwind 4, pnpm. Next 16 differs from older versions — see @AGENTS.md.
