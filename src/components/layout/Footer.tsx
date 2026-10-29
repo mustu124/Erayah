@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { InstagramGlyph, WhatsAppGlyph } from "@/components/ui/BrandIcons";
 import { ElephantMark, Wordmark } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
-import { currentYear } from "@/lib/format/date";
+import { CurrentYear } from "@/components/ui/Today";
 import { CATEGORY_LINKS, FOOTER_ERAYAH_LINKS, FOOTER_HELP_LINKS, type NavLink } from "@/lib/navigation";
 import { routes } from "@/lib/routes";
 import { whatsappUrl } from "@/lib/whatsapp";
@@ -19,7 +19,6 @@ const shownFrom = (i: number) => (i < 4 ? "" : i < 8 ? "hidden md:block" : "hidd
 const LINK = "flex min-h-11 items-center text-body-sm text-ivory/85 transition-opacity duration-300 hover:text-ivory lg:min-h-9";
 
 export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
-  const year = await currentYear();
 
   return (
     <footer className="bg-ink text-ivory">
@@ -68,7 +67,9 @@ export async function Footer({ instagramUrl, whatsappNumber }: FooterProps) {
 
       <div className="border-t border-ivory/15">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-2 px-6 py-6 text-caption text-ivory/70 md:flex-row md:justify-between md:px-10 md:pr-24">
-          <p>© {year} Erayah</p>
+          <p>
+            © <CurrentYear /> Erayah
+          </p>
           <p>Handcrafted in India</p>
         </div>
       </div>

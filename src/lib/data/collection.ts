@@ -24,9 +24,9 @@ export type CategoryInfo = {
 };
 
 export async function getCategories(): Promise<CategoryInfo[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.categories);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("categories")
@@ -137,9 +137,9 @@ export type CollectionPage = {
 
 /** One page of products, filtered and sorted in Postgres (24 per page). */
 export async function getCollectionPage(scope: Scope, filters: Filters): Promise<CollectionPage> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, TAGS.categories);
-  cacheLife("hours");
+  cacheLife("max");
 
   const categories = await getCategories();
   const categoryId = await categoryIdFor(scope);
@@ -220,9 +220,9 @@ const FILTER_STYLES = [
 
 /** Counts for the filter rail, over the whole scope (not narrowed by the current filters). */
 export async function getFacets(scope: Scope): Promise<Facets> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, TAGS.categories);
-  cacheLife("hours");
+  cacheLife("max");
 
   const categories = await getCategories();
   const categoryId = await categoryIdFor(scope);
@@ -278,9 +278,9 @@ export type LifestyleTile = {
 
 /** Tiles the owner configured for this category (or the Shop All tiles). */
 export async function getConfiguredTiles(scope: Scope): Promise<LifestyleTile[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.lifestyleTiles, TAGS.categories);
-  cacheLife("days");
+  cacheLife("max");
 
   const categoryId = await categoryIdFor(scope);
   let query = createPublicClient()
@@ -306,9 +306,9 @@ export type TileCandidate = { productId: number; slug: string; name: string; ima
 
 /** Photographed products in scope (curated order), for automatic lifestyle tiles. */
 export async function getTileCandidates(scope: Scope): Promise<TileCandidate[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, TAGS.categories);
-  cacheLife("hours");
+  cacheLife("max");
 
   const categoryId = await categoryIdFor(scope);
   let query = createPublicClient()

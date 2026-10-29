@@ -90,7 +90,7 @@ export function toCard(row: {
 export async function getNewArrivals(): Promise<ProductCardData[]> {
   "use cache";
   cacheTag(TAGS.home, TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("products")
@@ -108,7 +108,7 @@ export async function getNewArrivals(): Promise<ProductCardData[]> {
 export async function getBestSellers(): Promise<ProductCardData[]> {
   "use cache";
   cacheTag(TAGS.home, TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("products")
@@ -141,7 +141,7 @@ export type HeroSlide = {
 export async function getHeroSlides(): Promise<HeroSlide[]> {
   "use cache";
   cacheTag(TAGS.home, TAGS.heroSlides, TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
 
   const supabase = createPublicClient();
   const { data: slides, error } = await supabase
@@ -204,7 +204,7 @@ export type CategoryTile = {
 export async function getShopAllImage(): Promise<CardImage | null> {
   "use cache";
   cacheTag(TAGS.home, TAGS.siteSettings);
-  cacheLife("days");
+  cacheLife("max");
   const { data, error } = await createPublicClient().from("site_settings").select("shop_all_image_path").eq("id", 1).maybeSingle();
   if (error) console.error("getShopAllImage:", error.message);
   return data?.shop_all_image_path
@@ -219,7 +219,7 @@ export async function getShopAllImage(): Promise<CardImage | null> {
 export async function getCategoryTiles(): Promise<CategoryTile[]> {
   "use cache";
   cacheTag(TAGS.home, TAGS.categories, TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
 
   const supabase = createPublicClient();
   const [{ data: categories, error }, { data: products, error: productError }] = await Promise.all([

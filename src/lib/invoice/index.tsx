@@ -4,7 +4,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import sharp from "sharp";
 import { revalidateTag } from "next/cache";
 
-import { TAGS } from "@/lib/cache-tags";
+import { productTag, TAGS } from "@/lib/cache-tags";
 import { type CustomerOrder, getInvoiceSettings, getOrderById } from "@/lib/data/order";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -73,13 +73,22 @@ export async function ensureInvoice(order: CustomerOrder): Promise<Buffer> {
 
 /**
  * Runs once after an order is placed (from /verify, the webhook or a fully
- * gift-carded order): store the invoice and refresh stock on product pages.
+ * gift-carded order): store the invoice and refresh stock where it shows.
+ *
+ * Only the pages of the pieces bought are refreshed. The whole catalogue
+ * (listings, homepage) is refreshed only if a piece just sold out, because
+ * that's the only change they show. Refreshing everything on every order
+ * rewrote every page's cache and used up Vercel's monthly ISR writes.
  */
 export async function afterOrderPlaced(orderId: string) {
-  // Every product read is tagged "products", so this refreshes stock everywhere.
-  revalidateTag(TAGS.products, "max");
   const order = await getOrderById(orderId);
   if (!order) return;
+  const productIds = [...new Set(order.items.map((i) => i.product_id).filter((id): id is number => id !== null))];
+  if (productIds.length) {
+    const { data } = await createAdminClient().from("products").select("slug, stock_qty").in("id", productIds);
+    for (const p of data ?? []) revalidateTag(productTag(p.slug), "max");
+    if ((data ?? []).some((p) => p.stock_qty <= 0)) revalidateTag(TAGS.products, "max");
+  }
   try {
     await ensureInvoice(order);
   } catch (error) {

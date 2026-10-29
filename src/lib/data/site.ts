@@ -18,7 +18,7 @@ export type SiteShell = {
 export async function getSiteShell(): Promise<SiteShell> {
   "use cache";
   cacheTag(TAGS.siteSettings);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("site_settings")
@@ -46,7 +46,7 @@ export type BrandStory = {
 export async function getBrandStory(): Promise<BrandStory | null> {
   "use cache";
   cacheTag(TAGS.home, TAGS.siteSettings);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("site_settings")
@@ -75,7 +75,7 @@ export type MenuFeature = {
 export async function getMenuFeature(): Promise<MenuFeature> {
   "use cache";
   cacheTag(TAGS.heroSlides);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("hero_slides")

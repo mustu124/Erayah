@@ -2,14 +2,14 @@ import "server-only";
 
 import { cacheLife, cacheTag } from "next/cache";
 
-import { TAGS } from "@/lib/cache-tags";
+import { productTag, TAGS } from "@/lib/cache-tags";
 import { createPublicClient } from "@/lib/supabase/public";
 import { publicStorageUrl } from "@/lib/supabase/storage";
 import type { Enums } from "@/lib/supabase/types";
 
 import { CARD_ROLES, CARD_SELECT, toCard, type ProductCardData } from "./catalog";
 
-export const productTag = (slug: string) => `product:${slug}`;
+export { productTag } from "@/lib/cache-tags";
 
 export type GalleryItem = {
   key: string;
@@ -45,9 +45,9 @@ const ROLE_ORDER: Enums<"image_role">[] = ["worn_closeup", "lifestyle", "product
 
 /** A published product with its gallery (by sort_order, one entry per file) and variants. */
 export async function getProduct(slug: string): Promise<ProductDetail | null> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, productTag(slug));
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient()
     .from("products")
@@ -98,9 +98,9 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
 
 /** Every published product slug (for generateStaticParams). */
 export async function getAllProductSlugs(): Promise<string[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
 
   const { data, error } = await createPublicClient().from("products").select("slug").order("id");
   if (error) console.error("getAllProductSlugs:", error.message);
@@ -122,9 +122,9 @@ export async function getCardsByIds(ids: number[]): Promise<ProductCardData[]> {
 
 /** Product cards for these slugs, in the given order (for Recently Viewed). */
 export async function getCardsBySlugs(slugs: string[]): Promise<ProductCardData[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products);
-  cacheLife("hours");
+  cacheLife("max");
 
   if (!slugs.length) return [];
   const { data, error } = await createPublicClient()
@@ -145,9 +145,9 @@ const FILL_TO = 4;
  * topped up with pieces from the same category at the closest price.
  */
 export async function getCompleteTheLook(product: { id: number; slug: string; price: number | null; categoryId: number | null }): Promise<ProductCardData[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, productTag(product.slug));
-  cacheLife("days");
+  cacheLife("max");
 
   const supabase = createPublicClient();
   const { data: relations, error } = await supabase

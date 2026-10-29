@@ -13,7 +13,7 @@ import { Price } from "@/components/ui/Price";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Select } from "@/components/ui/Select";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { currentMonthLabel } from "@/lib/format/date";
+import { MonthLabel } from "@/components/ui/Today";
 
 import { InteractiveDemos } from "./InteractiveDemos";
 
@@ -33,7 +33,6 @@ const COLOURS = [
 ] as const;
 
 export default async function StyleguidePage() {
-  const month = await currentMonthLabel();
 
   return (
     <div className="mx-auto max-w-5xl space-y-16 px-4 py-12 md:px-6">
@@ -89,8 +88,8 @@ export default async function StyleguidePage() {
       </Block>
 
       <Block title="Section header">
-        <SectionHeader title="Most Loved" label={month} />
-        <SectionHeader title="New Arrivals" label={month} className="mt-8" />
+        <SectionHeader title="Most Loved" label={<MonthLabel />} />
+        <SectionHeader title="New Arrivals" label={<MonthLabel />} className="mt-8" />
       </Block>
 
       <Block title="Buttons">

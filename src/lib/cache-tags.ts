@@ -12,3 +12,6 @@ export const TAGS = {
   faqs: "faqs",
   testimonials: "testimonials",
 } as const;
+
+/** One product's page (detail, Complete the Look). */
+export const productTag = (slug: string) => `product:${slug}`;

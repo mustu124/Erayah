@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 import { cn } from "@/lib/cn";
 
 type SectionHeaderProps = {
   title: string;
-  /** Date-style label on the right, e.g. "October 2026" (see currentMonthLabel). */
-  label?: string;
+  /** Date-style label on the right, e.g. <MonthLabel /> ("October 2026"). */
+  label?: ReactNode;
   as?: "h2" | "h3";
   id?: string;
   className?: string;

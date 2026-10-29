@@ -4,7 +4,7 @@ import { Carousel } from "@/components/ui/Carousel";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/cn";
 import type { ProductCardData } from "@/lib/data/catalog";
-import { currentMonthLabel } from "@/lib/format/date";
+import { MonthLabel } from "@/components/ui/Today";
 
 type ProductCarouselSectionProps = {
   id: string;
@@ -24,12 +24,11 @@ const GRID_SIZES = "(min-width: 1024px) 23vw, 46vw";
 
 export async function ProductCarouselSection({ id, title, products, href, linkLabel, tone = "plain", layout = "carousel" }: ProductCarouselSectionProps) {
   if (!products.length) return null;
-  const month = await currentMonthLabel();
 
   return (
     <section aria-labelledby={id} className={cn("py-14 lg:py-20", tone === "ivory" && "bg-ivory")}>
       <div className="mx-auto max-w-[1440px] px-4 md:px-6 lg:px-10">
-        <SectionHeader id={id} title={title} label={month} />
+        <SectionHeader id={id} title={title} label={<MonthLabel />} />
         {layout === "grid" ? (
           <ul className="mt-8 grid grid-cols-2 gap-x-3 gap-y-8 md:gap-x-5 lg:mt-10 lg:grid-cols-4">
             {products.map((product) => (

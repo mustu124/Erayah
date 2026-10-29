@@ -22,9 +22,9 @@ type Hit = { id: number; rank: number };
  * applied, falls back to a simple name/description/style match.
  */
 export async function searchProductIds(q: string): Promise<number[]> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products);
-  cacheLife("hours");
+  cacheLife("max");
   return (await runSearch(q, MAX_MATCHES)).map((h) => h.id);
 }
 
@@ -72,9 +72,9 @@ export type InstantResults = { products: InstantProduct[]; links: InstantLink[];
 
 /** Up to 6 products and 3 category/style links for the search dropdown. */
 export async function getInstantResults(q: string): Promise<InstantResults> {
-  "use cache: remote";
+  "use cache";
   cacheTag(TAGS.products, TAGS.categories);
-  cacheLife("hours");
+  cacheLife("max");
 
   const [ids, links] = await Promise.all([searchProductIds(q), matchLinks(q)]);
   const top = ids.slice(0, 6);

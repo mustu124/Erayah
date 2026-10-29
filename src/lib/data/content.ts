@@ -17,7 +17,7 @@ export type ContentPage = { slug: string; title: string; body: string; seoTitle:
 export async function getPage(slug: string): Promise<ContentPage | null> {
   "use cache";
   cacheTag(TAGS.pages);
-  cacheLife("days");
+  cacheLife("max");
   const { data, error } = await createPublicClient().from("pages").select("slug, title, body, seo_title, seo_description, images").eq("slug", slug).maybeSingle();
   if (error) console.error("getPage:", error.message);
   if (!data) return null;
@@ -62,7 +62,7 @@ export const FAQ_GROUPS = ["Orders & Payment", "Shipping", "Exchanges", "Care", 
 export async function getFaqGroups(): Promise<{ group: string; faqs: Faq[] }[]> {
   "use cache";
   cacheTag(TAGS.faqs);
-  cacheLife("days");
+  cacheLife("max");
   const { data, error } = await createPublicClient().from("faqs").select("id, question, answer, group_name").eq("is_active", true).order("sort_order");
   if (error) console.error("getFaqGroups:", error.message);
   const byGroup = new Map<string, Faq[]>();
@@ -79,7 +79,7 @@ export type Testimonial = { id: number; quote: string; author: string; location:
 export async function getTestimonials(): Promise<Testimonial[]> {
   "use cache";
   cacheTag(TAGS.testimonials);
-  cacheLife("days");
+  cacheLife("max");
   const { data, error } = await createPublicClient().from("testimonials").select("id, quote, author_name, location").eq("is_active", true).order("sort_order").limit(6);
   if (error) console.error("getTestimonials:", error.message);
   return (data ?? []).map((t) => ({ id: t.id, quote: t.quote, author: t.author_name, location: t.location }));
@@ -97,7 +97,7 @@ export type ContactDetails = {
 export async function getContactDetails(): Promise<ContactDetails> {
   "use cache";
   cacheTag(TAGS.siteSettings);
-  cacheLife("days");
+  cacheLife("max");
   const { data, error } = await createPublicClient().from("site_settings").select("whatsapp_number, support_email, support_phone, instagram_url, business_hours").eq("id", 1).maybeSingle();
   if (error) console.error("getContactDetails:", error.message);
   const instagramUrl = data?.instagram_url || publicEnv.NEXT_PUBLIC_INSTAGRAM_URL;
@@ -119,7 +119,7 @@ export async function getContactDetails(): Promise<ContactDetails> {
 export async function getAboutFallbackImages(): Promise<{ hero: CardImage | null; story: CardImage[] }> {
   "use cache";
   cacheTag(TAGS.heroSlides, TAGS.products);
-  cacheLife("days");
+  cacheLife("max");
   const db = createPublicClient();
   const [{ data: slide }, { data: products }] = await Promise.all([
     db.from("hero_slides").select("image_desktop_path, alt").eq("is_active", true).order("sort_order").limit(1).maybeSingle(),
